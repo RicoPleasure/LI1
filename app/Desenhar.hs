@@ -5,11 +5,24 @@ import ImmutableTowers
 
 import LI12425
 
-desenhaLinha :: [Terreno] -> Int -> [Picture]
-desenhaLinha [] = []
-desenhaLinha (h:t) = color green
-
 desenha :: ImmutableTowers -> Picture
-desenha ImmutableTowers { jogo = Jogo {mapaJogo = (h:t)}} = desenhaLinha h
+desenha (ImmutableTowers {jogo = Jogo {mapaJogo = linhas}}) = Pictures $ desenhaMapa linhas 0
 desenha _ = undefined
---desenha _ = Translate (-450) 0 $ Scale 0.5 0.5 $ Text "Welcome to Immutable Towers!"
+
+desenhaMapa :: [[Terreno]] -> Int -> [Picture]
+desenhaMapa [] _ = []
+desenhaMapa (linha:t) y = 
+    Translate 0 (fromIntegral y * (-50)) (Pictures (desenhaLinha linha 0)) 
+    : desenhaMapa t (y + 1)
+
+desenhaLinha :: [Terreno] -> Int -> [Picture]
+desenhaLinha [] _ = []
+desenhaLinha (terreno:t) x = 
+    Translate (fromIntegral x * 50) 0 (desenhaTerreno terreno) 
+    : desenhaLinha t (x + 1)
+
+desenhaTerreno :: Terreno -> Picture
+desenhaTerreno terreno =  case terreno of
+    Relva -> Color green $ Polygon [(0, 0), (50, 0), (50, 50), (0, 50)]
+    Agua -> Color blue $ Polygon [(0, 0), (50, 0), (50, 50), (0, 50)]
+    Terra -> Color orange $ Polygon [(0, 0), (50, 0), (50, 50), (0, 50)]

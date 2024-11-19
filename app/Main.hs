@@ -28,6 +28,10 @@ main = do
         portaisJogo = [],
         torresJogo = [],
         mapaJogo = [
+          [Relva, Relva, Terra, Relva],
+          [Relva, Relva, Agua, Agua],
+          [Relva, Relva, Terra, Agua],
+          [Relva, Relva, Terra, Relva],
           [Relva, Relva, Terra, Relva]
         ],
         inimigosJogo = [],
