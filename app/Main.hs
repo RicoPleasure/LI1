@@ -10,8 +10,14 @@ import LI12425
 janela :: Display
 janela = InWindow "Immutable Towers" (1920, 1080) (0, 0)
 
+customColor :: Int -> Int -> Int -> Int -> Color
+customColor r g b a = makeColor (fromIntegral r / 255) 
+                              (fromIntegral g / 255) 
+                              (fromIntegral b / 255) 
+                              (fromIntegral a / 255)
+                              
 fundo :: Color
-fundo = white
+fundo = customColor 160 220 220 255
 
 fr :: Int
 fr = 60
@@ -28,11 +34,16 @@ main = do
         portaisJogo = [],
         torresJogo = [],
         mapaJogo = [
-          [Relva, Relva, Terra, Relva],
-          [Relva, Relva, Agua, Agua],
-          [Relva, Relva, Terra, Agua],
-          [Relva, Relva, Terra, Relva],
-          [Relva, Relva, Terra, Relva]
+          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
+          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
+          [Terra, Relva, Relva, Relva, Terra, Terra, Terra, Terra, Terra, Terra],
+          [Terra, Terra, Terra, Terra, Terra, Relva, Terra, Terra, Terra, Terra],
+          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
+          [Terra, Terra, Terra, Terra, Terra, Terra, Relva, Terra, Terra, Terra],
+          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
+          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
+          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
+          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra]
         ],
         inimigosJogo = [],
         lojaJogo = undefined
