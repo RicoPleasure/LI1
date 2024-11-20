@@ -23,9 +23,6 @@ desenhaLinha (terreno:t) xDif =
 
 desenhaTerreno :: Terreno -> Picture
 desenhaTerreno terreno = Pictures [terrenoTopo terreno, terrenoFrente terreno, terrenoDireita terreno]
-{- terrenoTopo :: Terreno -> Picture
-terrenoTopo terreno 
- -}
 
 terrenoTopo :: Terreno -> Picture
 terrenoTopo terreno =
