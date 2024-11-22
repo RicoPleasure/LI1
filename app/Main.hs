@@ -30,20 +30,22 @@ main = do
   where
     it = ImmutableTowers {
       jogo = Jogo {
-        baseJogo = undefined,
-        portaisJogo = [],
+        baseJogo = Base {
+          posicaoBase = (5,0)
+        },
+        portaisJogo = [ Portal {posicaoPortal = (3,9)} ],
         torresJogo = [],
         mapaJogo = [
-          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
-          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
-          [Terra, Relva, Relva, Relva, Terra, Terra, Terra, Terra, Terra, Terra],
-          [Terra, Terra, Terra, Terra, Terra, Relva, Terra, Terra, Terra, Terra],
-          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
-          [Terra, Terra, Terra, Terra, Terra, Terra, Relva, Terra, Terra, Terra],
-          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
-          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
-          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra],
-          [Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra, Terra]
+          [Relva, Relva, Relva, Relva, Relva, Terra, Relva, Relva, Relva, Relva],
+          [Relva, Relva, Relva, Relva, Relva, Terra, Relva, Relva, Relva, Relva],
+          [Relva, Relva, Relva, Relva, Relva, Terra, Relva, Relva, Relva, Relva],
+          [Agua, Agua, Agua, Agua, Relva, Terra, Terra, Terra, Agua, Agua],
+          [Relva, Relva, Relva, Agua, Relva, Relva, Relva, Terra, Agua, Relva],
+          [Relva, Relva, Relva, Agua, Terra, Terra, Terra, Terra, Agua, Relva],
+          [Relva, Agua, Agua, Agua, Terra, Relva, Relva, Relva, Agua, Relva],
+          [Relva, Agua, Relva, Relva, Terra, Relva, Relva, Relva, Agua, Agua],
+          [Relva, Agua, Relva, Terra, Terra, Relva, Relva, Relva, Relva, Relva],
+          [Relva, Agua, Relva, Terra, Relva, Relva, Relva, Relva, Relva, Relva]
         ],
         inimigosJogo = [],
         lojaJogo = undefined
