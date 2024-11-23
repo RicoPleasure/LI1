@@ -9,18 +9,19 @@ Módulo para a realização da Tarefa 1 de LI1 em 2024/25.
 -}
 module Tarefa1 where
 
+import ImmutableTowers -- O erro está ao importar este módulo
 import LI12425
 
 validaJogo :: Jogo -> Bool
-validaJogo = undefined
+validaJogo Jogo { 
+              mapaJogo = mapa,
+              baseJogo = Base { posicaoBase = (baseX,baseY)},
+              portaisJogo = [ Portal {posicaoPortal = (x,y)} ] } =
+                undefined
 
-{- data Base = Base
-  { -- | Vida da base. Quando esta chega a zero, o jogador perde o jogo.
-    vidaBase :: Float,
-    -- | Posição da base no mapa. A base deve estar sobre um terreno de terra.
-    posicaoBase :: Posicao,
-    -- | Balanço de créditos do jogador.
-    creditosBase :: Creditos
-  }
-  deriving (Show) 
--}
+-- A função que eu estava a falar era esta: deve funcionar mas não consegui testar 
+validaPosicaoObjeto :: (Float, Float) -> ImmutableTowers -> Bool
+validaPosicaoObjeto (x,y) (ImmutableTowers { jogo = Jogo {mapaJogo = mapa}}) = 
+  x >= 0 && x < fromIntegral (length (head mapa)) && y >= 0 && y < fromIntegral (length mapa)
+
+{- existeBase :: Jogo ->  -}

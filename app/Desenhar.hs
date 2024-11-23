@@ -34,9 +34,10 @@ desenha (ImmutableTowers {
 
 calculaAjusteMapa :: [[Terreno]] -> (Float,Float)
 calculaAjusteMapa mapa = 
-    let width = (blocoLargura - 50)
-        height = (blocoAltura * 3)
-    in (-width,height)
+    (-width,height)
+    where
+         width = (blocoLargura - 50)
+         height = (blocoAltura * 3)
 
 desenhaMapa :: [[Terreno]] -- Mapa  
             -> (Float,Float) -- Coordenadas da grelha do mapa
@@ -55,26 +56,27 @@ desenhaLinha (terreno:t) (x,y) =
 
 desenhaTerreno :: Terreno 
                -> Picture
-desenhaTerreno terreno = Pictures [terrenoTopo terreno, terrenoFrente terreno, terrenoDireita terreno]
+desenhaTerreno terreno = 
+    Pictures [terrenoTopo terreno, terrenoFrente terreno, terrenoDireita terreno]
 
 terrenoTopo :: Terreno 
             -> Picture
 terrenoTopo terreno =
-    let color = light (terrenoCor terreno)
-    in Color color $ Polygon [(0, 0), (50, -25), (100, 0), (50, 25)]
+    Color color $ Polygon [(0, 0), (50, -25), (100, 0), (50, 25)]
+    where color = light (terrenoCor terreno)
+
 
 terrenoFrente :: Terreno 
               -> Picture
 terrenoFrente terreno =
-    let color = terrenoCor terreno
-    in Color color $ Polygon [(0, 0), (50, -25), (50, -75), (0, -50)]
+    Color color $ Polygon [(0, 0), (50, -25), (50, -75), (0, -50)]
+    where color = terrenoCor terreno
 
 terrenoDireita :: Terreno 
                -> Picture
-terrenoDireita terreno =
-    let color = terrenoCor terreno
-    in Color color $ Polygon [(50, -25), (100, 0), (100, -50), (50, -75)]
-
+terrenoDireita terreno = 
+    Color color $ Polygon [(50, -25), (100, 0), (100, -50), (50, -75)]
+    where color = terrenoCor terreno
 -- Mais tarde vai ser com sprites / Pode ser feita outra deste tipo para escolher temas 
 terrenoCor :: Terreno 
            -> Color
