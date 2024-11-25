@@ -9,7 +9,6 @@ Módulo para a realização da Tarefa 1 de LI1 em 2024/25.
 -}
 module Tarefa1 where
 
-import ImmutableTowers -- O erro está ao importar este módulo
 import LI12425
 
 validaJogo :: Jogo -> Bool
@@ -20,8 +19,8 @@ validaJogo Jogo {
                 undefined
 
 -- A função que eu estava a falar era esta: deve funcionar mas não consegui testar 
-validaPosicaoObjeto :: (Float, Float) -> ImmutableTowers -> Bool
-validaPosicaoObjeto (x,y) (ImmutableTowers { jogo = Jogo {mapaJogo = mapa}}) = 
+validaPosicaoObjeto :: (Float, Float) -> Jogo -> Bool
+validaPosicaoObjeto (x,y) (Jogo {mapaJogo = mapa}) = 
   x >= 0 && x < fromIntegral (length (head mapa)) && y >= 0 && y < fromIntegral (length mapa)
 
 {- existeBase :: Jogo ->  -}
