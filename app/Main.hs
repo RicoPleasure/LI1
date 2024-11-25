@@ -15,7 +15,8 @@ customColor r g b a = makeColor (fromIntegral r / 255)
                               (fromIntegral g / 255) 
                               (fromIntegral b / 255) 
                               (fromIntegral a / 255)
-                              
+-- TODO create Utils.hs                           
+
 fundo :: Color
 fundo = customColor 160 220 220 255
 
