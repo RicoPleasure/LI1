@@ -108,16 +108,16 @@ terrenoCor terreno = case terreno of
     Terra -> orange
 
 {-| Função que desenha a base do jogador -}
-desenhaBase :: (Float, Float)
+desenhaBase :: Posicao
             -> Picture
 desenhaBase (x,y)
     = posicaoRealObjetos (x,y) $ Color red $ circleSolid 15
 
 {-| Função que desenha todos os portais  -}
-desenhaPortais :: [(Float, Float)]
+desenhaPortais :: [Posicao]
             -> [Picture]
 desenhaPortais pos = map desenhaPortal pos
 
 {-| Função que desenha um único portal -}
-desenhaPortal :: (Float, Float) -> Picture
+desenhaPortal :: Posicao -> Picture
 desenhaPortal (x,y) = posicaoRealObjetos (x,y) $ Color green $ circleSolid 20 
