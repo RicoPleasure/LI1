@@ -12,4 +12,15 @@ module Tarefa1 where
 import LI12425
 
 validaJogo :: Jogo -> Bool
-validaJogo = undefined
+validaJogo Jogo { 
+              mapaJogo = mapa,
+              baseJogo = Base { posicaoBase = (baseX,baseY)},
+              portaisJogo = [ Portal {posicaoPortal = (x,y)} ] } =
+                undefined
+
+-- A função que eu estava a falar era esta: deve funcionar mas não consegui testar 
+validaPosicaoObjeto :: (Float, Float) -> Jogo -> Bool
+validaPosicaoObjeto (x,y) (Jogo {mapaJogo = mapa}) = 
+  x >= 0 && x < fromIntegral (length (head mapa)) && y >= 0 && y < fromIntegral (length mapa)
+
+{- existeBase :: Jogo ->  -}
