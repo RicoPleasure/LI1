@@ -69,5 +69,5 @@ verificaSobreposicao :: Posicao -- Posição da base
                      -> [Posicao] -- Lista de posições dos portais
                      -> [Posicao] -- Lista de posições das torres
                      -> Bool
-verificaSobreposicao posicaoBase posicoesPortais posicoesTorres 
+verificaSobreposicao posicaoBase posicoesPortais posicoesTorres
   = not (posicaoBase `elem` posicoesPortais || posicaoBase `elem` posicoesTorres)
