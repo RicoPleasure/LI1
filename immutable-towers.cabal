@@ -43,6 +43,9 @@ library
         Tarefa1
         Tarefa2
         Tarefa3
+        Utils.Utilitarios
+        Utils.UtilitariosPortal
+        Utils.UtilitariosTorre
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -93,6 +96,7 @@ test-suite immutable-towers-test
         Tarefa1Spec
         Tarefa2Spec
         Tarefa3Spec
+        TData.TestData
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
