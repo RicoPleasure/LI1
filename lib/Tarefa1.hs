@@ -20,10 +20,25 @@ validaJogo (Jogo {
                                 vidaBase = vida,
                                 posicaoBase = (baseX,baseY),
                                 creditosBase = creditos},
-              portaisJogo = [ portais@Portal {posicaoPortal = coordsPortal} ],
-              torresJogo = [ torres@Torre {posicaoTorre = coordsTorre} ] }) =
+              inimigosJogo = inimigos,  
+              portaisJogo = portais,
+              torresJogo = torres }) =
                    validaMapa mapa
-                    && validaBase mapa vida (baseX,baseY) [coordsPortal] [coordsTorre] creditos
+                    && validaBase mapa (baseX,baseY) (map posicaoPortal portais) (map posicaoTorre torres) creditos
+                    
+{-| Valida a base do jogo -}
+validaBase :: [[Terreno]] -- Mapa
+           -> Posicao -- Posição da base
+           -> [Posicao] -- Lista de posições dos portais
+           -> [Posicao] -- Lista de posições das torres
+           -> Creditos -- Créditos da base
+           -> Bool
+validaBase mapa (xBase, yBase) portais torres creditos =
+  verificaTerrenoBase mapa (xBase, yBase) == Terra 
+  && validaPosicaoObjeto mapa (xBase, yBase)
+  && validaCreditosBase creditos
+  && verificaSobreposicao (xBase,yBase) portais torres
+
 {-| Valida a posição de um objeto qualquer dentro do mapa (base, portais, inimigos) -}
 validaPosicaoObjeto :: [[Terreno]] -- Mapa
                     -> Posicao -- Posição
@@ -36,20 +51,6 @@ validaMapa :: [[Terreno]] -- Mapa
            -> Bool
 validaMapa mapa = 
   length (head mapa) == length mapa
-
-{-| Valida se a base está num terreno de "Terra" -}
-validaBase :: [[Terreno]] -- Mapa
-           -> Float -- Vida da base
-           -> Posicao -- Posição da base
-           -> [Posicao] -- Lista de posições dos portais
-           -> [Posicao] -- Lista de posições das torres
-           -> Creditos -- Créditos da base
-           -> Bool
-validaBase mapa vida (xBase, yBase) portais torres creditos =
-  verificaTerrenoBase mapa (xBase, yBase) == Terra 
-  && validaPosicaoObjeto mapa (xBase, yBase)
-  && validaCreditosBase creditos
-  && verificaSobreposicao (xBase,yBase) portais torres
 
 {-| Pega o terreno da posição da base no mapa -}
 verificaTerrenoBase :: [[Terreno]] -- Mapa
