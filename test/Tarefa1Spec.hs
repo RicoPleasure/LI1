@@ -2,7 +2,7 @@
 module Tarefa1Spec (testesTarefa1) where
 
 import Test.HUnit
-import TData.TestData
+import TData.TDataTarefa1
 import Tarefa1
 
 testesTarefa1 :: Test

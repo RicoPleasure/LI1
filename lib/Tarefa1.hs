@@ -18,13 +18,13 @@ import Utils.UtilitariosTorre
   A função 'validaJogo' valida, recorrendo a múltiplas validações feitas por funções auxiliares, se um dado estado de Jogo é valido
 
   ==__Objetos validados__
-  * 'Portal': recorrendo á função 'validaPortais'. 
-  * 'Base': recorrendo á função 'validaBase'.
+  * 'Portal': recorrendo à função 'validaPortais'. 
+  * 'Base': recorrendo à função 'validaBase':.
   * 'Inimigos': recorrendo á função TODO:. 
-  * 'Torre': recorrendo á função 'validaTorres':.
-  * 'Mapa': recorrendo á função TODO:.
+  * 'Torre': recorrendo à função 'validaTorres':.
+  * 'Mapa': recorrendo à função TODO:.
 
-  Para além da validação de cada tipo de objetos presente no 'Jogo', a função 'validaJogo' também valida se existem sobreposições entre os vários objetos, recorrendo á função 'verificaCollision'
+  Para além da validação de cada tipo de objetos presente no 'Jogo', a função 'validaJogo' também valida se existem sobreposições entre os vários objetos, recorrendo à função 'verificaSobreposicoes'
 
   ==__Exemplos de utilização__
   >>> validaJogo Jogo {mapaJogo = [], baseJogo = Base {posicaoBase = (2,0)}, portaisJogo = [Portal {posicaoPortal = (0,0)}], torresJogo = []}
