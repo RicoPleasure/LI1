@@ -10,9 +10,9 @@ Módulo para a realização da Tarefa 1 de LI1 em 2024/25.
 module Tarefa1 where
 
 import LI12425
-import Utils.Utilitarios
 import Utils.UtilitariosPortal
 import Utils.UtilitariosBase
+import Utils.UtilitariosTorre
 
 {-|
   A função 'validaJogo' valida, recorrendo a múltiplas validações feitas por funções auxiliares, se um dado estado de Jogo é valido
@@ -21,7 +21,7 @@ import Utils.UtilitariosBase
   * 'Portal': recorrendo á função 'validaPortais'. 
   * 'Base': recorrendo á função 'validaBase'.
   * 'Inimigos': recorrendo á função TODO:. 
-  * 'Torre': recorrendo á função TODO:.
+  * 'Torre': recorrendo á função 'validaTorres':.
   * 'Mapa': recorrendo á função TODO:.
 
   Para além da validação de cada tipo de objetos presente no 'Jogo', a função 'validaJogo' também valida se existem sobreposições entre os vários objetos, recorrendo á função 'verificaCollision'
@@ -31,8 +31,12 @@ import Utils.UtilitariosBase
   False
   >>> validaJogo Jogo {mapaJogo = [[Terra, Terra, Terra, Relva]], baseJogo = Base {posicaoBase = (2,0)}, portaisJogo = [], torresJogo = []}
   False
+  >>> validaJogo Jogo {mapaJogo = [[Terra, Terra, Terra, Relva]], baseJogo = Base {posicaoBase = (2,0)}, portaisJogo = [Portal {posicaoPortal = (0,0), ondasPortal = []}], torresJogo = [Torre {posicaoTorre = (1,0)}]}
+  True
   >>> validaJogo Jogo {mapaJogo = [[Terra, Terra, Terra, Relva]], baseJogo = Base {posicaoBase = (2,0)}, portaisJogo = [Portal {posicaoPortal = (0,0), ondasPortal = []}], torresJogo = []}
   True
+  >>> validaJogo Jogo {mapaJogo = [[Terra, Terra, Terra, Relva]], baseJogo = Base {posicaoBase = (2,0)}, portaisJogo = [Portal {posicaoPortal = (0,0), ondasPortal = []}], torresJogo = [Torre {posicaoTorre = (1,0), rajadaTorre = 0, alcanceTorre = 0}]}
+  False
   
   TODO: Assim que todas as validações estiverem implementadas, verificar, alterar e adicionar mais exemplos.
 -}
@@ -41,33 +45,43 @@ validaJogo Jogo {
               mapaJogo = _,
               baseJogo = _,
               portaisJogo = [],
-              torresJogo = _ } = False
+              torresJogo = _,
+              lojaJogo = _ } = False
 validaJogo Jogo {
               mapaJogo = [],
               baseJogo = _,
               portaisJogo = _,
-              torresJogo = _ } = False
-validaJogo j@(Jogo { 
-              mapaJogo = mapa,
+              torresJogo = _,
+              lojaJogo = _ } = False
+validaJogo j@(Jogo {
+              mapaJogo = mapa, 
               baseJogo = base,
               portaisJogo = portais,
-              torresJogo = torres}) =
-                validaPortais portais mapa base 
-                && not (verificaSobreposicoes j)
-                && validaBase mapa (posicaoBase base) (creditosBase base)
+              torresJogo = torres,
+              lojaJogo = loja }) =
+                validaPortais portais mapa base && 
+                validaTorres torres mapa && 
+                validaBase mapa (posicaoBase base) (creditosBase base) &&
+                not (verificaSobreposicoes j)
+
 
 {-|
   A função 'verificaSobreposicoes' verifica, para cada objetos presente num 'Jogo', se esse está sobreposto a outro objeto que não devia.
-
+  
   ==__Exemplos de utilização__
   >>> verificaSobreposicoes Jogo {baseJogo = Base {posicaoBase = (0,0)}, portaisJogo = [Portal {posicaoPortal = (1,0)}], torresJogo = [Torre {posicaoTorre = (2,0)}]}
   False
+  >>> verificaSobreposicoes Jogo {baseJogo = Base {posicaoBase = (0,0)}, portaisJogo = [Portal {posicaoPortal = (1,0)}], torresJogo = [Torre {posicaoTorre = (2,0)}, Torre {posicaoTorre = (2,0)}]}
+  True
   >>> verificaSobreposicoes Jogo {baseJogo = Base {posicaoBase = (0,0)}, portaisJogo = [Portal {posicaoPortal = (0,0)}], torresJogo = [Torre {posicaoTorre = (2,0)}]}
   True
   >>> verificaSobreposicoes Jogo {baseJogo = Base {posicaoBase = (0,0)}, portaisJogo = [Portal {posicaoPortal = (2,0)}], torresJogo = [Torre {posicaoTorre = (2,0)}]}
   True
+  >>> verificaSobreposicoes Jogo {baseJogo = Base {posicaoBase = (0,0)}, portaisJogo = [Portal {posicaoPortal = (2,0)}], torresJogo = [Torre {posicaoTorre = (3,0)}, Torre {posicaoTorre = (3,0)}]}
+  True
 -}
 verificaSobreposicoes :: Jogo -> Bool
 verificaSobreposicoes (Jogo {baseJogo = base, portaisJogo = portais, torresJogo = torres}) = 
-  verificaColisaoBasePortais portais torres base
+  verificaColisaoBasePortais portais torres base &&
+  verificaCollisionTorres torres
 
