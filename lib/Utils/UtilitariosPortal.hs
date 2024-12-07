@@ -11,10 +11,9 @@ module Utils.UtilitariosPortal where
 
 import LI12425
 import Utils.Utilitarios
-import Utils.UtilitariosTorre
 
 {-|
-  Esta função 'validaPortais' valida um conjunto de 'Portal' quanto á sua conformidade com o esperado dadas as regras do jogo.
+  Esta função 'validaPortais' valida um conjunto de 'Portal' quanto à sua conformidade com o esperado dadas as regras do jogo.
 
   ==__Exemplos de utilização__
   >>>validaPortais [] [[Terra, Terra, Terra, Relva]] Base {posicaoBase = (0,0)} 
@@ -30,12 +29,12 @@ validaPortais (p:ps) m b =
    validaPortal p m b && validaPortais ps m b
 
 {-|
-  A função 'validaPortal' valida cada portal separadamente quanto á sua conformidade, recorrendo para isso a uma série de funções auxiliares.
+  A função 'validaPortal' valida cada portal separadamente quanto à sua conformidade, recorrendo para isso a uma série de funções auxiliares.
 
   ==__Validações necessárias__
   *Validação de que o 'Portal' se encontra dentro do mapa
   *Verifcação de que o 'Portal' se encontra sobre o 'Terreno' do tipo 'Terra'
-  *Verificação de que existe pelo menos um caminho que liga o 'Portal' á 'Base'
+  *Verificação de que existe pelo menos um caminho que liga o 'Portal' à 'Base'
   *Verificação de que cada 'Portal' tem no máximo uma 'Onda' ativa
 
   ==__Exemplos de utilização__
@@ -75,7 +74,7 @@ verificaCaminhoAux p@(px, py) b@(bx, by) (predx, predy) m
       checkEqualBase = px == bx && py == by
 
 {-|
-  A função 'verificaCaminhoPortalBase' verifica se existe pelo menos um caminho válido de um 'Portal' até á 'Base', para tal, recorrendo á função auxiliar 'verificaCaminhoAux'.
+  A função 'verificaCaminhoPortalBase' verifica se existe pelo menos um caminho válido de um 'Portal' até à 'Base', para tal, recorrendo à função auxiliar 'verificaCaminhoAux'.
 
   ==__Exemplos de utilização__
   >>> verificaCaminhoPortalBase (Portal {posicaoPortal = (0,0)}) (Base {posicaoBase = (2,1)}) [[Terra, Relva, Agua], [Terra, Terra, Terra]]
