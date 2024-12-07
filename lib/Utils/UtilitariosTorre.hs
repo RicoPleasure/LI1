@@ -11,13 +11,13 @@ module Utils.UtilitariosTorre where
 import LI12425
 
 {-|
-  'converteTorresEmListaPos' converte uma lista de objetos do tipo 'Torre' em uma lista do tipo 'Posicao' ou seja extrai as respetivas posições para uma coleção
+  'convertePortaisEmListaPos' converte uma lista de objetos do tipo 'Portal' em uma lista do tipo 'Posicao' ou seja extrai as respetivas posições para uma coleção
 
   ==__Exemplos de utilização__
-  >>> converteTorresEmListaPos [Torre {posicaoTorre = (0,0)}, Torre {posicaoTorre = (1,2)}]
+  >>> convertePortaisEmListaPos [Portal {posicaoPortal = (0,0)}, Portal {posicaoPortal = (1,2)}]
   [(0.0,0.0), (1.0,2.0)]
-  >>> converteTorresEmListaPos []
+  >>> convertePortaisEmListaPos []
   []
 -}
-converteTorresEmListaPos :: [Torre] -> [Posicao]
-converteTorresEmListaPos = map (\(Torre {posicaoTorre = pos} ) -> pos)
+convertePortaisEmListaPos :: [Portal] -> [Posicao]
+convertePortaisEmListaPos = map (\(Portal {posicaoPortal = pos} ) -> pos)

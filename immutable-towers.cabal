@@ -44,6 +44,7 @@ library
         Tarefa2
         Tarefa3
         Utils.Utilitarios
+        Utils.UtilitariosBase
         Utils.UtilitariosPortal
         Utils.UtilitariosTorre
 

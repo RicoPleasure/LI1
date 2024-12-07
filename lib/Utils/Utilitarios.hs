@@ -52,3 +52,15 @@ validaPosicaoObjeto (x,y) mapa =
 checkPositionTerra :: Posicao -> Mapa -> Bool
 checkPositionTerra (x,y) m = validaPosicaoObjeto (x,y) m && m !! floor y !! floor x == Terra
 
+
+{-|
+  'converteTorresEmListaPos' converte uma lista de objetos do tipo 'Torre' em uma lista do tipo 'Posicao' ou seja extrai as respetivas posições para uma coleção
+
+  ==__Exemplos de utilização__
+  >>> converteTorresEmListaPos [Torre {posicaoTorre = (0,0)}, Torre {posicaoTorre = (1,2)}]
+  [(0.0,0.0), (1.0,2.0)]
+  >>> converteTorresEmListaPos []
+  []
+-}
+converteTorresEmListaPos :: [Torre] -> [Posicao]
+converteTorresEmListaPos = map (\(Torre {posicaoTorre = pos} ) -> pos)
