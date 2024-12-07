@@ -269,3 +269,70 @@ jogoNoMap = Jogo {
     lojaJogo = []
 }
 
+jogoInvalidBasePos :: Jogo
+jogoInvalidBasePos = Jogo {
+    mapaJogo = [
+        [r, t, r, a, a],
+        [r, t, t, t, a],
+        [r, r, r, t, r],
+        [r, r, r, t, t]
+    ],
+    portaisJogo = [
+        Portal {
+            posicaoPortal = (1,0), 
+            ondasPortal = [
+                Onda {
+                    inimigosOnda = [], -- TODO: define inimigos
+                    cicloOnda = 0,
+                    tempoOnda = 0,
+                    entradaOnda = 50
+                },
+                Onda {
+                    inimigosOnda = [], -- TODO: define inimigos
+                    cicloOnda = 0,
+                    tempoOnda = 0,
+                    entradaOnda = -1
+                }
+        ]},
+        Portal {
+            posicaoPortal = (1,1), 
+            ondasPortal = [
+                Onda {
+                    inimigosOnda = [], -- TODO: define inimigos
+                    cicloOnda = 0,
+                    tempoOnda = 0,
+                    entradaOnda = 50
+                },
+                Onda {
+                    inimigosOnda = [], -- TODO: define inimigos
+                    cicloOnda = 0,
+                    tempoOnda = 0,
+                    entradaOnda = -1
+                }
+        ]}
+    ],
+    baseJogo = Base {
+        vidaBase = 5,
+        posicaoBase = (0,0),
+        creditosBase = 100
+    },
+    torresJogo = [
+        Torre {
+            posicaoTorre = (2,2),
+            danoTorre = 5,
+            alcanceTorre = 5,
+            rajadaTorre = 2,
+            cicloTorre = 10,
+            tempoTorre = 5,
+            projetilTorre = Projetil {
+                tipoProjetil = Fogo,
+                duracaoProjetil = Finita 20
+            }
+        }
+    ],
+    inimigosJogo = [],
+    lojaJogo = []
+} where 
+    r = Relva
+    t = Terra
+    a = Agua

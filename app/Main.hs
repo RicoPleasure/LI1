@@ -36,10 +36,12 @@ it :: ImmutableTowers
 it = ImmutableTowers {
       jogo = Jogo {
         baseJogo = Base {
-          posicaoBase = (5,0)
+          vidaBase = 100,
+          posicaoBase = (5,0),
+          creditosBase = 10
         },
-        portaisJogo = [ Portal {posicaoPortal = (3,9)} ],
-        torresJogo = [],
+        portaisJogo = [ Portal {posicaoPortal = (3,9)}, Portal {posicaoPortal = (3,3)}],
+        torresJogo = [ Torre {posicaoTorre = (2,2)}, Torre {posicaoTorre = (6,6)} ] ,
         mapaJogo = [
           [r, r, r, r, r, t, r, r, r, r],
           [r, r, r, r, r, t, r, r, r, r],

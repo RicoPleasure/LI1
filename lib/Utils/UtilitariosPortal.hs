@@ -51,22 +51,6 @@ validaPortal p@(Portal {posicaoPortal = posPortal, ondasPortal = ondas}) m b =
     validaPosicaoObjeto posPortal m && checkPositionTerra posPortal m && verificaCaminhoPortalBase p b m && verificaOndasPortal ondas
 
 {-|
-  A função 'verificaCollisionPortais' verifica se os portais de uma dada lista de 'Portal' não se encontram sobrepostos a objetos do tipo 'Torre' e 'Base'
-
-  ==__Exemplos de utilização__
-  >>> verificaCollisionPortais [] [] (Base {posicaoBase = (0,0)})
-  False
-  >>> verificaCollisionPortais [Portal {posicaoPortal = (0,0)}] [] (Base {posicaoBase = (0,0)})
-  True
--}
-verificaCollisionPortais :: [Portal] -> [Torre] -> Base -> Bool
-verificaCollisionPortais ps ts (Base {posicaoBase = posBase}) = verificaDuplosPos listPos
-    where
-      posTorres = converteTorresEmListaPos ts
-      posPortais = convertePortaisEmListaPos ps
-      listPos = posTorres ++ posPortais ++ [posBase]
-
-{-|
   A função 'verificaCaminhoAux' serve como função auxiliar que verifica se existe um caminho de 'Terra' de uma dada 'Posicao' para outra.
 
   ==__Observações__
@@ -78,13 +62,14 @@ verificaCollisionPortais ps ts (Base {posicaoBase = posBase}) = verificaDuplosPo
   >>> verificaCaminhoAux (0,0) (2,1) (0,0) [[Terra, Relva, Agua], [Agua, Terra, Terra]]
   False
 -}
+
 verificaCaminhoAux :: Posicao -> Posicao -> Posicao -> Mapa -> Bool
-verificaCaminhoAux (px, py) (bx, by) (predx, predy) m
+verificaCaminhoAux p@(px, py) b@(bx, by) (predx, predy) m
       | checkEqualBase = True
-      | (px-1) >= 0 && checkPositionTerra (px-1, py) m && (px-1) /= predx = verificaCaminhoAux (px-1, py) (bx, by) (px, py) m
-      | checkPositionTerra (px+1, py) m && (px+1) /= predx = verificaCaminhoAux (px+1, py) (bx, by) (px, py) m
-      | (py-1) >= 0 && checkPositionTerra (px, py-1) m && (py-1) /= predy = verificaCaminhoAux (px, py-1)  (bx, by) (px, py) m
-      | floor (py+1) < length m && checkPositionTerra (px, py+1) m && (py+1) /= predy = verificaCaminhoAux (px, py+1)  (bx, by) (px, py) m
+      | (px-1) >= 0 && checkPositionTerra (px-1, py) m && (px-1) /= predx = verificaCaminhoAux (px-1, py) b p m
+      | checkPositionTerra (px+1, py) m && (px+1) /= predx = verificaCaminhoAux (px+1, py) b p m
+      | (py-1) >= 0 && checkPositionTerra (px, py-1) m && (py-1) /= predy = verificaCaminhoAux (px, py-1)  b p m
+      | floor (py+1) < length m && checkPositionTerra (px, py+1) m && (py+1) /= predy = verificaCaminhoAux (px, py+1) b p m
       | otherwise = False
     where
       checkEqualBase = px == bx && py == by
@@ -120,15 +105,3 @@ verificaOndasPortal ondas = amountOndasAtivas < 2
   where
     amountOndasAtivas = length ondasAtivas
     ondasAtivas = filter (\(Onda {entradaOnda = entOnda}) -> entOnda <= 0) ondas
-
-{-|
-  'convertePortaisEmListaPos' converte uma lista de objetos do tipo 'Portal' em uma lista do tipo 'Posicao' ou seja extrai as respetivas posições para uma coleção
-
-  ==__Exemplos de utilização__
-  >>> convertePortaisEmListaPos [Portal {posicaoPortal = (0,0)}, Portal {posicaoPortal = (1,2)}]
-  [(0.0,0.0), (1.0,2.0)]
-  >>> convertePortaisEmListaPos []
-  []
--}
-convertePortaisEmListaPos :: [Portal] -> [Posicao]
-convertePortaisEmListaPos = map (\(Portal {posicaoPortal = pos} ) -> pos)
