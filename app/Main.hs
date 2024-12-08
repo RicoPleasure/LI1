@@ -1,3 +1,11 @@
+{-|
+Module      : Main
+Description : Módulo principal para inicialização do Jogo e handling do Jogo
+Copyright   : Enrico Silva Prazeres <a112068@alunos.uminho.pt>
+              Leandro Filipe Lourenço Carvalho <a112021@alunos.uminho.pt>
+
+Módulo principal, onde com ajuda do Gloss é inicializado o Jogo e onde estão as definições principais do Jogo
+-}
 module Main where
 
 import Desenhar
@@ -7,15 +15,15 @@ import ImmutableTowers
 import Tempo
 import LI12425
 
+
 janela :: Display
-janela = InWindow "Immutable Towers" (1920, 1080) (0, 0)
+janela = InWindow "Immutable Towers" (1920, 1080) (0, 0)                       
 
 customColor :: Int -> Int -> Int -> Int -> Color
 customColor r g b a = makeColor (fromIntegral r / 255) 
                               (fromIntegral g / 255) 
                               (fromIntegral b / 255) 
-                              (fromIntegral a / 255)
--- TODO create Utils.hs                           
+                              (fromIntegral a / 255)                         
 
 fundo :: Color
 fundo = customColor 160 220 220 255
@@ -23,13 +31,9 @@ fundo = customColor 160 220 220 255
 fr :: Int
 fr = 60
 
-main :: IO ()
-main = do
-  putStrLn "Hello from Immutable Towers!"
-
-  play janela fundo fr it desenha reageEventos reageTempo
-  where
-    it = ImmutableTowers {
+-- TODO: change as needed
+it :: ImmutableTowers
+it = ImmutableTowers {
       jogo = Jogo {
         baseJogo = Base {
           vidaBase = 100,
@@ -39,18 +43,30 @@ main = do
         portaisJogo = [ Portal {posicaoPortal = (3,9)}, Portal {posicaoPortal = (3,3)}],
         torresJogo = [ Torre {posicaoTorre = (2,2)}, Torre {posicaoTorre = (6,6)} ] ,
         mapaJogo = [
-          [Relva, Relva, Relva, Relva, Relva, Terra, Relva, Relva, Relva, Relva],
-          [Relva, Relva, Relva, Relva, Relva, Terra, Relva, Relva, Relva, Relva],
-          [Relva, Relva, Relva, Relva, Relva, Terra, Relva, Relva, Relva, Relva],
-          [Agua, Agua, Agua, Relva, Relva, Terra, Terra, Terra, Agua, Agua],
-          [Relva, Relva, Agua, Relva, Relva, Relva, Relva, Terra, Agua, Relva],
-          [Relva, Relva, Agua, Relva, Terra, Terra, Terra, Terra, Agua, Relva],
-          [Relva, Agua, Agua, Relva, Terra, Relva, Relva, Relva, Agua, Relva],
-          [Relva, Agua, Relva, Relva, Terra, Relva, Relva, Relva, Agua, Agua],
-          [Relva, Agua, Relva, Terra, Terra, Relva, Relva, Relva, Relva, Relva],
-          [Relva, Agua, Relva, Terra, Relva, Relva, Relva, Relva, Relva, Relva]
+          [r, r, r, r, r, t, r, r, r, r],
+          [r, r, r, r, r, t, r, r, r, r],
+          [r, r, r, r, r, t, r, r, r, r],
+          [a, a, a, r, r, t, t, t, a, a],
+          [r, r, a, r, r, r, r, t, a, r],
+          [r, r, a, r, t, t, t, t, a, r],
+          [r, a, a, r, t, r, r, r, a, r],
+          [r, a, r, r, t, r, r, r, a, a],
+          [r, a, r, t, t, r, r, r, r, r],
+          [r, a, r, t, r, r, r, r, r, r]
         ],
         inimigosJogo = [],
         lojaJogo = undefined
         }
     }
+    where
+      t = Terra
+      r = Relva
+      a = Agua
+
+
+main :: IO ()
+main = do
+  putStrLn "Hello from Immutable Towers!"
+
+  play janela fundo fr it desenha reageEventos reageTempo
+    

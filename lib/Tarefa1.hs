@@ -10,65 +10,78 @@ Módulo para a realização da Tarefa 1 de LI1 em 2024/25.
 module Tarefa1 where
 
 import LI12425
+import Utils.UtilitariosPortal
+import Utils.UtilitariosBase
+import Utils.UtilitariosTorre
 
-{-| Função que recebe todas as validações (validaMapa, validaBase) -}
-validaJogo :: Jogo -- Dados do jogo
-           -> Bool
-validaJogo (Jogo { 
-              mapaJogo = mapa,
-              baseJogo = Base {
-                                vidaBase = vida,
-                                posicaoBase = (baseX,baseY),
-                                creditosBase = creditos},
-              inimigosJogo = inimigos,  
+{-|
+  A função 'validaJogo' valida, recorrendo a múltiplas validações feitas por funções auxiliares, se um dado estado de Jogo é valido
+
+  ==__Objetos validados__
+  * 'Portal': recorrendo à função 'validaPortais'. 
+  * 'Base': recorrendo à função 'validaBase':.
+  * 'Inimigos': recorrendo á função TODO:. 
+  * 'Torre': recorrendo à função 'validaTorres':.
+  * 'Mapa': recorrendo à função TODO:.
+
+  Para além da validação de cada tipo de objetos presente no 'Jogo', a função 'validaJogo' também valida se existem sobreposições entre os vários objetos, recorrendo à função 'verificaSobreposicoes'
+
+  ==__Exemplos de utilização__
+  >>> validaJogo Jogo {mapaJogo = [], baseJogo = Base {posicaoBase = (2,0)}, portaisJogo = [Portal {posicaoPortal = (0,0)}], torresJogo = []}
+  False
+  >>> validaJogo Jogo {mapaJogo = [[Terra, Terra, Terra, Relva]], baseJogo = Base {posicaoBase = (2,0)}, portaisJogo = [], torresJogo = []}
+  False
+  >>> validaJogo Jogo {mapaJogo = [[Terra, Terra, Terra, Relva]], baseJogo = Base {posicaoBase = (2,0)}, portaisJogo = [Portal {posicaoPortal = (0,0), ondasPortal = []}], torresJogo = [Torre {posicaoTorre = (1,0)}]}
+  True
+  >>> validaJogo Jogo {mapaJogo = [[Terra, Terra, Terra, Relva]], baseJogo = Base {posicaoBase = (2,0)}, portaisJogo = [Portal {posicaoPortal = (0,0), ondasPortal = []}], torresJogo = []}
+  True
+  >>> validaJogo Jogo {mapaJogo = [[Terra, Terra, Terra, Relva]], baseJogo = Base {posicaoBase = (2,0)}, portaisJogo = [Portal {posicaoPortal = (0,0), ondasPortal = []}], torresJogo = [Torre {posicaoTorre = (1,0), rajadaTorre = 0, alcanceTorre = 0}]}
+  False
+  
+  TODO: Assim que todas as validações estiverem implementadas, verificar, alterar e adicionar mais exemplos.
+-}
+validaJogo :: Jogo -> Bool
+validaJogo Jogo {
+              mapaJogo = _,
+              baseJogo = _,
+              portaisJogo = [],
+              torresJogo = _,
+              lojaJogo = _ } = False
+validaJogo Jogo {
+              mapaJogo = [],
+              baseJogo = _,
+              portaisJogo = _,
+              torresJogo = _,
+              lojaJogo = _ } = False
+validaJogo j@(Jogo {
+              mapaJogo = mapa, 
+              baseJogo = base,
               portaisJogo = portais,
-              torresJogo = torres }) =
-                   validaMapa mapa
-                    && validaBase mapa (baseX,baseY) (map posicaoPortal portais) (map posicaoTorre torres) creditos
-                    
-{-| Valida a base do jogo -}
-validaBase :: [[Terreno]] -- Mapa
-           -> Posicao -- Posição da base
-           -> [Posicao] -- Lista de posições dos portais
-           -> [Posicao] -- Lista de posições das torres
-           -> Creditos -- Créditos da base
-           -> Bool
-validaBase mapa (xBase, yBase) portais torres creditos =
-  verificaTerrenoBase mapa (xBase, yBase) == Terra 
-  && validaPosicaoObjeto mapa (xBase, yBase)
-  && validaCreditosBase creditos
-  && verificaSobreposicao (xBase,yBase) portais torres
+              torresJogo = torres,
+              lojaJogo = loja }) =
+                validaPortais portais mapa base && 
+                validaTorres torres mapa && 
+                validaBase mapa (posicaoBase base) (creditosBase base) &&
+                not (verificaSobreposicoes j)
 
-{-| Valida a posição de um objeto qualquer dentro do mapa (base, portais, inimigos) -}
-validaPosicaoObjeto :: [[Terreno]] -- Mapa
-                    -> Posicao -- Posição
-                    -> Bool
-validaPosicaoObjeto mapa (x,y) =
-  x >= 0 && x < fromIntegral (length (head mapa)) && y >= 0 && y < fromIntegral (length mapa)
 
-{-| Valida se o mapa está bem construído (isto é, o número de linhas é igual ao número de colunas) -}
-validaMapa :: [[Terreno]] -- Mapa
-           -> Bool
-validaMapa mapa = 
-  length (head mapa) == length mapa
+{-|
+  A função 'verificaSobreposicoes' verifica, para cada objetos presente num 'Jogo', se esse está sobreposto a outro objeto que não devia.
+  
+  ==__Exemplos de utilização__
+  >>> verificaSobreposicoes Jogo {baseJogo = Base {posicaoBase = (0,0)}, portaisJogo = [Portal {posicaoPortal = (1,0)}], torresJogo = [Torre {posicaoTorre = (2,0)}]}
+  False
+  >>> verificaSobreposicoes Jogo {baseJogo = Base {posicaoBase = (0,0)}, portaisJogo = [Portal {posicaoPortal = (1,0)}], torresJogo = [Torre {posicaoTorre = (2,0)}, Torre {posicaoTorre = (2,0)}]}
+  True
+  >>> verificaSobreposicoes Jogo {baseJogo = Base {posicaoBase = (0,0)}, portaisJogo = [Portal {posicaoPortal = (0,0)}], torresJogo = [Torre {posicaoTorre = (2,0)}]}
+  True
+  >>> verificaSobreposicoes Jogo {baseJogo = Base {posicaoBase = (0,0)}, portaisJogo = [Portal {posicaoPortal = (2,0)}], torresJogo = [Torre {posicaoTorre = (2,0)}]}
+  True
+  >>> verificaSobreposicoes Jogo {baseJogo = Base {posicaoBase = (0,0)}, portaisJogo = [Portal {posicaoPortal = (2,0)}], torresJogo = [Torre {posicaoTorre = (3,0)}, Torre {posicaoTorre = (3,0)}]}
+  True
+-}
+verificaSobreposicoes :: Jogo -> Bool
+verificaSobreposicoes (Jogo {baseJogo = base, portaisJogo = portais, torresJogo = torres}) = 
+  verificaColisaoBasePortais portais torres base &&
+  verificaCollisionTorres torres
 
-{-| Pega o terreno da posição da base no mapa -}
-verificaTerrenoBase :: [[Terreno]] -- Mapa
-                -> Posicao -- Posição da base
-                -> Terreno -- Terreno da base
-verificaTerrenoBase mapa (xBase,yBase) = terreno
-  where 
-    linhas = mapa !! (floor yBase)
-    terreno = linhas !! (floor xBase)
-
-{-| Valida se os créditos da base são positivos  -}
-validaCreditosBase :: Creditos -> Bool
-validaCreditosBase creditos = creditos > 0
-
-{-| Verifica se a base está sobreposta a um portal ou a uma torre -}
-verificaSobreposicao :: Posicao -- Posição da base
-                     -> [Posicao] -- Lista de posições dos portais
-                     -> [Posicao] -- Lista de posições das torres
-                     -> Bool
-verificaSobreposicao posicaoBase posicoesPortais posicoesTorres
-  = not (posicaoBase `elem` posicoesPortais || posicaoBase `elem` posicoesTorres)

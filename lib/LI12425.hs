@@ -11,7 +11,7 @@ Tipos de dados e funções auxiliares para a realização do projeto de LI1 em 2
 module LI12425 (
     -- * Tipos de dados
     -- ** Básicos
-    Creditos, Direcao, Distancia, Duracao, Posicao, Semente, Tempo,
+    Creditos, Direcao(..), Distancia, Duracao(..), Posicao, Semente, Tempo,
     -- ** Mapas
     Mapa, Terreno(..),
     -- ** Entidades
@@ -19,7 +19,9 @@ module LI12425 (
     -- ** Jogo
     Jogo(..), Onda(..), Loja,
     -- * Funções auxiliares
-    geraAleatorios
+    geraAleatorios,
+    -- * Funções para instancia Num Duração
+    addDuracao, multDuracao, absDuracao, signumDuracao, fromIntegerDuracao, negateDuracao
     ) where
 
 import System.Random (mkStdGen, randoms)
@@ -68,6 +70,14 @@ data Duracao
   | -- | Duração infinita
     Infinita
   deriving (Eq, Show, Ord)
+
+instance Num Duracao where
+  (+) = addDuracao
+  (*) = multDuracao
+  abs = absDuracao
+  signum = signumDuracao
+  fromInteger = fromIntegerDuracao
+  negate = negateDuracao
 
 -- | Torre que dispara projéteis contra inimigos.
 data Torre = Torre
@@ -185,3 +195,88 @@ type Semente = Int
 -}
 geraAleatorios :: Semente -> Int -> [Int]
 geraAleatorios s c = take c $ randoms (mkStdGen s)
+
+-- Funções para instância de Num de Duracao
+
+{-|
+  'addDuracao' é responsável por somar valores do tipo 'Duracao'
+
+  ==__Exemplos de utilização__
+  >>> addDuracao (Finita 5) (Finita (-5))
+  Finita 0
+  >>> addDuracao Infinita (Finita 5)
+  Infinita
+  >>> addDuracao Infinita Infinita
+  Infinita
+-}
+addDuracao :: Duracao -> Duracao -> Duracao
+addDuracao Infinita _ = Infinita
+addDuracao _ Infinita = Infinita
+addDuracao (Finita x) (Finita y) = Finita $ x + y
+
+{-|
+  'multDuracao' é responsável por calcular o produto de valores do tipo 'Duracao'
+
+  ==__Exemplos de utilização__
+  >>> multDuracao (Finita 5) (Finita (-5))
+  Finita (-25.0)
+  >>> multDuracao Infinita (Finita 5)
+  Infinita
+  >>> multDuracao Infinita Infinita
+  Infinita
+-}
+multDuracao :: Duracao -> Duracao -> Duracao
+multDuracao Infinita (Finita _) = Infinita
+multDuracao (Finita _) Infinita = Infinita
+multDuracao (Finita x) (Finita y) = Finita $ x * y
+multDuracao _ _ = error "Illegal operation performed"
+
+{-|
+  A função 'absDuracao' é responsável por calcular o valor absoluto de um valor do tipo 'Duracao'
+
+  ==__Exemplos de utilização__
+  >>> absDuracao Infinita
+  Infinita
+  >>> absDuracao (Finita (-5))
+  Finita 5
+-}
+absDuracao :: Duracao -> Duracao
+absDuracao Infinita = Infinita
+absDuracao (Finita x) = Finita $ abs x
+
+{-|
+  A função 'signumDuracao' é responsável por calcular o sinal de uma 'Duracao'
+
+  ==__Exemplos de utilização__
+  >>> signumDuracao Infinita
+  Finita 1.0
+  >>> signumDuracao (Finita 5)
+  Finita 1.0
+-}
+signumDuracao :: Duracao -> Duracao
+signumDuracao Infinita = Finita 1
+signumDuracao (Finita x)
+    | x < 0 = Finita (-1)
+    | x == 0 = Finita 0
+    | otherwise = Finita 1
+
+{-|
+  A função 'fromIntegerDuracao' converte um Integer em uma 'Duracao'
+
+  ==__Exemplos de utilização__
+  >>> fromIntegerDuracao 5
+  Finita 5.0
+-}
+fromIntegerDuracao :: Integer -> Duracao
+fromIntegerDuracao x = Finita (fromIntegral x :: Float)
+
+{-|
+  A função 'negateDuracao' calcula o valor simétrico de uma 'Duracao'
+
+  ==__Exemplos de utilização__
+  >>> negateDuracao (Finita 5)
+  Finita (-5.0)
+-}
+negateDuracao :: Duracao -> Duracao
+negateDuracao Infinita = Infinita
+negateDuracao (Finita x) = Finita $ (-1) * x

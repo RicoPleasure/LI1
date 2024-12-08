@@ -2,20 +2,32 @@
 module Tarefa1Spec (testesTarefa1) where
 
 import Test.HUnit
-import LI12425
+import TData.TDataTarefa1
 import Tarefa1
-import GameSituations
 
 testesTarefa1 :: Test
 testesTarefa1 =
-  TestLabel "Testes Tarefa 1" $ test (validaJogoTeste)                               
+  TestLabel "Testes Tarefa 1" $
+    test
+      [ 
+        "teste Jogo valido" ~: True ~=? validaJogo jogoValido,
 
-validaJogoTeste = [TestCase (assertBool "Teste1" (not (validaJogo jogoTeste1))),
-                   TestCase (assertBool "Teste2" (not (validaJogo jogoTeste2))),
-                   TestCase (assertBool "Teste3" (not (validaJogo jogoTeste3))),
-                   TestCase (assertBool "Teste4" (not (validaJogo jogoTeste4))),
-                   TestCase (assertBool "Teste5" (not (validaJogo jogoTeste5))),
-                   TestCase (assertBool "Teste6" (not (validaJogo jogoTeste6))),
-                   TestCase (assertBool "Teste7" (not (validaJogo jogoTeste7))),
-                   TestCase (assertBool "Teste8" (not (validaJogo jogoTeste8))),
-                   TestCase (assertBool "Teste9" (not (validaJogo jogoTeste9)))]
+        -- Testes mapa
+        "teste Jogo inválido sem mapa" ~: False ~=? validaJogo jogoNoMap,
+        "teste Jogo válido com mapa complexo" ~: True ~=? validaJogo jogoValidoMapTest,
+
+        -- Testes portais
+        "teste Jogo inválido sem portais" ~: False ~=? validaJogo jogoNoPortals,
+        "teste Jogo portal com pos inválida" ~: False ~=? validaJogo jogoValidoInvalidPortalPos,
+        
+        -- Testes torres
+        "teste Jogo torre com terreno inválido" ~: False ~=? validaJogo jogoTorreTerrenoInvalido,
+        "teste Jogo torre com alcance inválido" ~: False ~=? validaJogo jogoTorreAlcanceInvalido,
+        "teste Jogo torre com rajada inválida" ~: False ~=? validaJogo jogoTorreRajadaInvalido,
+        "teste Jogo com torres sobrepostas" ~: False ~=? validaJogo jogoTorresSobrepostas,
+
+        -- Testes base
+        "teste Jogo base com pos inválida" ~: False ~=? validaJogo jogoInvalidBasePos
+      ]
+
+
