@@ -31,7 +31,6 @@ fundo = customColor 160 220 220 255
 fr :: Int
 fr = 60
 
--- TODO: change as needed
 it :: ImmutableTowers
 it = ImmutableTowers {
       jogo = Jogo {
@@ -54,7 +53,19 @@ it = ImmutableTowers {
           [r, a, r, t, t, r, r, r, r, r],
           [r, a, r, t, r, r, r, r, r, r]
         ],
-        inimigosJogo = [],
+        inimigosJogo = [
+          Inimigo {posicaoInimigo = (1,2),
+                   direcaoInimigo = Norte,
+                   vidaInimigo = 100,
+                   velocidadeInimigo = 10,
+                   ataqueInimigo = 99,
+                   butimInimigo = 200,
+                   projeteisInimigo = [ Projetil {
+                    tipoProjetil = Fogo,
+                    duracaoProjetil = Finita 3
+                   }]
+                   }
+        ],
         lojaJogo = undefined
         }
     }
