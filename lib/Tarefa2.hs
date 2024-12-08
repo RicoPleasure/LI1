@@ -11,6 +11,7 @@ module Tarefa2 where
 
 import LI12425
 import Utils.UtilitariosInimigo
+import Utils.UtilitariosPortal
 
 {- 
     Implementação da função que retorna os inimigos que estão no alcance da torre.
@@ -61,3 +62,30 @@ atingeInimigo (Torre {projetilTorre = p, danoTorre = dano}) i =
 -}
 ativaInimigo :: Portal -> [Inimigo] -> (Portal, [Inimigo])
 ativaInimigo = undefined
+
+{-|
+    TODO:
+-}
+terminouJogo :: Jogo -> Bool
+terminouJogo = Jogo (mapaJogo, baseJogo, portaisJogo, torresJogo, lojaJogo) = 
+    ganhouJogo (Jogo (mapaJogo, baseJogo, portaisJogo, torresJogo, lojaJogo)) || 
+    perdeuJogo (Jogo (mapaJogo, baseJogo, portaisJogo, torresJogo, lojaJogo))
+
+{-|
+    TODO:
+-}
+ganhouJogo :: Jogo -> Bool
+ganhouJogo Jogo (portaisJogo = portais, inimigosJogo = inimigos, baseJogo = Base (posicaoBase, vidaBase))
+    | listEnemies == [] && vidaBase > 0 = True
+    | otherwise = False
+    where listEnemies = inimigos ++ listaPortais
+          listaPortais = convertePortaisEmListaPos portais
+
+{-|
+    TODO:
+-}
+perdeuJogo :: Jogo -> Bool
+perdeuJogo Jogo (baseJogo = Base (vidaBase))
+    | vidaBase <= 0 = True
+    | otherwise = False
+{-|
