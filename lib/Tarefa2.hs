@@ -11,6 +11,9 @@ module Tarefa2 where
 
 import LI12425
 import Utils.UtilitariosInimigo
+import Utils.UtilitariosPortal
+import Utils.Utilitarios
+import Data.Maybe
 
 {-|
     TODO:
@@ -21,7 +24,7 @@ inimigosNoAlcance = undefined
 {-|
     A função 'atingeInimigo' altera um 'Inimigo' conforme previsto quando este é atingido por um 'Projetil' de uma 'Torre'
 
-    ==__Funcionalidades da função__
+    ==Funcionalidades da função
     * Reduzir a vida de um Inimigo conforme o dano causado pelo impacto do 'Projetil', para tal recorrendo à função 'reduzVidaInimigo'
     * Adicionar o efeito colateral do 'Projetil' à lista de projeteis do 'Inimigo'
 
@@ -38,10 +41,26 @@ atingeInimigo (Torre {projetilTorre = p, danoTorre = dano}) i =
     handleHitByProjetil (reduzVidaInimigo i dano) p
 
 {-|
-    TODO:
+    A função 'ativaInimigo' é responsável por ativar um inimigo do 'Portal', ou seja por colocar o 'Inimigo' no 'Mapa' do 'Jogo'.
+
+    ==Observações
+    * A função retira da 'Onda' ativa (entradaOnda <= 0) o próximo 'Inimigo' a colocar no 'Jogo' e atualiza a lista de 'Inimigos' do Jogo.
+
+    ==__Exemplos de utilização__ 
+    >>> ativaInimigo (Portal {posicaoPortal = (0,0), ondasPortal = [Onda {inimigosOnda = [Inimigo {posicaoInimigo = (5,5), direcaoInimigo = Norte, vidaInimigo = 10, velocidadeInimigo = 1, ataqueInimigo = 10, butimInimigo = 2, projeteisInimigo = []}], entradaOnda = 0, tempoOnda = 0, cicloOnda = 15}]}) []
+    (Portal {posicaoPortal = (0.0,0.0), ondasPortal = [Onda {inimigosOnda = [], cicloOnda = 15.0, tempoOnda = 15.0, entradaOnda = 0.0}]},[Inimigo {posicaoInimigo = (5.0,5.0), direcaoInimigo = Norte, vidaInimigo = 10.0, velocidadeInimigo = 1.0, ataqueInimigo = 10.0, butimInimigo = 2, projeteisInimigo = []}])
+    >>> ativaInimigo (Portal {posicaoPortal = (0,0), ondasPortal = [Onda {inimigosOnda = [Inimigo {posicaoInimigo = (5,5), direcaoInimigo = Norte, vidaInimigo = 10, velocidadeInimigo = 1, ataqueInimigo = 10, butimInimigo = 2, projeteisInimigo = []}], entradaOnda = 1, tempoOnda = 0, cicloOnda = 15}]}) []
+    (Portal {posicaoPortal = (0.0,0.0), ondasPortal = [Onda {inimigosOnda = [Inimigo {posicaoInimigo = (5.0,5.0), direcaoInimigo = Norte, vidaInimigo = 10.0, velocidadeInimigo = 1.0, ataqueInimigo = 10.0, butimInimigo = 2, projeteisInimigo = []}], cicloOnda = 15.0, tempoOnda = 0.0, entradaOnda = 1.0}]},[])
+    >>> ativaInimigo (Portal {posicaoPortal = (0,0), ondasPortal = [Onda {inimigosOnda = [], entradaOnda = (-1), tempoOnda = 0, cicloOnda = 15}]}) []
+    (Portal {posicaoPortal = (0.0,0.0), ondasPortal = [Onda {inimigosOnda = [], cicloOnda = 15.0, tempoOnda = 0.0, entradaOnda = -1.0}]},[])
 -}
 ativaInimigo :: Portal -> [Inimigo] -> (Portal, [Inimigo])
-ativaInimigo = undefined
+ativaInimigo portal inimigos
+        | isNothing onda = (portal, inimigos)
+        | otherwise = (portal { ondasPortal = insertOndaAtivaInOndas newOnda (ondasPortal portal) }, is)
+    where
+        onda = getOndaAtiva $ ondasPortal portal
+        (newOnda, is) = ativaInimigoDeOnda (extractValueFromMaybe onda) inimigos
 
 {-|
     TODO:
