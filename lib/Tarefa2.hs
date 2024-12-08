@@ -61,21 +61,3 @@ atingeInimigo (Torre {projetilTorre = p, danoTorre = dano}) i =
 -}
 ativaInimigo :: Portal -> [Inimigo] -> (Portal, [Inimigo])
 ativaInimigo = undefined
-
-{-|
-    TODO:
--}
-terminouJogo :: Jogo -> Bool
-terminouJogo = undefined
-
-{-|
-    TODO:
--}
-ganhouJogo :: Jogo -> Bool
-ganhouJogo = undefined
-
-{-|
-    TODO:
--}
-perdeuJogo :: Jogo -> Bool
-perdeuJogo = undefined
