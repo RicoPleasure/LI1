@@ -20,8 +20,71 @@ module Desenhar where
 
 import Graphics.Gloss
 import ImmutableTowers
-
 import LI12425
+
+data OpcaoMenuInicial = Jogar | Options | Sair
+data OpcaoModoJogo = Resumed | Pause
+
+data Menu = MenuInicial OpcaoMenuInicial | ModoJogo OpcaoModoJogo
+
+data Estado = Estado { immutableTowers :: ImmutableTowers, menu :: Menu}
+
+
+{-| Função principal que desenha todos os elementos -}
+{-| Tipo de dados que representa o mundo -}
+
+{-| Função principal que desenha todos os elementos -}
+desenha :: [Picture] -> Estado -> IO Picture
+desenha _ Estado {menu = MenuInicial Jogar} = return $ Pictures 
+    [ Translate (-300) 200 $ Color blue $ Text "Play"
+    , Translate (-300) 50 $ Color black $ Text "Options"
+    , Translate (-300) (-100) $ Color black $ Text "Quit"
+    ]
+
+desenha _ Estado {menu = MenuInicial Options} = return $ Pictures 
+    [ Translate (-300) 200 $ Color black $ Text "Play"
+    , Translate (-300) 50 $ Color blue $ Text "Options"
+    , Translate (-300) (-100) $ Color black $ Text "Quit"
+    ]
+
+desenha _ Estado {menu = MenuInicial Sair} = return $ Pictures 
+    [ Translate (-300) 200 $ Color black $ Text "Play"
+    , Translate (-300) 50 $ Color black $ Text "Options"
+    , Translate (-300) (-100) $ Color blue $ Text "Quit"
+    ]
+
+desenha _ Estado {menu = MenuInicial Sair} = return $ Pictures 
+    [ Translate (-300) 200 $ Color black $ Text "Play"
+    , Translate (-300) 50 $ Color black $ Text "Options"
+    , Translate (-300) (-100) $ Color blue $ Text "Quit"
+    ]
+
+desenha _ Estado {menu = ModoJogo Resumed, immutableTowers = ImmutableTowers { 
+    jogo = Jogo { mapaJogo = mapa,
+                  baseJogo = Base { posicaoBase = (baseX, baseY) },
+                  portaisJogo = portais } }} = return $ 
+    Translate ajusteX ajusteY $ 
+    Pictures (desenhaMapa mapa (0, 0) 
+    ++ [desenhaBase (baseX, baseY)]
+    ++ desenhaPortais (map posicaoPortal portais))
+    where 
+        (ajusteX, ajusteY) = (-blocoLargura - 50, blocoAltura * 3)
+
+desenha ts Estado {menu = ModoJogo Pause, immutableTowers = ImmutableTowers { 
+    jogo = Jogo { mapaJogo = mapa,
+                  baseJogo = Base { posicaoBase = (baseX, baseY) },
+                  portaisJogo = portais } }} = return $
+    Pictures [
+        Translate ajusteX ajusteY $ 
+            Pictures (desenhaMapa ts mapa (0, 0) 
+            ++ [desenhaBase (baseX, baseY)]
+            ++ desenhaPortais (map posicaoPortal portais)),
+        Color (makeColor 0 0 0 0.5) $ Polygon [(-960, -540), (960, -540), (960, 540), (-960, 540)],
+        Translate (-550) 200 $ Color white $ Text "Paused",
+        Translate (-550) 100 $ Color white $ Text "Press p to resume"
+    ]
+        where 
+            (ajusteX, ajusteY) = (-blocoLargura - 50, blocoAltura * 3)
 
 {-| Largura do bloco -}
 blocoLargura :: Float
@@ -49,42 +112,32 @@ posicaoRealObjetos (x, y) = Translate (realX+50) (-realY)
         realX = (x - y) * (blocoLargura / 2)
         realY = (x + y) * (blocoAltura / 2)
 
-{-| Função principal que desenha todos os elementos -}
-desenha :: ImmutableTowers 
-        -> Picture
-desenha (ImmutableTowers { 
-    jogo = Jogo { mapaJogo = mapa,
-                  baseJogo = Base { posicaoBase = (baseX,baseY)},
-                  portaisJogo = portais }}) =
-    Translate ajusteX ajusteY $ 
-    Pictures (desenhaMapa mapa (0, 0) 
-    ++ [desenhaBase (baseX,baseY)] 
-    ++ desenhaPortais (map posicaoPortal portais))
-    where 
-        (ajusteX, ajusteY) = (-blocoLargura-50, blocoAltura *3)
-
 {-| Função que desenha o mapa -}
-desenhaMapa :: [[Terreno]] -- Mapa  
+desenhaMapa :: [Picture]
+            ->[[Terreno]] -- Mapa  
             -> (Float,Float) -- Coordenadas da grelha do mapa
             -> [Picture] -- Retorna o mapa
-desenhaMapa [] _ = []   
+desenhaMapa ts [] _ = []   
 desenhaMapa (linha:t) (x,y) =
-    desenhaLinha linha (x,y) ++ desenhaMapa t (x, (y+1))
+    desenhaLinha ts linha (x,y) ++ desenhaMapa t (x, (y+1))
 
 {-| Função que desenha só uma linha do mapa -}
-desenhaLinha :: [Terreno]
+desenhaLinha :: [Picture]
+             -> [Terreno]
              -> (Float,Float) 
              -> [Picture]
-desenhaLinha [] _ = []
-desenhaLinha (terreno:t) (x,y) =
-    posicaoReal (x,y) (desenhaTerreno terreno)
+desenhaLinha ts [] _ = []
+desenhaLinha ts (terreno:t) (x,y) =
+    posicaoReal (x,y) (desenhaTerreno ts terreno)
     : desenhaLinha t ((x+1), y)
 
 {-| Função que desenha um único bloco do mapa  -}
-desenhaTerreno :: Terreno 
+desenhaTerreno :: [Picture] 
+               -> Terreno 
                -> Picture
-desenhaTerreno terreno = 
-    Pictures [terrenoTopo terreno, terrenoFrente terreno, terrenoDireita terreno]
+desenhaTerreno ts terreno = 
+    Pictures [terrenoCor ts terreno]
+{- 
 
 {-| Desenha o topo do bloco -}
 terrenoTopo :: Terreno 
@@ -106,15 +159,15 @@ terrenoDireita :: Terreno
 terrenoDireita terreno = 
     Color color $ Polygon [(50, -25), (100, 0), (100, -50), (50, -75)]
     where color = terrenoCor terreno
+ -}
 
--- Mais tarde vai ser com sprites / Pode ser feita outra deste tipo para escolher temas 
+
 {-| Função que seleciona a textura do terreno -}
-terrenoCor :: Terreno 
-           -> Color
-terrenoCor terreno = case terreno of
-    Relva -> dark green
-    Agua  -> blue
-    Terra -> orange
+terrenoCor :: [Picture] -> Terreno -> Picture
+terrenoCor ts terreno = case terreno of
+    Relva -> ts !! 0
+    Terra -> ts !! 1
+    Agua -> ts !! 2
 
 {-| Função que desenha a base do jogador -}
 desenhaBase :: Posicao

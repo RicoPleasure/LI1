@@ -11,9 +11,11 @@ module Main where
 import Desenhar
 import Eventos
 import Graphics.Gloss
+import Graphics.Gloss.Interface.IO.Game
+import Graphics.Gloss.Juicy (loadJuicyPNG)
 import ImmutableTowers
-import Tempo
 import LI12425
+import Tempo
 
 
 janela :: Display
@@ -21,9 +23,9 @@ janela = InWindow "Immutable Towers" (1920, 1080) (0, 0)
 
 customColor :: Int -> Int -> Int -> Int -> Color
 customColor r g b a = makeColor (fromIntegral r / 255) 
-                              (fromIntegral g / 255) 
-                              (fromIntegral b / 255) 
-                              (fromIntegral a / 255)                         
+                                (fromIntegral g / 255) 
+                                (fromIntegral b / 255) 
+                                (fromIntegral a / 255)                         
 
 fundo :: Color
 fundo = customColor 160 220 220 255
@@ -31,8 +33,10 @@ fundo = customColor 160 220 220 255
 fr :: Int
 fr = 60
 
-it :: ImmutableTowers
-it = ImmutableTowers {
+it :: Estado
+it = Estado {
+  menu = MenuInicial Jogar,
+  immutableTowers = ImmutableTowers {
       jogo = Jogo {
         baseJogo = Base {
           vidaBase = 100,
@@ -68,16 +72,23 @@ it = ImmutableTowers {
         ],
         lojaJogo = undefined
         }
+      }
     }
     where
       t = Terra
       r = Relva
       a = Agua
 
+path :: String
+path = "assets/images/"
 
 main :: IO ()
 main = do
+-- Terreno
+  Just terra <- loadJuicyPNG $ path ++ "terreno/dirt.png"
+  Just relva <- loadJuicyPNG $ path ++ "terreno/grass.png"
+  Just agua <- loadJuicyPNG $ path ++ "terreno/water.png"
+
   putStrLn "Hello from Immutable Towers!"
 
-  play janela fundo fr it desenha reageEventos reageTempo
-    
+  playIO janela fundo fr it (desenha [terra,relva,agua]) reageEventos reageTempo
