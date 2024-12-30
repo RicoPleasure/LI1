@@ -12,7 +12,6 @@ import Desenhar
 import Eventos
 import Graphics.Gloss
 import Graphics.Gloss.Interface.IO.Game
-import Graphics.Gloss.Juicy (loadJuicyPNG)
 import ImmutableTowers
 import LI12425
 import Tempo
@@ -79,16 +78,9 @@ it = Estado {
       r = Relva
       a = Agua
 
-path :: String
-path = "assets/images/"
-
 main :: IO ()
 main = do
--- Terreno
-  Just terra <- loadJuicyPNG $ path ++ "terreno/dirt.png"
-  Just relva <- loadJuicyPNG $ path ++ "terreno/grass.png"
-  Just agua <- loadJuicyPNG $ path ++ "terreno/water.png"
 
   putStrLn "Hello from Immutable Towers!"
 
-  playIO janela fundo fr it (desenha [terra,relva,agua]) reageEventos reageTempo
+  playIO janela fundo fr it desenha reageEventos reageTempo
