@@ -12,9 +12,11 @@ import Desenhar
 import Eventos
 import Graphics.Gloss
 import Graphics.Gloss.Interface.IO.Game
+import Graphics.Gloss.Juicy
 import ImmutableTowers
 import LI12425
 import Tempo
+import System.Directory
 
 
 janela :: Display
@@ -77,10 +79,24 @@ it = Estado {
       t = Terra
       r = Relva
       a = Agua
+    
+path :: String
+path = "app/assets/images/"
+
+loadImage :: FilePath -> IO Picture
+loadImage filePath = do
+  maybeImg <- loadJuicyPNG filePath
+  case maybeImg of
+    Just img -> return img
+    Nothing -> error ("Failed to load image: " ++ filePath)
 
 main :: IO ()
 main = do
 
-  putStrLn "Hello from Immutable Towers!"
+  l <- loadImage $ path ++ "loja/loja-container.png"
+  r <- loadImage $ path ++ "terreno/grass.png"
+  t <- loadImage $ path ++ "terreno/dirt.png"
+  a <- loadImage $ path ++ "terreno/water.png"
 
-  playIO janela fundo fr it desenha reageEventos reageTempo
+  let sprites = [[l], [r, t, a]]
+  playIO janela fundo fr it (desenha sprites) reageEventos reageTempo

@@ -9,6 +9,7 @@ reageEventos :: Event -> Estado -> IO Estado
 reageEventos tecla e@Estado {menu = MenuInicial _} = reageEventosMenuInicial tecla e
 reageEventos tecla e@Estado {menu = ModoJogo _} = reageEventosModoJogo tecla e
 reageEventos tecla e@Estado {menu = Options _ } = reageEventosOptions tecla e
+reageEventos tecla e@Estado {menu = ModoJogo (Loja _)} = reageEventosLoja tecla e
 reageEventos _ w = return $ w
 
 {-| Navegar entre as opções do menu inicial -}
@@ -51,4 +52,11 @@ reageEventosModoJogo (EventKey (Char 'p') Down _ _) e@Estado {menu = ModoJogo Pa
 reageEventosModoJogo (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {menu = ModoJogo Resumed} = return $ e {menu = MenuInicial Jogar}
 reageEventosModoJogo (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {menu = ModoJogo Pause} = return $ e {menu = MenuInicial Jogar}
 
+{-| Ativa a loja in-game -}
+reageEventosModoJogo (EventKey (Char 'l') Down _ _) e@Estado {menu = ModoJogo Resumed} = return $ e {menu = ModoJogo (Loja Torre1)}
+reageEventosModoJogo (EventKey (Char 'l') Down _ _) e@Estado {menu = ModoJogo (Loja _)} = return $ e {menu = ModoJogo Resumed}
+
+{-| Caso geral -}
 reageEventosModoJogo _ e = return $ e
+
+reageEventosLoja _ e = return $ e

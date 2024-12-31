@@ -81,6 +81,8 @@ executable immutable-towers
     build-depends:
         base ^>=4.17.2.1,
         gloss ^>=1.13.2.1,
+        gloss-juicy==0.2.3,
+        directory,
         immutable-towers
 
     hs-source-dirs:   app
