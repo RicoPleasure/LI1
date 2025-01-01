@@ -7,7 +7,8 @@ import System.Exit (exitSuccess)
 
 reageEventos :: Event -> Estado -> IO Estado
 reageEventos tecla e@Estado {menu = MenuInicial _} = reageEventosMenuInicial tecla e
-reageEventos tecla e@Estado {menu = ModoJogo _} = reageEventosModoJogo tecla e
+reageEventos tecla e@Estado {menu = ModoJogo Resumed} = reageEventosModoJogo tecla e
+reageEventos tecla e@Estado {menu = ModoJogo Pause} = reageEventosModoJogo tecla e
 reageEventos tecla e@Estado {menu = Options _ } = reageEventosOptions tecla e
 reageEventos tecla e@Estado {menu = ModoJogo (Loja _)} = reageEventosLoja tecla e
 reageEventos _ w = return $ w
@@ -54,9 +55,24 @@ reageEventosModoJogo (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {menu = Mo
 
 {-| Ativa a loja in-game -}
 reageEventosModoJogo (EventKey (Char 'l') Down _ _) e@Estado {menu = ModoJogo Resumed} = return $ e {menu = ModoJogo (Loja Torre1)}
-reageEventosModoJogo (EventKey (Char 'l') Down _ _) e@Estado {menu = ModoJogo (Loja _)} = return $ e {menu = ModoJogo Resumed}
 
 {-| Caso geral -}
 reageEventosModoJogo _ e = return $ e
+
+{- Navegação loja -}
+reageEventosLoja (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {menu = ModoJogo (Loja Torre1)} = return $ e {menu = ModoJogo (Loja Torre2)}
+reageEventosLoja (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {menu = ModoJogo (Loja Torre2)} = return $ e {menu = ModoJogo (Loja Torre3)}
+reageEventosLoja (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {menu = ModoJogo (Loja Torre3)} = return $ e {menu = ModoJogo (Loja Torre1)}
+reageEventosLoja (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {menu = ModoJogo (Loja Torre1)} = return $ e {menu = ModoJogo (Loja Torre3)}
+reageEventosLoja (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {menu = ModoJogo (Loja Torre2)} = return $ e {menu = ModoJogo (Loja Torre1)}
+reageEventosLoja (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {menu = ModoJogo (Loja Torre3)} = return $ e {menu = ModoJogo (Loja Torre2)}
+reageEventosLoja (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {menu = ModoJogo (Loja Torre1)} = return $ e {menu = AdicionaTorre Torre1}
+reageEventosLoja (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {menu = ModoJogo (Loja Torre2)} = return $ e {menu = AdicionaTorre Torre2}
+reageEventosLoja (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {menu = ModoJogo (Loja Torre3)} = return $ e {menu = AdicionaTorre Torre3}
+
+reageEventosLoja (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {menu = AdicionaTorre _} = return $ e {menu = ModoJogo Resumed}
+
+{- Sai da -}
+reageEventosLoja (EventKey (Char 'l') Down _ _) e@Estado {menu = ModoJogo (Loja _)} = return $ e {menu = ModoJogo Resumed}
 
 reageEventosLoja _ e = return $ e

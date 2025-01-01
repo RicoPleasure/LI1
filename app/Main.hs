@@ -44,22 +44,25 @@ it = Estado {
           posicaoBase = (5,0),
           creditosBase = 10
         },
-        portaisJogo = [ Portal {posicaoPortal = (3,9)}, Portal {posicaoPortal = (3,3)}],
-        torresJogo = [ Torre {posicaoTorre = (2,2)}, Torre {posicaoTorre = (6,6)} ] ,
+        portaisJogo = [ Portal {posicaoPortal = (3,10)}],
+        torresJogo = [ Torre {posicaoTorre = (2,2), projetilTorre = Projetil {tipoProjetil = Fogo}}, 
+                       Torre {posicaoTorre = (6,6), projetilTorre = Projetil {tipoProjetil = Resina}},
+                       Torre {posicaoTorre = (6,2), projetilTorre = Projetil {tipoProjetil = Gelo}} ] ,
         mapaJogo = [
-          [r, r, r, r, r, t, r, r, r, r],
-          [r, r, r, r, r, t, r, r, r, r],
-          [r, r, r, r, r, t, r, r, r, r],
-          [a, a, a, r, r, t, t, t, a, a],
-          [r, r, a, r, r, r, r, t, a, r],
-          [r, r, a, r, t, t, t, t, a, r],
-          [r, a, a, r, t, r, r, r, a, r],
-          [r, a, r, r, t, r, r, r, a, a],
-          [r, a, r, t, t, r, r, r, r, r],
-          [r, a, r, t, r, r, r, r, r, r]
+          [r, r, r, r, r, t, r, r, r, r, r],
+          [r, r, r, r, r, t, r, r, r, r, r],
+          [r, r, r, r, r, t, r, r, r, r, r],
+          [a, a, a, r, r, t, t, t, a, a, r],
+          [r, r, a, r, r, r, r, t, a, r, r],
+          [r, r, a, r, t, t, t, t, a, r, r],
+          [r, a, a, r, t, r, r, r, a, r, r],
+          [r, a, r, r, t, r, r, r, a, a, r],
+          [r, a, r, t, t, r, r, r, r, r, r],
+          [r, a, r, t, r, r, r, r, r, r, r],
+          [r, a, r, t, r, r, r, r, r, r, r]
         ],
         inimigosJogo = [
-          Inimigo {posicaoInimigo = (1,2),
+          Inimigo {posicaoInimigo = (5,2),
                    direcaoInimigo = Norte,
                    vidaInimigo = 100,
                    velocidadeInimigo = 10,
@@ -93,10 +96,26 @@ loadImage filePath = do
 main :: IO ()
 main = do
 
-  l <- loadImage $ path ++ "loja/loja-container.png"
+  l01 <- loadImage $ path ++ "loja/loja01.png"
+  l02 <- loadImage $ path ++ "loja/loja02.png"
+  l03 <- loadImage $ path ++ "loja/loja03.png"
   r <- loadImage $ path ++ "terreno/grass.png"
   t <- loadImage $ path ++ "terreno/dirt.png"
   a <- loadImage $ path ++ "terreno/water.png"
+  bg <- loadImage $ path ++ "fundo/bg1.png"
+  base <- loadImage $ path ++ "estruturas/base/base.png"
+  tf01 <- loadImage $ path ++ "estruturas/torre/fogo/torre-fogo.png"
+  tg01 <- loadImage $ path ++ "estruturas/torre/gelo/torre-gelo.png"
+  tr01 <- loadImage $ path ++ "estruturas/torre/resina/torre-resina.png"
+  p01 <- loadImage $ path ++ "estruturas/portal/portal.png"
+  i01 <- loadImage $ path ++ "estruturas/inimigos/inimigo.png"
+  ms <- loadImage $ path ++ "menu/start.png"
+  mo <- loadImage $ path ++ "menu/options.png"
+  mq <- loadImage $ path ++ "menu/quit.png"
+  ot <- loadImage $ path ++ "menu/themes.png"
+  oa <- loadImage $ path ++ "menu/audio.png"
+  ob <- loadImage $ path ++ "menu/back.png"
+  paused <- loadImage $ path ++ "pause/paused.png"
 
-  let sprites = [[l], [r, t, a]]
+  let sprites = [[l01, l02, l03], [r, t, a], [bg], [base], [tf01, tg01, tr01], [p01], [i01], [ms, mo, mq, ot, oa, ob], [paused]]
   playIO janela fundo fr it (desenha sprites) reageEventos reageTempo
