@@ -17,6 +17,7 @@ import ImmutableTowers
 import LI12425
 import Tempo
 import System.Directory
+import Utils.Utilitarios
 
 
 janela :: Display
@@ -36,13 +37,13 @@ fr = 60
 
 it :: Estado
 it = Estado {
-  menu = MenuInicial Jogar,
+  cena = MenuInicial Jogar,
   immutableTowers = ImmutableTowers {
       jogo = Jogo {
         baseJogo = Base {
           vidaBase = 100,
           posicaoBase = (5,0),
-          creditosBase = 10
+          creditosBase = 350
         },
         portaisJogo = [ Portal {posicaoPortal = (3,10)}],
         torresJogo = [ Torre {posicaoTorre = (2,2), projetilTorre = Projetil {tipoProjetil = Fogo}}, 
@@ -116,6 +117,13 @@ main = do
   oa <- loadImage $ path ++ "menu/audio.png"
   ob <- loadImage $ path ++ "menu/back.png"
   paused <- loadImage $ path ++ "pause/paused.png"
+  rb <- loadImage $ path ++ "terreno/grass-blocked.png"
+  tb <- loadImage $ path ++ "terreno/dirt-blocked.png"
+  ab <- loadImage $ path ++ "terreno/water-blocked.png"
+  rf <- loadImage $ path ++ "terreno/grass-free.png"
+  tf <- loadImage $ path ++ "terreno/dirt-free.png"
+  af <- loadImage $ path ++ "terreno/water-free.png"
 
-  let sprites = [[l01, l02, l03], [r, t, a], [bg], [base], [tf01, tg01, tr01], [p01], [i01], [ms, mo, mq, ot, oa, ob], [paused]]
+
+  let sprites = [[l01, l02, l03], [r, t, a], [bg], [base], [tf01, tg01, tr01], [p01], [i01], [ms, mo, mq, ot, oa, ob], [paused], [rb, tb, ab], [rf, tf, af]]
   playIO janela fundo fr it (desenha sprites) reageEventos reageTempo

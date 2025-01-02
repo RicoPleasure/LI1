@@ -12,162 +12,111 @@ module Desenhar where
 import Graphics.Gloss
 import ImmutableTowers
 import LI12425
+import Utils.Utilitarios
+import Utils.UtilitariosTorre
 
-data TipoTorre = Torre1 | Torre2 | Torre3
-
-data OpcaoMenuInicial = Jogar | Opcoes | Sair
-data OpcaoModoJogo = Resumed | Pause | Loja TipoTorre
-data Config = Themes | Audio | Voltar
-
-data Menu = MenuInicial OpcaoMenuInicial | Options Config | ModoJogo OpcaoModoJogo | AdicionaTorre TipoTorre
-
-data Estado = Estado { immutableTowers :: ImmutableTowers, menu :: Menu}
+data Estado = Estado { immutableTowers :: ImmutableTowers, cena :: Cena}
 
 {-| Legenda dos sprites
 
 sprites !! 0 -> Loja
 sprites !! 1 -> Terrenos
-sprites !! 2 -> Mapa
+sprites !! 2 -> Background
 sprites !! 3 -> Base
 sprites !! 4 -> Torres
 sprites !! 5 -> Portais
+sprites !! 6 -> Inimigos
+sprites !! 7 -> Menu
+sprites !! 8 -> Pause
+sprites !! 9 -> Terreno alternativo válido (modo de adicionar torre)
+sprites !! 10 -> Terreno alternativo inválido (modo de adicionar torre)
+
  -}
 
-{-| Função principal. Desenha tudo que aparece no jogo com base no estado.-}
+{-| Função principal. Desenha tudo que aparece no jogo com base na cena atual.-}
 desenha :: [[Picture]] -> Estado -> IO Picture
-desenha sprites (Estado {menu = MenuInicial Jogar}) = return $ (sprites !! 7) !! 0
+desenha sprites (Estado {cena = MenuInicial Jogar}) = return $ (sprites !! 7) !! 0
+desenha sprites (Estado {cena = MenuInicial Opcoes}) = return $ (sprites !! 7) !! 1
+desenha sprites (Estado {cena = MenuInicial Sair}) = return $ (sprites !! 7) !! 2
+desenha sprites (Estado {cena = Options Themes}) = return $ (sprites !! 7) !! 3
+desenha sprites (Estado {cena = Options Audio}) = return $ (sprites !! 7) !! 4
+desenha sprites (Estado {cena = Options Voltar}) = return $ (sprites !! 7) !! 5 
 
-desenha sprites (Estado {menu = MenuInicial Opcoes}) = return $ (sprites !! 7) !! 1
-
-desenha sprites (Estado {menu = MenuInicial Sair}) = return $ (sprites !! 7) !! 2
-
-desenha sprites (Estado {menu = Options Themes}) = return $ (sprites !! 7) !! 3
-
-desenha sprites (Estado {menu = Options Audio}) = return $ (sprites !! 7) !! 4
-
-desenha sprites (Estado {menu = Options Voltar}) = return $ (sprites !! 7) !! 5 
-
-desenha sprites (Estado {menu = ModoJogo Resumed, immutableTowers = ImmutableTowers { 
-    jogo = Jogo { mapaJogo = mapa,
-                  baseJogo = Base { posicaoBase = (baseX, baseY) },
-                  portaisJogo = portais,
-                  torresJogo = torres,
-                  inimigosJogo = inimigos  } }}) = return $ 
-    Pictures [imagemFundo sprites,
-        Translate ajusteX ajusteY $ 
-            Pictures (desenhaMapa (sprites !! 1) mapa (0, 0) 
-            ++ [desenhaBase (sprites !! 3) (baseX, baseY)]
-            ++ desenhaPortais (sprites !! 5) portais
-            ++ desenhaTorres (sprites !! 4) torres
-            ++ desenhaInimigos (sprites !! 6) inimigos)       
-    ]
-    where 
-        (ajusteX, ajusteY) = (0, blocoAltura * 4)
-
-desenha sprites (Estado {menu = ModoJogo (Loja Torre1), immutableTowers = ImmutableTowers { 
-    jogo = Jogo { mapaJogo = mapa,
-                  baseJogo = Base { posicaoBase = (baseX, baseY) },
-                  portaisJogo = portais,
-                  torresJogo = torres,
-                  inimigosJogo = inimigos  } }}) = return $ 
-    Pictures [imagemFundo sprites,
-        Translate ajusteX ajusteY $ 
-            Pictures (desenhaMapa (sprites !! 1) mapa (0, 0) 
-            ++ [desenhaBase (sprites !! 3) (baseX, baseY)]
-            ++ desenhaPortais (sprites !! 5) portais
-            ++ desenhaTorres (sprites !! 4) torres
-            ++ desenhaInimigos (sprites !! 6) inimigos),
-        desenhaLoja 1 ((sprites !! 0) !! 0)
-    ]
-    where 
-        (ajusteX, ajusteY) = (0, blocoAltura * 4)
-
-desenha sprites (Estado {menu = ModoJogo (Loja Torre2), immutableTowers = ImmutableTowers { 
-    jogo = Jogo { mapaJogo = mapa,
-                  baseJogo = Base { posicaoBase = (baseX, baseY) },
-                  portaisJogo = portais,
-                  torresJogo = torres,
-                  inimigosJogo = inimigos  } }}) = return $ 
-    Pictures [imagemFundo sprites,
-        Translate ajusteX ajusteY $ 
-            Pictures (desenhaMapa (sprites !! 1) mapa (0, 0) 
-            ++ [desenhaBase (sprites !! 3) (baseX, baseY)]
-            ++ desenhaPortais (sprites !! 5) portais
-            ++ desenhaTorres (sprites !! 4) torres
-            ++ desenhaInimigos (sprites !! 6) inimigos),
-        desenhaLoja 1 ((sprites !! 0) !! 1)
-    ]
-    where 
-        (ajusteX, ajusteY) = (0, blocoAltura * 4)
-
-desenha sprites (Estado {menu = ModoJogo (Loja Torre3), immutableTowers = ImmutableTowers { 
-    jogo = Jogo { mapaJogo = mapa,
-                  baseJogo = Base { posicaoBase = (baseX, baseY) },
-                  portaisJogo = portais,
-                  torresJogo = torres,
-                  inimigosJogo = inimigos  } }}) = return $ 
-    Pictures [imagemFundo sprites,
-        Translate ajusteX ajusteY $ 
-            Pictures (desenhaMapa (sprites !! 1) mapa (0, 0) 
-            ++ [desenhaBase (sprites !! 3) (baseX, baseY)]
-            ++ desenhaPortais (sprites !! 5) portais
-            ++ desenhaTorres (sprites !! 4) torres
-            ++ desenhaInimigos (sprites !! 6) inimigos),
-        desenhaLoja 1 ((sprites !! 0) !! 2)
-    ]
-    where 
-        (ajusteX, ajusteY) = (0, blocoAltura * 4)
-
-desenha sprites (Estado { menu = ModoJogo Pause
-                        , immutableTowers = ImmutableTowers {
-                            jogo = Jogo { mapaJogo = mapa,
-                                          baseJogo = Base { posicaoBase = (baseX, baseY) },
-                                          portaisJogo = portais,
-                                          torresJogo = torres,
-                                          inimigosJogo = inimigos }}}) = return $
-    Pictures [
-               imagemFundo sprites,
-               Translate ajusteX ajusteY $
-                   Pictures (desenhaMapa (sprites !! 1) mapa (0, 0) 
-                           ++ [desenhaBase (sprites !! 3) (baseX, baseY)]
-                           ++ desenhaPortais (sprites !! 5) portais
-                           ++ desenhaTorres (sprites !! 4) torres
-                           ++ desenhaInimigos (sprites !! 6) inimigos),
-               Color (makeColor 0 0 0 0.5) $ Polygon [(-960, -540), (960, -540), (960, 540), (-960, 540)],
-               (sprites !! 8) !! 0
-    ]
+{-| Desenha o jogo quando se encontra no modo de jogo -}
+desenha sprites (Estado {cena = ModoJogo Resumed, immutableTowers = ImmutableTowers { jogo = jogo } }) = return $
+    Pictures [ imagemFundo sprites
+             , Translate ajusteX ajusteY $
+                 Pictures (desenhaMapa (sprites !! 1) (mapaJogo jogo) (0, 0)
+                          ++ [desenhaBase (sprites !! 3) (posicaoBase $ baseJogo jogo)]
+                          ++ desenhaPortais (sprites !! 5) (portaisJogo jogo)
+                          ++ desenhaTorres (sprites !! 4) (torresJogo jogo)
+                          ++ desenhaInimigos (sprites !! 6) (inimigosJogo jogo))
+             ]
+             
+{-| Desenha a loja no modo de jogo -}
+desenha sprites (Estado { cena = ModoJogo (Loja t), immutableTowers = ImmutableTowers { jogo = jogo } }) = return $
+    Pictures [ imagemFundo sprites
+             , Translate ajusteX ajusteY $ Pictures 
+                 ( desenhaMapa (sprites !! 1) (mapaJogo jogo) (0, 0)
+                 ++ [desenhaBase (sprites !! 3) (posicaoBase $ baseJogo jogo)]
+                 ++ desenhaPortais (sprites !! 5) (portaisJogo jogo)
+                 ++ desenhaTorres (sprites !! 4) (torresJogo jogo)
+                 ++ desenhaInimigos (sprites !! 6) (inimigosJogo jogo) )
+             , desenhaLoja (spriteLoja t)
+             ]
   where
-    (ajusteX, ajusteY) = (0, blocoAltura * 4)
-
-
-desenha sprites (Estado { menu = AdicionaTorre Torre1
-                        , immutableTowers = ImmutableTowers {
-                            jogo = Jogo { mapaJogo = mapa,
-                                          baseJogo = Base { posicaoBase = (baseX, baseY) },
-                                          portaisJogo = portais,
-                                          torresJogo = torres,
-                                          inimigosJogo = inimigos }}}) = return $
+    spriteLoja indexTorre = case indexTorre of
+        Torre1 -> (sprites !! 0) !! 0
+        Torre2 -> (sprites !! 0) !! 1
+        Torre3 -> (sprites !! 0) !! 2
+        _ -> Blank 
+        
+{-| Desenha o jogo quando o está pausado -}
+desenha sprites (Estado { 
+    cena = ModoJogo Pause,
+    immutableTowers = ImmutableTowers { jogo = jogo } 
+}) = return $ 
     Pictures [
-               imagemFundo sprites,
-               Translate ajusteX ajusteY $
-                   Pictures (desenhaMapa (sprites !! 1) mapa (0, 0) 
-                           ++ [desenhaBase (sprites !! 3) (baseX, baseY)]
-                           ++ desenhaPortais (sprites !! 5) portais
-                           ++ desenhaTorres (sprites !! 4) torres
-                           ++ desenhaInimigos (sprites !! 6) inimigos
-                           ++ [desenhaTorre (sprites !! 4) (4,4) Resina])
+        imagemFundo sprites,
+        Translate ajusteX ajusteY $ Pictures 
+            ( desenhaMapa (sprites !! 1) (mapaJogo jogo) (0, 0)
+            ++ [desenhaBase (sprites !! 3) (posicaoBase $ baseJogo jogo)]
+            ++ desenhaPortais (sprites !! 5) (portaisJogo jogo)
+            ++ desenhaTorres (sprites !! 4) (torresJogo jogo)
+            ++ desenhaInimigos (sprites !! 6) (inimigosJogo jogo) ),
+        Color (makeColor 0 0 0 0.5) $ Polygon [(-960, -540), (960, -540), (960, 540), (-960, 540)],
+        (sprites !! 8) !! 0
     ]
-  where
-    (ajusteX, ajusteY) = (0, blocoAltura * 4)
 
+{-| Desenha o jogo quando o jogador escolhe a posição da nova torre -}
+desenha sprites (Estado { 
+    cena = AdicionaTorre t (x, y), 
+    immutableTowers = ImmutableTowers { jogo = jogo } 
+}) = return $ 
+    Pictures [
+        imagemFundo sprites,
+        Translate ajusteX ajusteY $ Pictures 
+            ( desenhaMapa (sprites !! 1) (mapaJogo jogo) (0, 0)
+            ++ [desenhaTerrenoAlternativo sprites (mapaJogo jogo) t (torresJogo jogo) ((mapaJogo jogo !! y) !! x) (fromIntegral x, fromIntegral y) (creditosBase (baseJogo jogo)) (custoTorre t)]
+            ++ [desenhaBase (sprites !! 3) (posicaoBase $ baseJogo jogo)]
+            ++ desenhaPortais (sprites !! 5) (portaisJogo jogo)
+            ++ desenhaTorres (sprites !! 4) (torresJogo jogo)
+            ++ desenhaInimigos (sprites !! 6) (inimigosJogo jogo)
+            ++ [desenhaTorre (sprites !! 4) (fromIntegral x, fromIntegral y) (projetilNovaTorre t)])
+    ]
 
 {-| Imagem de fundo do jogo -}
 imagemFundo :: [[Picture]] -- ^ Sprites do jogo
             -> Picture -- ^ Imagem de fundo
 imagemFundo sprites = (sprites !! 2) !! 0
 
-{-| Função que desenha o menu inicial -}
+ajusteX :: Float
+ajusteX = 0
 
+ajusteY :: Float
+ajusteY = blocoAltura * 4
+
+{-| Desenha a loja -}
 
 {-| As funções a seguir ajudam a manter a função 'desenha' mais limpa.  -}
 {-| Extrai as posições das torres presentes no jogo. -}
@@ -312,7 +261,25 @@ desenhaInimigo :: [Picture] -- ^ Sprites dos inimigos
 desenhaInimigo sprites (x,y) = scale 0.5 0.5 $ posicaoRealObjetosScale (x,y) $ sprites !! 0
 
 {-| Função que desenha a loja -} 
-desenhaLoja :: Int -- ^ Número da torre selecionada  
-            -> Picture -- ^ Sprite da loja
+desenhaLoja :: Picture -- ^ Sprite da loja
             -> Picture -- ^ Loja desenhada
-desenhaLoja n l = Translate (-720) 220 $ Pictures [l]
+desenhaLoja l = Translate (-720) 220 $ Pictures [l]
+
+desenhaTerrenoAlternativo :: [[Picture]] -- ^ Sprites dos terrenos
+                          -> Mapa -- ^ Mapa
+                          -> TipoTorre -- ^ Tipo da torre
+                          -> [Torre] -- ^ Torres
+                          -> Terreno -- ^ Terreno
+                          -> Posicao -- ^ Posição do terreno
+                          -> Creditos -- ^ Créditos do jogador
+                          -> Creditos -- ^ Custo da torre
+                          -> Picture -- ^ Terreno desenhado
+desenhaTerrenoAlternativo sprites mapa tipoTorre torres t (x,y)creditos custo = posicaoReal (x,y) (scale 3 3 $ terrenoSprite spriteCorreto t)
+    where spriteCorreto = if adicionaTorreValida (x,y) mapa (insereTorreNaLista torres (x,y) (projetilNovaTorre tipoTorre)) creditos custo then (sprites !! 10) else (sprites !! 9)
+
+projetilNovaTorre :: TipoTorre -- ^ Tipo da torre 
+                  -> TipoProjetil -- ^ Tipo do projétil
+projetilNovaTorre tipo = case tipo of
+  Torre1 -> Resina
+  Torre2 -> Fogo
+  Torre3 -> Gelo 

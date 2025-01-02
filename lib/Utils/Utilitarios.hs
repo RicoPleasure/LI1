@@ -10,6 +10,28 @@ module Utils.Utilitarios where
 
 import LI12425
 
+data TipoTorre = Torre1
+               | Torre2 
+               | Torre3 
+
+data OpcaoMenuInicial = Jogar 
+                      | Opcoes 
+                      | Sair
+
+data OpcaoModoJogo = Resumed 
+                   | Pause 
+                   | Loja TipoTorre
+
+data Config = Themes
+            | Audio
+            | Voltar
+
+data Cena = MenuInicial OpcaoMenuInicial 
+          | Options Config 
+          | ModoJogo OpcaoModoJogo 
+          | AdicionaTorre TipoTorre (Int,Int)
+
+
 {-|
   A função utilitária 'verificaDuplosPos' verifica se numa lista de 'Posicao' existem elementos repetidos.
 

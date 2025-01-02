@@ -26,7 +26,7 @@ module LI12425 (
 
 import System.Random (mkStdGen, randoms)
 
--- | Tipo de terrenno do mapa.
+-- | Tipo de terreno do mapa.
 data Terreno
   = -- | Torres constroem-se sobre o relvado do mapa.
     Relva

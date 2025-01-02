@@ -217,4 +217,3 @@ handleNewProjetil ((Projetil {tipoProjetil = Fogo, duracaoProjetil = durFogo}):x
 handleNewProjetil ((Projetil {tipoProjetil = Fogo}):xs) (Projetil {tipoProjetil = Gelo}) = xs
 handleNewProjetil ((Projetil {tipoProjetil = Gelo}):xs) (Projetil {tipoProjetil = Fogo}) = xs
 handleNewProjetil l _ = l
-
