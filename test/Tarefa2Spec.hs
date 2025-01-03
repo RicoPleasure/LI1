@@ -8,7 +8,7 @@ import Control.Exception (try, evaluate, SomeException)
 
 import Test.HUnit
 
--- Test do Jogo não terminou
+-- Test Jogo não terminou
 testJogoNaoTerminou :: Test
 testJogoNaoTerminou = TestCase $ do
   let jogo = Jogo { baseJogo = Base {vidaBase = 0}, inimigosJogo = [], portaisJogo = [] }
