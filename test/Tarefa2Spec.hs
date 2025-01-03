@@ -6,6 +6,38 @@ import LI12425
 import TData.TDataTarefa2
 import Control.Exception (try, evaluate, SomeException)
 
+import Test.HUnit
+
+-- Test do Jogo não terminou
+testJogoNaoTerminou :: Test
+testJogoNaoTerminou = TestCase $ do
+  let jogo = Jogo { baseJogo = Base {vidaBase = 0}, inimigosJogo = [], portaisJogo = [] }
+  assertBool "Test Jogo Não Terminou" (terminouJogo jogo == True)
+
+-- Test do Jogo ganhou
+testJogoGanhou :: Test
+testJogoGanhou = TestCase $ do
+  let jogo = Jogo { baseJogo = Base {vidaBase = 10}, inimigosJogo = [], portaisJogo = [] }
+  assertBool "Test Jogo Ganhou" (ganhouJogo jogo == True)
+
+-- Test do Jogo não ganhou
+testJogoNaoGanhou :: Test
+testJogoNaoGanhou = TestCase $ do
+  let jogo = Jogo { baseJogo = Base {vidaBase = 10}, inimigosJogo = [Inimigo {vidaInimigo = 10}], portaisJogo = [] }
+  assertBool "Test Jogo Não Ganhou" (ganhouJogo jogo == False)
+
+-- Test do Jogo perdeu
+testJogoPerdeu :: Test
+testJogoPerdeu = TestCase $ do
+  let jogo = Jogo { baseJogo = Base {vidaBase = 0}, inimigosJogo = [], portaisJogo = [] }
+  assertBool "Test Jogo Perdeu" (perdeuJogo jogo == True)
+
+-- Test do Jogo não perdeu
+testJogoNaoPerdeu :: Test
+testJogoNaoPerdeu = TestCase $ do
+  let jogo = Jogo { baseJogo = Base {vidaBase = 10}, inimigosJogo = [], portaisJogo = [] }
+  assertBool "Test Jogo Não Perdeu" (perdeuJogo jogo == False)
+
 -- Inimigo sem projeteis
 testInimigoSemProjAtingGelo :: Test
 testInimigoSemProjAtingGelo = TestCase $ do
@@ -137,5 +169,16 @@ testesTarefa2 =
         testInimigoComGeloAtingGelo,
         testInimigoComResinaAtingResina,
         testInimigoComResinaAtingFogo,
-        testInimigoComResinaAtingGelo
+        testInimigoComResinaAtingGelo,
+
+        -- testes terminouJogo
+        testJogoNaoTerminou,
+        
+        -- testes ganhouJogo
+        testJogoGanhou,
+        testJogoNaoGanhou,
+
+        -- testes perdeuJogo
+        testJogoPerdeu,
+        testJogoNaoPerdeu
       ]
