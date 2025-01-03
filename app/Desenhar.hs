@@ -15,8 +15,6 @@ import LI12425
 import Utils.Utilitarios
 import Utils.UtilitariosTorre
 
-data Estado = Estado { immutableTowers :: ImmutableTowers, cena :: Cena}
-
 {-| Legenda dos sprites
 
 sprites !! 0 -> Loja
@@ -32,6 +30,8 @@ sprites !! 9 -> Terreno alternativo válido (modo de adicionar torre)
 sprites !! 10 -> Terreno alternativo inválido (modo de adicionar torre)
 
  -}
+
+data Estado = Estado { immutableTowers :: ImmutableTowers, cena :: Cena}
 
 {-| Função principal. Desenha tudo que aparece no jogo com base na cena atual.-}
 desenha :: [[Picture]] -> Estado -> IO Picture

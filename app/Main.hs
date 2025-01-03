@@ -63,10 +63,10 @@ it = Estado {
           [r, a, r, t, r, r, r, r, r, r, r]
         ],
         inimigosJogo = [
-          Inimigo {posicaoInimigo = (5,2),
+          Inimigo {posicaoInimigo = (3,10),
                    direcaoInimigo = Norte,
                    vidaInimigo = 100,
-                   velocidadeInimigo = 10,
+                   velocidadeInimigo = 2,
                    ataqueInimigo = 99,
                    butimInimigo = 200,
                    projeteisInimigo = [ Projetil {
