@@ -27,7 +27,18 @@ testesTarefa1 =
         "teste Jogo com torres sobrepostas" ~: False ~=? validaJogo jogoTorresSobrepostas,
 
         -- Testes base
-        "teste Jogo base com pos inválida" ~: False ~=? validaJogo jogoInvalidBasePos
+        "teste Jogo base com pos inválida" ~: False ~=? validaJogo jogoInvalidBasePos,
+
+        -- Testes inimigos
+        "teste Jogo com inimigos dentro dos portais sem projeteis" ~: True ~=? validaJogo jogoValidoInimigosDentroSemProjetil,
+        "teste Jogo com inimigos dentro dos portais com projeteis" ~: False ~=? validaJogo jogoInvalidoInimigosDentroComProjetil,
+        "teste Jogo com inimigos fora dos portais com projéteis normalizados" ~: True ~=? validaJogo jogoValidoInimigosForaComProjetil,
+        "teste Jogo com inimigos fora dos portais com projéteis não normalizados" ~: False ~=? validaJogo jogoInvalidoInimigosForaComProjeteisNaoNormalizados,
+        "teste Jogo com inimigos com combinações inválidas de projéteis" ~: False ~=? validaJogo jogoInvalidoInimigosComCombinacaoInvalidaProjetil,
+        "teste Jogo com inimigo com projétil do tipo Fogo" ~: True ~=? validaJogo jogoValidoProjetilFogo,
+        "teste Jogo com inimigo com projétil do tipo Gelo" ~: True ~=? validaJogo jogoValidoProjetilGelo,
+        "teste Jogo com inimigo com projétil do tipo Resina" ~: True ~=? validaJogo jogoValidoProjetilResina,
+        "teste Jogo com inimigo sem projéteis" ~: True ~=? validaJogo jogoValidoSemProjetil
       ]
 
 

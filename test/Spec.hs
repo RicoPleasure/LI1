@@ -6,6 +6,7 @@ import LI12425
 import Tarefa1Spec
 import Tarefa2Spec
 import Tarefa3Spec
+import Utils.Utilitarios
 import Control.Exception (SomeException, evaluate, try, displayException)
 import Data.List (isInfixOf)
 
@@ -18,6 +19,15 @@ testMultError = TestCase $ do
       assertBool "Erro em caso de multiplicação de dois valores infinitos"
                  ("Illegal operation performed" `isInfixOf` displayException ex)
     Right _ -> assertFailure "Não foi retornado um erro como era espectável no caso da multiplicação de dois valores infinitos"
+
+testExtractNothingFromMaybe :: Test
+testExtractNothingFromMaybe = TestCase $ do
+  result <- try (evaluate (extractValueFromMaybe Nothing)) :: IO (Either SomeException a)
+  case result of
+    Left ex ->
+      assertBool "Erro em caso de tentativa de extração de valor de Nothing"
+                 ("No value found in maybe" `isInfixOf` displayException ex)
+    Right _ -> assertFailure "Não foi retornado um erro como era espectável no caso da extração de um valor de Nothing"
 
 testSuite :: Test
 testSuite =
@@ -38,7 +48,8 @@ testSuite =
         "Conversão Int para Duracao" ~: Finita 5.0 ~=? fromIntegerDuracao 5,
         "Negacao duracao infinita" ~: Infinita ~=? negateDuracao Infinita,
         "Negacao duracao finita" ~: Finita (-1) ~=? negateDuracao (Finita 1),
-        testMultError
+        testMultError,
+        testExtractNothingFromMaybe
       ]
 
 main :: IO ()

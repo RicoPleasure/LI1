@@ -71,3 +71,82 @@ inimigoComResina = Inimigo {
     ]
 }
 
+-- Portais
+portalComOndaAtivaEInimigoParaAtivar :: Portal
+portalComOndaAtivaEInimigoParaAtivar = Portal {
+  posicaoPortal = (0,0),
+  ondasPortal = [
+    Onda {
+      entradaOnda = 0,
+      tempoOnda = 0,
+      cicloOnda = 15,
+      inimigosOnda = [
+        inimigoComFogo
+      ]
+    }
+  ]
+}
+
+portalComOndaAtivaEInimigoParaAtivarMultOndas :: Portal
+portalComOndaAtivaEInimigoParaAtivarMultOndas = Portal {
+  posicaoPortal = (0,0),
+  ondasPortal = [
+    Onda {
+      entradaOnda = 1,
+      tempoOnda = 0,
+      cicloOnda = 15,
+      inimigosOnda = [
+        inimigoComFogo
+      ]
+    },
+    Onda {
+      entradaOnda = 0,
+      tempoOnda = 0,
+      cicloOnda = 15,
+      inimigosOnda = [
+        inimigoComFogo
+      ]
+    }
+  ]
+}
+
+portalComOndaAtivaSemInimigoParaAtivar :: Portal
+portalComOndaAtivaSemInimigoParaAtivar = Portal {
+  posicaoPortal = (0,0),
+  ondasPortal = [
+    Onda {
+      entradaOnda = 0,
+      tempoOnda = 1,
+      cicloOnda = 15,
+      inimigosOnda = [
+        inimigoComFogo
+      ]
+    }
+  ]
+}
+
+portalSemOndaAtiva :: Portal
+portalSemOndaAtiva = Portal {
+  posicaoPortal = (0,0),
+  ondasPortal = [
+    Onda {
+      entradaOnda = 1,
+      tempoOnda = 0,
+      cicloOnda = 15,
+      inimigosOnda = [
+        inimigoComFogo
+      ]
+    }
+  ]
+}
+
+tOnda :: Onda
+tOnda = Onda {
+      entradaOnda = 0,
+      tempoOnda = 0,
+      cicloOnda = 15,
+      inimigosOnda = [
+        inimigoComFogo
+      ]
+    }
+

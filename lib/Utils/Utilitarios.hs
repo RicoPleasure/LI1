@@ -63,3 +63,14 @@ checkPositionTerra (x,y) m = validaPosicaoObjeto (x,y) m && m !! floor y !! floo
 -}
 checkPositionRelva :: Posicao -> Mapa -> Bool
 checkPositionRelva (x,y) m = validaPosicaoObjeto (x,y) m && m !! floor y !! floor x == Relva
+
+{-|
+  A função 'extractValueFromMaybe' é responsável por extrair um valor de um maybe, caso esse exista.
+
+  ==__Exemplos de utilização__
+  >>> extractValueFromMaybe (Maybe 1)
+  1
+-}
+extractValueFromMaybe :: Maybe a -> a
+extractValueFromMaybe Nothing = error "No value found in maybe"
+extractValueFromMaybe (Just a) = a

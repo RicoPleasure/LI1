@@ -9,10 +9,12 @@ Módulo para a realização da Tarefa 1 de LI1 em 2024/25.
 -}
 module Tarefa1 where
 
+import Data.List
 import LI12425
 import Utils.UtilitariosPortal
 import Utils.UtilitariosBase
 import Utils.UtilitariosTorre
+import Utils.UtilitariosInimigo
 
 {-|
   A função 'validaJogo' valida, recorrendo a múltiplas validações feitas por funções auxiliares, se um dado estado de Jogo é valido
@@ -20,7 +22,7 @@ import Utils.UtilitariosTorre
   ==__Objetos validados__
   * 'Portal': recorrendo à função 'validaPortais'. 
   * 'Base': recorrendo à função 'validaBase':.
-  * 'Inimigos': recorrendo á função TODO:. 
+  * 'Inimigos': recorrendo á função 'validaInimigos. 
   * 'Torre': recorrendo à função 'validaTorres':.
   * 'Mapa': recorrendo à função TODO:.
 
@@ -58,12 +60,13 @@ validaJogo j@(Jogo {
               baseJogo = base,
               portaisJogo = portais,
               torresJogo = torres,
+              inimigosJogo = inimigos,
               lojaJogo = loja }) =
-                validaPortais portais mapa base && 
-                validaTorres torres mapa && 
-                validaBase mapa (posicaoBase base) (creditosBase base) &&
-                not (verificaSobreposicoes j)
-
+                validaPortais portais mapa base 
+                && validaTorres torres mapa 
+                && validaBase mapa (posicaoBase base) (creditosBase base) 
+                && validaInimigos mapa inimigos portais
+                && not (verificaSobreposicoes j)
 
 {-|
   A função 'verificaSobreposicoes' verifica, para cada objetos presente num 'Jogo', se esse está sobreposto a outro objeto que não devia.
@@ -81,7 +84,7 @@ validaJogo j@(Jogo {
   True
 -}
 verificaSobreposicoes :: Jogo -> Bool
-verificaSobreposicoes (Jogo {baseJogo = base, portaisJogo = portais, torresJogo = torres}) = 
+verificaSobreposicoes (Jogo {baseJogo = base, portaisJogo = portais, torresJogo = torres, inimigosJogo = inimigos}) = 
   verificaColisaoBasePortais portais torres base &&
-  verificaCollisionTorres torres
-
+  verificaCollisionTorres torres &&
+  verificaColisaoInimigosTorres inimigos torres 

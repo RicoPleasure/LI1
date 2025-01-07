@@ -54,6 +54,7 @@ test-suite immutable-towers-test
         Tarefa3Spec
         TData.TDataTarefa1
         TData.TDataTarefa2
+        TData.TDataTarefa3
 
     default-language: GHC2021
     ghc-options:      -Wall

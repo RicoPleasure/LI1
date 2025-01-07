@@ -3,6 +3,7 @@ module Tarefa2Spec (testesTarefa2) where
 import Test.HUnit
 import Tarefa2
 import LI12425
+import Utils.UtilitariosPortal
 import TData.TDataTarefa2
 import Control.Exception (try, evaluate, SomeException)
 
@@ -153,6 +154,64 @@ testInimigoComResinaAtingGelo = TestCase $ do
       assertBool "Test Proj. Gelo Inimigo com Resina."
                  (vida == (-5) && length proj == 1 && tipoProjetil (head proj) == Resina && duracaoProjetil (head proj) == Finita 10)
 
+-- Definição testes ativaInimigo
+
+testPortalComOndaAtivaEInimigoParaAtivar :: Test
+testPortalComOndaAtivaEInimigoParaAtivar = TestCase $ do
+  result <- try (evaluate (ativaInimigo portalComOndaAtivaEInimigoParaAtivar [])) :: IO (Either SomeException (Portal, [Inimigo]))
+  case result of
+    Left _ ->
+      assertFailure "Ocorreu um erro na função testPortalComOndaAtivaEInimigoParaAtivar"
+    Right (portal, is) ->
+      assertBool "Test portal com onda ativa e inimigo por ativar"
+                 (length is == 1 && null (inimigosOnda onda) && tempoOnda onda == cicloOnda onda && vida == 0)
+      where
+        onda = head (ondasPortal portal)
+        vida = vidaInimigo (head is)
+
+testPortalMultOndas :: Test
+testPortalMultOndas = TestCase $ do
+  result <- try (evaluate (ativaInimigo portalComOndaAtivaEInimigoParaAtivarMultOndas [])) :: IO (Either SomeException (Portal, [Inimigo]))
+  case result of
+    Left _ ->
+      assertFailure "Ocorreu um erro na função testPortalMultOndas"
+    Right (portal, is) ->
+      assertBool "Test portal com onda ativa e inimigo por ativar (múltiplas ondas)"
+                 (length is == 1 && null (inimigosOnda onda) && tempoOnda onda == cicloOnda onda)
+      where
+        onda = last (ondasPortal portal)
+
+testPortalSemOndaAtiva :: Test
+testPortalSemOndaAtiva = TestCase $ do
+  result <- try (evaluate (ativaInimigo portalSemOndaAtiva [])) :: IO (Either SomeException (Portal, [Inimigo]))
+  case result of
+    Left _ ->
+      assertFailure "Ocorreu um erro na função testPortalSemOndaAtiva"
+    Right (portal, is) ->
+      assertBool "Test portal sem onda ativa"
+                 (null is && length (inimigosOnda (head (ondasPortal portal))) == 1)
+
+testPortalComOndaAtivaSemInimigoParaAtivar :: Test
+testPortalComOndaAtivaSemInimigoParaAtivar = TestCase $ do
+  result <- try (evaluate (ativaInimigo portalComOndaAtivaSemInimigoParaAtivar [])) :: IO (Either SomeException (Portal, [Inimigo]))
+  case result of
+    Left _ ->
+      assertFailure "Ocorreu um erro na função testPortalComOndaAtivaSemInimigoParaAtivar"
+    Right (portal, is) ->
+      assertBool "Test portal com onda ativa sem inimigo por ativar"
+                 (null is && length (inimigosOnda (head (ondasPortal portal))) == 1)
+
+-- Teste extra Utils.UtilitariosPortal
+testInsertOndaAtivaInOndas :: Test
+testInsertOndaAtivaInOndas = TestCase $ do
+  result <- try (evaluate (insertOndaAtivaInOndas tOnda [])) :: IO (Either SomeException [Onda])
+  case result of
+    Left _ ->
+      assertFailure "Ocorreu um erro na função testInsertOndaAtivaInOndas"
+    Right os ->
+      assertBool "Teste extra insertOndaAtivaInOndas com lista de Ondas vazia."
+                 (length os == 1)         
+
 -- Testsuite Tarefa 2
 testesTarefa2 :: Test
 testesTarefa2 =
@@ -171,6 +230,7 @@ testesTarefa2 =
         testInimigoComResinaAtingFogo,
         testInimigoComResinaAtingGelo,
 
+<<<<<<< HEAD
         -- testes terminouJogo
         testJogoNaoTerminou,
         
@@ -181,4 +241,14 @@ testesTarefa2 =
         -- testes perdeuJogo
         testJogoPerdeu,
         testJogoNaoPerdeu
+=======
+        -- testes ativaInimigo
+        testPortalComOndaAtivaEInimigoParaAtivar,
+        testPortalSemOndaAtiva,
+        testPortalComOndaAtivaSemInimigoParaAtivar,
+        testPortalMultOndas,
+
+        -- testes extra
+        testInsertOndaAtivaInOndas
+>>>>>>> main
       ]
