@@ -58,12 +58,6 @@ atingeInimigo (Torre {projetilTorre = p, danoTorre = dano}) i =
     handleHitByProjetil (reduzVidaInimigo i dano) p
 
 {-|
-    TODO:
--}
-{- ativaInimigo :: Portal -> [Inimigo] -> (Portal, [Inimigo])
-ativaInimigo = undefined
- -}
-{-|
     A função 'terminouJogo' verifica se o jogo terminou, ou seja, se o jogador ganhou ou perdeu o jogo.
 
     ==__Exemplos de utilização__
