@@ -229,7 +229,11 @@ desenha sprites (Estado {cena = Debug, immutableTowers = ImmutableTowers { jogo 
                           ++ desenhaPortais ((sprites !! temaAtual) !! 5) (portaisJogo jogo)
                           ++ desenhaTorres ((sprites !! temaAtual) !! 4) (torresJogo jogo)
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo)),
-                        scale 0.5 0.5 $ Translate (-1000) (800) $ text $ show (posicaoInimigo (head (inimigosJogo jogo)))
+{-                         scale 0.5 0.5 $ Translate (-1000) (800) $ text $ show (posicaoInimigo (head (inimigosJogo jogo))),                        
+                        scale 0.5 0.5 $ Translate (-1000) (400) $ text $ show (direcaoInimigo (head (inimigosJogo jogo))), -}
+                        scale 0.5 0.5 $ Translate (-1000) (800) $ text $ show (tempoOnda (head (ondasPortal (head (portaisJogo jogo))))),
+                        scale 0.5 0.5 $ Translate (-1000) (400) $ text $ show (cicloOnda (head (ondasPortal (head (portaisJogo jogo))))),
+                        scale 0.5 0.5 $ Translate (-1000) (0) $ text $ show (entradaOnda (head (ondasPortal (head (portaisJogo jogo)))))
              ]
              
              

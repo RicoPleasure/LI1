@@ -22,10 +22,7 @@ import Data.List
   True
   >>> validaInimigos [[Terra, Terra, Terra, Relva]] [(Inimigo {posicaoInimigo = (1,1), vidaInimigo = -10, velocidadeInimigo = 10, projeteisInimigo = []})] [(1,1), (2,2)]
   False
-
 -}
-
-
 validaInimigos :: [[Terreno]] -- Mapa
                -> [Inimigo] -- Posicoes dos inimigos
                -> [Portal] -- Posicões dos portais
@@ -42,8 +39,7 @@ validaInimigos mapa inimigos portais =
   True
   >>> validaInimigo [[Terra, Terra, Terra, Relva]] (Inimigo {posicaoInimigo = (1,1), vidaInimigo = -10, velocidadeInimigo = 10, projeteisInimigo = []}) [(1,1), (2,2)]
   False
-
-  -}
+-}
 validaInimigo :: [[Terreno]] -- Mapa
               -> Inimigo -- Inimigo
               -> [Portal] -- Portais
@@ -75,8 +71,7 @@ validaInimigo mapa (Inimigo { posicaoInimigo = posicao, vidaInimigo = vida, velo
   True
   >>> projeteisNormalizados (1,1) [(1,1), (2,2)] [Projetil {tipoProjetil = Fogo, duracaoProjetil = 10}, Projetil {tipoProjetil = Gelo, duracaoProjetil = 10}]
   False
-
- -}
+-}
 projeteisNormalizados :: Posicao -- Posicao do inimigo
                       -> [Posicao] -- Posicoes dos portais
                       -> [Projetil] -- Lista de projéteis
@@ -85,10 +80,30 @@ projeteisNormalizados posInimigo posPortais projeteis
   | inimigoDentroDosPortais posInimigo posPortais = null projeteis
   | otherwise = combinacaoValida (map tipoProjetil projeteis)
 
-{-| 
-  ''combinacaoValida'' verifica se a combinação de projéteis é válida
- -}
+{-|
+  'combinacaoValida' verifica se a combinação de projéteis é válida
 
+  ==__Observações__
+
+  * A combinação de projéteis válida é:
+    * Fogo
+    * Gelo
+    * Resina
+    * Gelo + Resina
+
+  ==__Exemplos de utilização__
+
+  >>> combinacaoValida [Fogo]
+  True
+  >>> combinacaoValida [Gelo]
+  True
+  >>> combinacaoValida [Resina]
+  True
+  >>> combinacaoValida [Gelo, Resina]
+  True
+  >>> combinacaoValida [Fogo, Gelo]
+  False
+-}
 combinacaoValida  :: [TipoProjetil] -- Lista de projéteis
                   -> Bool
 combinacaoValida tiposProjeteis
@@ -136,15 +151,15 @@ verificaColisaoInimigosTorres is ts = verificaDuplosPos listPos
         listPos = posInimigo ++ posTorres
 
 {-|
-    A função 'reduzVidaInimigo' reduz a vida de um 'Inimigo' por um dado valor
+  A função 'reduzVidaInimigo' reduz a vida de um 'Inimigo' por um dado valor
 
-    ==__Exemplos de utilização__
-    >>> reduzVidaInimigo (Inimigo {vidaInimigo = 10}) 5
-    Inimigo {vidaInimigo = 5}
-    >>> reduzVidaInimigo (Inimigo {vidaInimigo = 10}) 15
-    Inimigo {vidaInimigo = (-5)}
-    >>> reduzVidaInimigo (Inimigo {vidaInimigo = 10}) 10
-    Inimigo {vidaInimigo = 0}
+  ==__Exemplos de utilização__
+  >>> reduzVidaInimigo (Inimigo {vidaInimigo = 10}) 5
+  Inimigo {vidaInimigo = 5}
+  >>> reduzVidaInimigo (Inimigo {vidaInimigo = 10}) 15
+  Inimigo {vidaInimigo = (-5)}
+  >>> reduzVidaInimigo (Inimigo {vidaInimigo = 10}) 10
+  Inimigo {vidaInimigo = 0}
 -}
 reduzVidaInimigo :: Inimigo -> Float -> Inimigo
 reduzVidaInimigo inimigo dano = 
@@ -166,22 +181,22 @@ converteInimigosEmListaPos = map (\(Inimigo {posicaoInimigo = pos} ) -> pos)
 
 
 {-|
-    A função 'handleHitByProjetil' altera o 'Inimigo' conforme o esperado, quando este é atingido por um 'Projetil' e recorre para tal à função auxiliar 'handleNewProjetil'
+  A função 'handleHitByProjetil' altera o 'Inimigo' conforme o esperado, quando este é atingido por um 'Projetil' e recorre para tal à função auxiliar 'handleNewProjetil'
 
-    ==__Observações__
-    * Quando um inimigo já se encontra sob o efeito de 'Fogo' ou 'Gelo' e é atingido por um projetil do outro tipo ('Fogo' ou 'Gelo'), estes cancelam os seus efeitos mutuamente.
-    * A combinação dos projeteis 'Fogo' e 'Resina' dobra a duração do efeito do 'Projetil' do tipo 'Fogo'
-    * Quando o inimigo se encontra sob o efeito de um certo 'Projetil' e é atingido por outro do mesmo tipo, as suas durações são somada.
+  ==__Observações__
+  * Quando um inimigo já se encontra sob o efeito de 'Fogo' ou 'Gelo' e é atingido por um projetil do outro tipo ('Fogo' ou 'Gelo'), estes cancelam os seus efeitos mutuamente.
+  * A combinação dos projeteis 'Fogo' e 'Resina' dobra a duração do efeito do 'Projetil' do tipo 'Fogo'
+  * Quando o inimigo se encontra sob o efeito de um certo 'Projetil' e é atingido por outro do mesmo tipo, as suas durações são somada.
 
-    ==__Exemplos de utilização__
-    >>> handleHitByProjetil (Inimigo { projeteisInimigo = [] }) (Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 })
-    Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }
-    >>> handleHitByProjetil (Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }) (Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 })
-    Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 20 }] }
-    >>> handleHitByProjetil (Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }) (Projetil { tipoProjetil = Resina, duracaoProjetil = 2 })
-    Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 20 }] }
-    >>> handleHitByProjetil (Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }) (Projetil { tipoProjetil = Gelo, duracaoProjetil = 2 })
-    Inimigo { projeteisInimigo = [] }
+  ==__Exemplos de utilização__
+  >>> handleHitByProjetil (Inimigo { projeteisInimigo = [] }) (Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 })
+  Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }
+  >>> handleHitByProjetil (Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }) (Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 })
+  Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 20 }] }
+  >>> handleHitByProjetil (Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }) (Projetil { tipoProjetil = Resina, duracaoProjetil = 2 })
+  Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 20 }] }
+  >>> handleHitByProjetil (Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }) (Projetil { tipoProjetil = Gelo, duracaoProjetil = 2 })
+  Inimigo { projeteisInimigo = [] }
 -}
 handleHitByProjetil :: Inimigo -> Projetil -> Inimigo
 handleHitByProjetil inimigo projetil = 
@@ -217,3 +232,81 @@ handleNewProjetil ((Projetil {tipoProjetil = Fogo, duracaoProjetil = durFogo}):x
 handleNewProjetil ((Projetil {tipoProjetil = Fogo}):xs) (Projetil {tipoProjetil = Gelo}) = xs
 handleNewProjetil ((Projetil {tipoProjetil = Gelo}):xs) (Projetil {tipoProjetil = Fogo}) = xs
 handleNewProjetil l _ = l
+
+{-|
+    A função 'inimigoVivo' verifica se um 'Inimigo' está vivo.
+
+    ==__Exemplos de utilização__
+    >>> inimigoVivo (Inimigo {vidaInimigo = 10})
+    True
+    >>> inimigoVivo (Inimigo {vidaInimigo = 0})
+    False
+-}
+inimigoVivo :: Inimigo -- ^ Inimigo 
+            -> Bool -- ^ Bool
+inimigoVivo (Inimigo {vidaInimigo = vida}) = vida > 0
+
+{-|
+    A função 'calculaNovaPosicao' é responsável por calcular a nova posição de um 'Inimigo' com o passar do 'Tempo'.
+
+    ==__Exemplos de utilização__
+    >>> calculaNovaPosicao Norte (0,0) [] 1 2
+    (0.0,-2.0)
+    >>> calculaNovaPosicao Norte (0,0) [] 1 2
+    (0.0,-2.0)
+-}
+calculaNovaPosicao :: Direcao -- ^ Direção
+                   -> Posicao -- ^ Posição
+                   -> Mapa -- ^ Mapa
+                   -> Float -- ^ Velocidade
+                   -> Float -- ^ Tempo
+                   -> Posicao -- ^ Nova Posição
+calculaNovaPosicao dir (x, y) _ v t = case dir of
+    Norte -> (x, y - v * t)
+    Sul   -> (x, y + v * t)
+    Este  -> (x + v * t, y)
+    Oeste -> (x - v * t, y)
+
+{-|
+    A função 'calculaNovaDirecao' é responsável por calcular a nova direção de um 'Inimigo' com o passar do 'Tempo'.
+
+    ==__Exemplos de utilização__
+    >>> calculaNovaDirecao Norte [] (0,0) 1 2
+    Norte
+    >>> calculaNovaDirecao Norte [] (0,0) 1 2
+    Norte
+-}
+calculaNovaDirecao :: Direcao -- ^ Direção
+                   -> Mapa -- ^ Mapa
+                   -> Posicao -- ^ Posição
+                   -> Float -- ^ Velocidade
+                   -> Float -- ^ Tempo
+                   -> Direcao -- ^ Nova Direção
+calculaNovaDirecao dir mapa (x, y) v t
+    | not (isValidPos novaPos mapa dir && isTerra novaPos mapa dir) = case filter isValidAndTerra [Norte, Sul, Este, Oeste] of
+        (newDir:_) -> newDir
+        []         -> dir
+    | otherwise = dir
+    where
+        novaPos = proximaPosicao dir (x, y) v t
+        isValidAndTerra d = let pos = proximaPosicao d (x, y) v t in isValidPos pos mapa d && isTerra pos mapa d && d /= oposta dir && pos /= novaPos
+        oposta Norte = Sul
+        oposta Sul   = Norte
+        oposta Este  = Oeste
+        oposta Oeste = Este
+
+{-|
+    A função 'handleProjeteisInimigo' é responsável por atualizar os projéteis de um 'Inimigo' com o passar do 'Tempo'.
+
+    ==__Exemplos de utilização__
+    >>> handleProjeteisInimigo (Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 5}]}) 2
+    Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 3.0}], velocidadeInimigo = 1.0}
+    >>> handleProjeteisInimigo (Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 5}]}) 2
+    Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 3.0}], velocidadeInimigo = 1.0}
+-}      
+proximaPosicao :: Direcao -> Posicao -> Float -> Float -> Posicao
+proximaPosicao dir (x, y) v t = case dir of
+    Norte -> (x, y - v * t)
+    Sul   -> (x, y + v * t)
+    Este  -> (x + v * t, y)
+    Oeste -> (x - v * t, y)

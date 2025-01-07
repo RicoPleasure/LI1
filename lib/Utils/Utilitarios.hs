@@ -10,6 +10,7 @@ module Utils.Utilitarios where
 
 import LI12425
 
+
 data TipoTorre = Torre1
                | Torre2 
                | Torre3 
@@ -135,3 +136,68 @@ checkPositionRelva (x,y) m = validaPosicaoObjeto (x,y) m && m !! floor y !! floo
 extractValueFromMaybe :: Maybe a -> a
 extractValueFromMaybe Nothing = error "No value found in maybe"
 extractValueFromMaybe (Just a) = a
+
+{-|
+    A função 'isValidPos' verifica se uma 'Posicao' é válida num 'Mapa' com uma determinada 'Direcao'.
+
+    ==__Exemplos de utilização__
+    >>> isValidPos (0,0) [] Norte
+    False
+    >>> isValidPos (0,0) [] Norte
+    False
+-}
+isValidPos :: Posicao -> Mapa -> Direcao -> Bool
+isValidPos (x, y) mapa dir = 
+    let (x', y') = case dir of
+                    Norte -> (round x, floor y)
+                    Sul   -> (round x, ceiling y)
+                    Este  -> (ceiling x, round y)
+                    Oeste -> (floor x, round y)
+    in x' >= 0 && y' >= 0 && y' < length mapa && x' < length (head mapa)
+
+{-|
+    A função 'isTerra' verifica se uma 'Posicao' é terra num 'Mapa' com uma determinada 'Direcao'.
+
+    ==__Exemplos de utilização__
+    >>> isTerra (0,0) [] Norte
+    False
+    >>> isTerra (0,0) [] Norte
+    False
+-}
+isTerra :: Posicao -> Mapa -> Direcao -> Bool
+isTerra (x, y) mapa dir = 
+    case getPosicaoMapa (adjustPosition x y dir) mapa of
+        Just Terra -> True
+        _          -> False
+        
+{-|
+    A função 'adjustPosition' ajusta a posição de um 'Inimigo' com base na sua 'Direcao'.
+
+    ==__Exemplos de utilização__
+    >>> adjustPosition 0 0 Norte
+    (0,0)
+    >>> adjustPosition 0 0 Norte
+    (0,0)
+-}
+adjustPosition :: Float -> Float -> Direcao -> (Int, Int)
+adjustPosition x y dir = case dir of
+    Norte -> (floor x, floor y)
+    Sul   -> (ceiling x, ceiling y)
+    Este  -> (ceiling x, floor y)
+    Oeste -> (floor x, floor y)
+
+{-|
+    A função 'getPosicaoMapa' devolve o 'Terreno' de uma determinada 'Posicao' num 'Mapa'.
+
+    ==__Exemplos de utilização__
+    >>> getPosicaoMapa (0,0) []
+    Nothing
+    >>> getPosicaoMapa (0,0) []
+    Nothing
+-}
+getPosicaoMapa :: (Int, Int) -- ^ Posição
+               -> Mapa -- ^ Mapa
+               -> Maybe Terreno -- ^ Terreno
+getPosicaoMapa (x, y) mapa
+    | x >= 0 && y >= 0 && y < length mapa && x < length (head mapa) = Just ((mapa !! y) !! x)
+    | otherwise = Nothing

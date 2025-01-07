@@ -12,7 +12,6 @@ import Utils.UtilitariosEditor
 import Utils.UtilitariosPortal
 import Levels
 import Graphics.Gloss.Juicy
-import System.IO.Unsafe
 
 {-| Função que reage ao tempo -}
 
@@ -374,7 +373,9 @@ reageEventosEditorDeMapas _ e = return $ e
 
 {-| Caso geral de "reageEventosEditorDeMapas" -}
 
-reageEventosLoadGame (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = LoadGame t} = return $ e {immutableTowers = ImmutableTowers game, cena = ModoJogo Resumed}
-    where game = unsafePerformIO (loadGame t)
+reageEventosLoadGame (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = LoadGame t} = do
+    game <- loadGame t
+    return $ e {immutableTowers = ImmutableTowers game, cena = ModoJogo Resumed}
+    
 
 reageEventosLoadGame _ e = return $ e
