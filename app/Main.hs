@@ -17,7 +17,7 @@ import LI12425
 
 
 janela :: Display
-janela = InWindow "Immutable Towers" (1920, 1080) (0, 0)
+janela = InWindow "Immutable Towers" (1920, 1080) (0, 0)                       
 
 customColor :: Int -> Int -> Int -> Int -> Color
 customColor r g b a = makeColor (fromIntegral r / 255) 

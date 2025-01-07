@@ -7,15 +7,6 @@ Copyright   : Enrico Silva Prazeres <a112068@alunos.uminho.pt>
 
 Módulo para a desenhar o mapa e os objetos.
 -}
-{-|
-Module      : Desenhar
-Description : Desenha mapa e objetos
-Copyright   : Enrico Silva Prazeres <a112068@alunos.uminho.pt>
-              Leandro Filipe Lourenço Carvalho <a112021@alunos.uminho.pt>
-
-
-Módulo para a desenhar o mapa e os objetos.
--}
 module Desenhar where
 
 import Graphics.Gloss
@@ -129,4 +120,4 @@ desenhaPortais pos = map desenhaPortal pos
 
 {-| Função que desenha um único portal -}
 desenhaPortal :: Posicao -> Picture
-desenhaPortal (x,y) = posicaoRealObjetos (x,y) $ Color green $ circleSolid 20 
+desenhaPortal (x,y) = posicaoRealObjetos (x,y) $ Color green $ circleSolid 20  
