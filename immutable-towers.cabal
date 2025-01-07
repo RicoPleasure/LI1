@@ -100,6 +100,7 @@ test-suite immutable-towers-test
         Tarefa3Spec
         TData.TDataTarefa1
         TData.TDataTarefa2
+        TData.TDataTarefa3
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
