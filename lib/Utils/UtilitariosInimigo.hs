@@ -114,7 +114,7 @@ combinacaoValida tiposProjeteis
 inimigoDentroDosPortais :: Posicao -- Posicao do inimigo 
                         -> [Posicao] -- Posicoes dos portais
                         -> Bool
-inimigoDentroDosPortais posInimigo posicoesPortais = (elem posInimigo posicoesPortais)
+inimigoDentroDosPortais = elem
 
 {-|
   'verificaColisaoInimigosTorres' verifica se o inimigo está sobreposto a alguma torre
