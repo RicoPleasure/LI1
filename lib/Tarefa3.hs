@@ -34,30 +34,32 @@ atualizaJogo t
         inimigosJogo = novosInimigos
     }
     where 
-        (novosInimigos, baseAtualizada) = handleInimigos inimigos base t
+        (novosInimigos, baseAtualizada) = handleInimigos inimigos base mapa t
 
 handleInimigos :: [Inimigo] -- ^ Lista de Inimigos 
                -> Base -- ^ Base
+               -> Mapa -- ^ Mapa
                -> Float -- ^ Tempo 
                -> ([Inimigo],Base) -- ^ Lista de retorno de Inimigos
-handleInimigos [] base _  = ([],base)
-handleInimigos (i:is) base t 
-    | inimigoChegouBase i base = handleInimigos is baseAtualizada t
-    | not (inimigoVivo inimigoAtualizado) = handleInimigos is baseComButim t
+handleInimigos [] base _ _  = ([],base)
+handleInimigos (i:is) base mapa t 
+    | inimigoChegouBase i base = handleInimigos is baseAtualizada mapa t
+    | not (inimigoVivo inimigoAtualizado) = handleInimigos is baseComButim mapa t
     | otherwise = (inimigoAtualizado : restantes, novaBase)
         where 
-            inimigoAtualizado = handleInimigo i base t
+            inimigoAtualizado = handleInimigo i base mapa t
             baseAtualizada = base {vidaBase = vidaBase base - ataqueInimigo i}
             baseComButim  = base {creditosBase = creditosBase base + butimInimigo i}
-            (restantes, novaBase) = handleInimigos is base t
+            (restantes, novaBase) = handleInimigos is base mapa t
 
 handleInimigo :: Inimigo -- ^ Inimigo 
               -> Base -- ^ Base
+              -> Mapa -- ^ Mapa
               -> Float -- ^ Tempo 
               -> Inimigo -- ^ Inimigo de retorno
-handleInimigo i base t = atualizaPosicaoInimigo inimigosComEfeitosAplicados t
+handleInimigo i base mapa t = atualizaPosicaoInimigo inimigoComEfeitosAplicados mapa t
     where 
-        inimigosComEfeitosAplicados = handleProjeteisInimigo i t
+        inimigoComEfeitosAplicados = handleProjeteisInimigo i t
     
 inimigoChegouBase :: Inimigo -- ^ Inimigo 
                   -> Base -- ^ Base
@@ -72,37 +74,72 @@ inimigoVivo :: Inimigo -- ^ Inimigo
 inimigoVivo (Inimigo {vidaInimigo = vida}) = vida > 0
 
 atualizaPosicaoInimigo :: Inimigo -- ^ Inimigo
+                       -> Mapa -- ^ Mapa
                        -> Float -- ^ Tempo
                        -> Inimigo -- ^ Inimigo atualizado
-atualizaPosicaoInimigo inimigo@(Inimigo { posicaoInimigo = (x, y), direcaoInimigo = dir, velocidadeInimigo = v }) t =
+atualizaPosicaoInimigo inimigo@(Inimigo { posicaoInimigo = (x, y), direcaoInimigo = dir, velocidadeInimigo = v }) mapa t =
     inimigo { posicaoInimigo = novaPosicao }
-  where
-    novaPosicao = case dir of
-        Norte -> (x, y - v * t)
-        Sul   -> (x, y + v * t)
-        Este  -> (x - v * t, y)
-        Oeste -> (x + v * t, y)
+    where 
+        novaDir = calculaNovaDirecao dir mapa (x,y) v t 
+        novaPosicao = calculaNovaPosicao novaDir (x, y) mapa v t
 
-handleProjeteisInimigo :: Inimigo -- ^ Inimigo
-                        -> Float -- ^ Tempo
-                        -> Inimigo -- ^ Inimigo atualizado com efeitos de projéteis
-handleProjeteisInimigo inimigo@(Inimigo { posicaoInimigo = posicao, direcaoInimigo = direcao, projeteisInimigo = projeteis, velocidadeInimigo = velocidade, vidaInimigo = vida }) t = 
+calculaNovaPosicao :: Direcao -- ^ Direção
+                   -> Posicao -- ^ Posição
+                   -> Mapa -- ^ Mapa
+                   -> Float -- ^ Velocidade
+                   -> Float -- ^ Tempo
+                   -> Posicao -- ^ Nova Posição
+calculaNovaPosicao dir (x, y) mapa v t = case dir of
+    Norte -> (x, y - v * t)
+    Sul   -> (x, y + v * t)
+    Este  -> (x + v * t, y)
+    Oeste -> (x - v * t, y)
+   
+calculaNovaDirecao :: Direcao -- ^ Direção
+                   -> Mapa -- ^ Mapa
+                   -> Posicao -- ^ Posição
+                   -> Float -- ^ Velocidade
+                   -> Float -- ^ Tempo
+                   -> Direcao -- ^ Nova Direção
+calculaNovaDirecao dir mapa (x,y) v t
+    |   isValidPos (move dir (move dir (x,y) v t) v t) mapa && isTerra (move dir (move dir (x,y) v t) v t) mapa = dir
+    |   otherwise = case dir of
+        Norte -> if isValidPos (x, y - v * t) mapa && isTerra (x, y - v * t) mapa then Norte else dir
+        Sul   -> if isValidPos (x, y + v * t) mapa && isTerra (x, y + v * t) mapa then Sul else dir
+        Este  -> if isValidPos (x - v * t, y) mapa && isTerra (x - v * t, y) mapa then Este else dir
+        Oeste -> if isValidPos (x + v * t, y) mapa && isTerra (x + v * t, y) mapa then Oeste else dir
+
+move :: Direcao -> Posicao -> Float -> Float -> Posicao
+move dir (x, y) v t = case dir of
+    Norte -> (x, y - v * t)
+    Sul   -> (x, y + v * t)
+    Este  -> (x - v * t, y)
+    Oeste -> (x + v * t, y)
+
+isValidPos :: Posicao -> Mapa -> Bool
+isValidPos (x, y) mapa = x >= 0 && y >= 0 && (floor y) < length mapa && (floor x) < length (head mapa)
+
+isTerra :: Posicao -> Mapa -> Bool
+isTerra (x, y) mapa = case getPosicaoMapa (x, y) mapa of
+    Terra -> True
+    _     -> False
+
+getPosicaoMapa :: Posicao -- ^ Posição
+               -> Mapa -- ^ Mapa
+               -> Terreno -- ^ Terreno
+getPosicaoMapa (x, y) mapa = (mapa !! (floor y)) !! (floor x)
+
+handleProjeteisInimigo :: Inimigo -> Float -> Inimigo
+handleProjeteisInimigo inimigo@(Inimigo { posicaoInimigo = posicao, direcaoInimigo = direcao, projeteisInimigo = projeteis, velocidadeInimigo = velocidade, vidaInimigo = vida }) t =
     case projeteis of
-        [Projetil {tipoProjetil = Gelo, duracaoProjetil = duracao}] -> inimigoGelo duracao
-        [Projetil {tipoProjetil = Fogo, duracaoProjetil = duracao}] -> inimigoFogo duracao
-        [Projetil {tipoProjetil = Resina, duracaoProjetil = duracao}] -> inimigoResina duracao
+        [Projetil {tipoProjetil = Gelo, duracaoProjetil = duracao}] ->
+            let novaVelocidade = if duracao > 0 then 0 else velocidade
+                novaDuracao = duracao - (Finita t)
+            in inimigo
+                { projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = novaDuracao}],
+                  velocidadeInimigo = novaVelocidade }
+        [Projetil {tipoProjetil = Fogo, duracaoProjetil = duracao}] -> 
+            inimigo { projeteisInimigo = [Projetil {tipoProjetil = Fogo, duracaoProjetil = duracao}], vidaInimigo = vida - 15 }
+        [Projetil {tipoProjetil = Resina, duracaoProjetil = duracao}] -> 
+            inimigo { projeteisInimigo = [Projetil {tipoProjetil = Resina, duracaoProjetil = duracao}], velocidadeInimigo = max 0 (velocidade - 5) }
         _ -> inimigo
-  where
-    inimigoGelo duracao = inimigo 
-        { projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = addDuracao duracao (Finita (-t))}],
-          velocidadeInimigo = 0 
-        }
-    inimigoFogo duracao = inimigo 
-        { projeteisInimigo = [Projetil {tipoProjetil = Fogo, duracaoProjetil = addDuracao duracao (Finita (-t))}],
-          vidaInimigo = vida - 15 
-        }
-    inimigoResina duracao = inimigo 
-        { projeteisInimigo = [Projetil {tipoProjetil = Resina, duracaoProjetil = addDuracao duracao (Finita (-t))}],
-          velocidadeInimigo = max 0 (velocidade - 5) 
-        }
-    

@@ -18,7 +18,7 @@ import LI12425
 import Tempo
 import System.Directory
 import Utils.Utilitarios
-
+import System.IO.Unsafe
 
 janela :: Display
 janela = InWindow "Immutable Towers" (1920, 1080) (0, 0)
@@ -33,60 +33,11 @@ fundo :: Color
 fundo = customColor 160 220 220 255
 
 fr :: Int
-fr = 60
+fr = 30
 
 it :: Estado
-it = Estado {
-  cena = MenuInicial Jogar,
-  immutableTowers = ImmutableTowers {
-      jogo = Jogo {
-        baseJogo = Base {
-          vidaBase = 100,
-          posicaoBase = (5,0),
-          creditosBase = 350
-        },
-        portaisJogo = [ Portal {posicaoPortal = (3,10)}],
-        torresJogo = [ Torre {posicaoTorre = (2,2), projetilTorre = Projetil {tipoProjetil = Fogo}}, 
-                       Torre {posicaoTorre = (6,6), projetilTorre = Projetil {tipoProjetil = Resina}},
-                       Torre {posicaoTorre = (6,2), projetilTorre = Projetil {tipoProjetil = Gelo}} ] ,
-        mapaJogo = [
-          [r, r, r, r, r, t, r, r, r, r, r],
-          [r, r, r, r, r, t, r, r, r, r, r],
-          [r, r, r, r, r, t, r, r, r, r, r],
-          [a, a, a, r, r, t, t, t, a, a, r],
-          [r, r, a, r, r, r, r, t, a, r, r],
-          [r, r, a, r, t, t, t, t, a, r, r],
-          [r, a, a, r, t, r, r, r, a, r, r],
-          [r, a, r, r, t, r, r, r, a, a, r],
-          [r, a, r, t, t, r, r, r, r, r, r],
-          [r, a, r, t, r, r, r, r, r, r, r],
-          [r, a, r, t, r, r, r, r, r, r, r]
-        ],
-        inimigosJogo = [
-          Inimigo {posicaoInimigo = (3,10),
-                   direcaoInimigo = Norte,
-                   vidaInimigo = 100,
-                   velocidadeInimigo = 2,
-                   ataqueInimigo = 99,
-                   butimInimigo = 200,
-                   projeteisInimigo = [ Projetil {
-                    tipoProjetil = Fogo,
-                    duracaoProjetil = Finita 3
-                   }]
-                   }
-        ],
-        lojaJogo = undefined
-        }
-      }
-    }
-    where
-      t = Terra
-      r = Relva
-      a = Agua
+it = Estado {cena = MenuInicial Jogar, tema = 0}
     
-path :: String
-path = "app/assets/images/"
-
 loadImage :: FilePath -> IO Picture
 loadImage filePath = do
   maybeImg <- loadJuicyPNG filePath
@@ -94,36 +45,64 @@ loadImage filePath = do
     Just img -> return img
     Nothing -> error ("Failed to load image: " ++ filePath)
 
+path :: String
+path = "app/assets/images/"
+
 main :: IO ()
 main = do
 
-  l01 <- loadImage $ path ++ "loja/loja01.png"
-  l02 <- loadImage $ path ++ "loja/loja02.png"
-  l03 <- loadImage $ path ++ "loja/loja03.png"
-  r <- loadImage $ path ++ "terreno/grass.png"
-  t <- loadImage $ path ++ "terreno/dirt.png"
-  a <- loadImage $ path ++ "terreno/water.png"
-  bg <- loadImage $ path ++ "fundo/bg1.png"
-  base <- loadImage $ path ++ "estruturas/base/base.png"
-  tf01 <- loadImage $ path ++ "estruturas/torre/fogo/torre-fogo.png"
-  tg01 <- loadImage $ path ++ "estruturas/torre/gelo/torre-gelo.png"
-  tr01 <- loadImage $ path ++ "estruturas/torre/resina/torre-resina.png"
-  p01 <- loadImage $ path ++ "estruturas/portal/portal.png"
-  i01 <- loadImage $ path ++ "estruturas/inimigos/inimigo.png"
-  ms <- loadImage $ path ++ "menu/start.png"
-  mo <- loadImage $ path ++ "menu/options.png"
-  mq <- loadImage $ path ++ "menu/quit.png"
-  ot <- loadImage $ path ++ "menu/themes.png"
-  oa <- loadImage $ path ++ "menu/audio.png"
-  ob <- loadImage $ path ++ "menu/back.png"
-  paused <- loadImage $ path ++ "pause/paused.png"
-  rb <- loadImage $ path ++ "terreno/grass-blocked.png"
-  tb <- loadImage $ path ++ "terreno/dirt-blocked.png"
-  ab <- loadImage $ path ++ "terreno/water-blocked.png"
-  rf <- loadImage $ path ++ "terreno/grass-free.png"
-  tf <- loadImage $ path ++ "terreno/dirt-free.png"
-  af <- loadImage $ path ++ "terreno/water-free.png"
+  {- Tema Base -}
+
+  l01 <- loadImage (path ++ "loja/loja01.png")
+  l02 <- loadImage (path ++ "loja/loja02.png")
+  l03 <- loadImage (path ++ "loja/loja03.png")
+  r01 <- loadImage (path ++ "terreno/grass.png")
+  d01 <- loadImage (path ++ "terreno/dirt.png")
+  w01 <- loadImage (path ++ "terreno/water.png")
+  v01 <- loadImage (path ++ "terreno/vazio.png")
+  bg1 <- loadImage (path ++ "fundo/bg1.png")
+  b01 <- loadImage (path ++ "estruturas/base/base.png")
+  t01 <- loadImage (path ++ "estruturas/torre/fogo/torre-fogo.png")
+  t02 <- loadImage (path ++ "estruturas/torre/gelo/torre-gelo.png")
+  t03 <- loadImage (path ++ "estruturas/torre/resina/torre-resina.png")
+  p01 <- loadImage (path ++ "estruturas/portal/portal.png")
+  i01 <- loadImage (path ++ "estruturas/inimigos/inimigo.png")
+  m01 <- loadImage (path ++ "menu/start.png")
+  m02 <- loadImage (path ++ "menu/options.png")
+  m03 <- loadImage (path ++ "menu/quit.png")
+  m04 <- loadImage (path ++ "menu/themes.png")
+  m05 <- loadImage (path ++ "menu/audio.png")
+  m06 <- loadImage (path ++ "menu/back.png")
+  m07 <- loadImage (path ++ "menu/continue.png")
+  m08 <- loadImage (path ++ "menu/newgame.png")
+  m09 <- loadImage (path ++ "menu/levels.png")
+  m10 <- loadImage (path ++ "menu/creator.png")
+  m11 <- loadImage (path ++ "menu/level1.png")
+  m12 <- loadImage (path ++ "menu/level2.png")
+  m13 <- loadImage (path ++ "menu/level3.png")
+  m14 <- loadImage (path ++ "menu/level4.png")
+  m15 <- loadImage (path ++ "menu/level5.png")
+  p02 <- loadImage (path ++ "pause/paused.png")
+  p03 <- loadImage (path ++ "pause/quit-editor-save.png")
+  g02 <- loadImage (path ++ "terreno/grass-blocked.png")
+  d02 <- loadImage (path ++ "terreno/dirt-blocked.png")
+  w02 <- loadImage (path ++ "terreno/water-blocked.png")
+  g03 <- loadImage (path ++ "terreno/grass-free.png")
+  d03 <- loadImage (path ++ "terreno/dirt-free.png")
+  w03 <- loadImage (path ++ "terreno/water-free.png")
+  g04 <- loadImage (path ++ "terreno/grass-editor.png")
+  d04 <- loadImage (path ++ "terreno/dirt-editor.png")
+  w04 <- loadImage (path ++ "terreno/water-editor.png")
+
+  {- Tema Natal -}
+  r02 <- loadImage (path ++ "terreno/grass-2.png")
+  d05 <- loadImage (path ++ "terreno/dirt-2.png")
+  w05 <- loadImage (path ++ "terreno/water-2.png")
+  bg2 <- loadImage (path ++ "fundo/bg2.png")
+
+  let temaInicial = [[l01, l02, l03],[r01, d01, w01, v01],[bg1],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02],[g03, d03, w03],[g04, d04, w04]] 
+
+  let temaNatal = [[l01, l02, l03],[r02, d05, w05, v01],[bg2],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02],[g03, d03, w03],[g04, d04, w04]]
 
 
-  let sprites = [[l01, l02, l03], [r, t, a], [bg], [base], [tf01, tg01, tr01], [p01], [i01], [ms, mo, mq, ot, oa, ob], [paused], [rb, tb, ab], [rf, tf, af]]
-  playIO janela fundo fr it (desenha sprites) reageEventos reageTempo
+  playIO janela fundo fr it (desenha [temaInicial, temaNatal]) reageEventos reageTempo

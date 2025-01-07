@@ -18,6 +18,33 @@ data OpcaoMenuInicial = Jogar
                       | Opcoes 
                       | Sair
 
+data OpcaoContinueNew = ContinueGame
+                  | NewGame
+
+data SelectGameMode = Levels
+              | Creator
+
+data SelectLevel = Level1
+                 | Level2
+                 | Level3
+                 | Level4
+                 | Level5
+
+data EditorDeMapas = Editor EstadoEditor
+                  | QuitEditor OpcaoSaveMap
+
+data OpcaoSaveMap = SaveMapa | NoSaveMapa
+
+data EstadoEditor = OpcaoEditorTerreno Terreno
+                  | OpcaoEditorTorre TipoTorre
+                  | OpcaoEditorBase
+                  | OpcaoEditorPortal
+                  | AdicionaTerreno Terreno (Int,Int)
+                  | AdicionaTorreEditor TipoTorre (Int,Int)
+                  | AdicionaBase (Int,Int)
+                  | AdicionaPortal (Int,Int)
+
+
 data OpcaoModoJogo = Resumed 
                    | Pause 
                    | Loja TipoTorre
@@ -25,12 +52,24 @@ data OpcaoModoJogo = Resumed
 data Config = Themes
             | Audio
             | Voltar
+          
+data Themes = Theme1
+            | Theme2
+            | Theme3
 
-data Cena = MenuInicial OpcaoMenuInicial 
+data Cena = MenuInicial OpcaoMenuInicial
+          | OpcaoJogar OpcaoContinueNew
+          | SelectGameMode SelectGameMode
+          | SelectLevel SelectLevel
           | Options Config 
+          | ThemesMenu Themes
+          | EditorDeMapas EditorDeMapas
           | ModoJogo OpcaoModoJogo 
           | AdicionaTorre TipoTorre (Int,Int)
+          | Debug
+          | LoadGame Int
 
+type SpritePaths = [[String]]
 
 {-|
   A função utilitária 'verificaDuplosPos' verifica se numa lista de 'Posicao' existem elementos repetidos.

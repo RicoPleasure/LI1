@@ -20,13 +20,16 @@ library
         Utils.UtilitariosPortal
         Utils.UtilitariosTorre
         Utils.UtilitariosInimigo
+        Utils.UtilitariosEditor
+        Levels
 
     hs-source-dirs:   lib
     default-language: GHC2021
     ghc-options:      -Wall
     build-depends:
         base ^>=4.17.2.1,
-        random ^>=1.2.1.1
+        random ^>=1.2.1.1,
+        directory
 
 executable immutable-towers
     main-is:          Main.hs

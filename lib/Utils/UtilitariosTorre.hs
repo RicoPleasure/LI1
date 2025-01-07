@@ -80,17 +80,14 @@ verificaCollisionTorres torres = verificaDuplosPos (converteTorresEmListaPos tor
 converteTorresEmListaPos :: [Torre] -> [Posicao]
 converteTorresEmListaPos = map (\(Torre {posicaoTorre = pos} ) -> pos)
 
-{-| 
-
- -}
 adicionaTorreValida :: Posicao -> Mapa -> [Torre] -> Creditos -> Creditos -> Bool
 adicionaTorreValida (x,y) mapa torres creditos custoTorre = checkPositionRelva (x,y) mapa && not (verificaCollisionTorres torres) && creditos >= custoTorre
 
 insereTorreNaLista :: [Torre] -> Posicao -> TipoProjetil -> [Torre]  
 insereTorreNaLista torres (x,y) tipo = case tipo of 
-    Fogo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 20, alcanceTorre = 30, rajadaTorre = 1, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Fogo}}]
-    Resina -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 30, alcanceTorre = 20, rajadaTorre = 2, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Resina}}]
-    Gelo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 20, alcanceTorre = 15, rajadaTorre = 3, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Gelo}}]
+    Fogo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 20, alcanceTorre = 30, rajadaTorre = 1, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = 5}}]
+    Resina -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 30, alcanceTorre = 20, rajadaTorre = 2, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Resina, duracaoProjetil = 5}}]
+    Gelo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 20, alcanceTorre = 15, rajadaTorre = 3, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Gelo, duracaoProjetil = 5}}]
 
 custoTorre :: TipoTorre -> Creditos
 custoTorre tipoTorre = case tipoTorre of
