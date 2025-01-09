@@ -162,10 +162,10 @@ verificaColisaoInimigosTorres is ts = verificaDuplosPos listPos
   Inimigo {vidaInimigo = 0}
 -}
 reduzVidaInimigo :: Inimigo -> Float -> Inimigo
-reduzVidaInimigo inimigo dano = 
-        inimigo {vidaInimigo = vida - dano}
+reduzVidaInimigo inimigo dano = inimigo {vidaInimigo = max 0 (vida - dano)}
     where
         vida = vidaInimigo inimigo
+
 
 {-|
   'converteInimigosEmListaPos' converte uma lista de objetos do tipo 'Inimigo' em uma lista do tipo 'Posicao' ou seja extrai as respetivas posições para uma coleção
@@ -181,56 +181,59 @@ converteInimigosEmListaPos = map (\(Inimigo {posicaoInimigo = pos} ) -> pos)
 
 
 {-|
-  A função 'handleHitByProjetil' altera o 'Inimigo' conforme o esperado, quando este é atingido por um 'Projetil' e recorre para tal à função auxiliar 'handleNewProjetil'
+ 'handleHitByProjetil' aplica o efeito de um 'Projetil' a um 'Inimigo'
+
+  ==__Exemplos de utilização__
+  >>> handleHitByProjetil (Inimigo {vidaInimigo = 10, velocidadeInimigo = 10, projeteisInimigo = []}) (Projetil {tipoProjetil = Fogo})
+  Inimigo {vidaInimigo = 0.0, velocidadeInimigo = 10.0, projeteisInimigo = [Projetil {tipoProjetil = Fogo}]}
+  >>> handleHitByProjetil (Inimigo {vidaInimigo = 10, velocidadeInimigo = 10, projeteisInimigo = []}) (Projetil {tipoProjetil = Resina})
+  Inimigo {vidaInimigo = 10.0, velocidadeInimigo = 5.0, projeteisInimigo = [Projetil {tipoProjetil = Resina}]}
+  >>> handleHitByProjetil (Inimigo {vidaInimigo = 10, velocidadeInimigo = 10, projeteisInimigo = []}) (Projetil {tipoProjetil = Gelo})
+  Inimigo {vidaInimigo = 10.0, velocidadeInimigo = 5.0, projeteisInimigo = [Projetil {tipoProjetil = Gelo}]} 
+-}
+handleHitByProjetil :: Inimigo -> Projetil -> Inimigo
+handleHitByProjetil inimigo projetil = inimigo {
+  projeteisInimigo = handleNewProjetil (projeteisInimigo inimigo) projetil,
+  velocidadeInimigo = newVelocidade,
+  vidaInimigo = newDano
+} 
+  where
+    (newDano, newVelocidade) = applyEffect projetil (vidaInimigo inimigo) (velocidadeInimigo inimigo)
+
+{-|
+  'applyEffect' aplica o efeito de um 'Projetil' a um 'Inimigo', retornando a nova vida e velocidade do 'Inimigo' após a aplicação do efeito.
+
+  ==__Exemplos de utilização__
+  >>> applyEffect (Projetil {tipoProjetil = Fogo}) 10 10
+  (0.0,10.0)
+  >>> applyEffect (Projetil {tipoProjetil = Resina}) 10 10
+  (10.0,5.0)
+  >>> applyEffect (Projetil {tipoProjetil = Gelo}) 10 10
+  (10.0,5.0)
+-}
+applyEffect :: Projetil -> Float -> Float -> (Float, Float)
+applyEffect p@Projetil {tipoProjetil = Fogo} vida velocidade = (vida - 10, velocidade)
+applyEffect p@Projetil {tipoProjetil = Resina} vida velocidade = (vida, velocidade * 0.5)
+applyEffect p@Projetil {tipoProjetil = Gelo} vida velocidade = (vida, velocidade * 0)
+
+
+{-| 
+  'handleNewProjetil' adiciona um novo 'Projetil' à lista de projeteis de um 'Inimigo'
 
   ==__Observações__
   * Quando um inimigo já se encontra sob o efeito de 'Fogo' ou 'Gelo' e é atingido por um projetil do outro tipo ('Fogo' ou 'Gelo'), estes cancelam os seus efeitos mutuamente.
-  * A combinação dos projeteis 'Fogo' e 'Resina' dobra a duração do efeito do 'Projetil' do tipo 'Fogo'
-  * Quando o inimigo se encontra sob o efeito de um certo 'Projetil' e é atingido por outro do mesmo tipo, as suas durações são somada.
-
-  ==__Exemplos de utilização__
-  >>> handleHitByProjetil (Inimigo { projeteisInimigo = [] }) (Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 })
-  Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }
-  >>> handleHitByProjetil (Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }) (Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 })
-  Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 20 }] }
-  >>> handleHitByProjetil (Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }) (Projetil { tipoProjetil = Resina, duracaoProjetil = 2 })
-  Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 20 }] }
-  >>> handleHitByProjetil (Inimigo { projeteisInimigo = [Projetil { tipoProjetil = Fogo, duracaoProjetil = 10 }] }) (Projetil { tipoProjetil = Gelo, duracaoProjetil = 2 })
-  Inimigo { projeteisInimigo = [] }
--}
-handleHitByProjetil :: Inimigo -> Projetil -> Inimigo
-handleHitByProjetil inimigo projetil = 
-        inimigo { projeteisInimigo = handleNewProjetil projeteis projetil }
-    where
-        projeteis = projeteisInimigo inimigo
-
-{-|
-    A função 'handleNewProjetil' serve como função auxiliar para a função 'handleHitByProjetil' e decide o que fazer com o Projetil que atingiu o Inimigo consultando para tal os projeteis já presentes no Inimigo.
-
-    ==__Exemplos de utilização__
-    >>> handleNewProjetil [] (Projetil {tipoProjetil = Fogo, duracaoProjetil = 5})
-    [Projetil {tipoProjetil = Fogo, duracaoProjetil = 5}]
-    >>> handleNewProjetil [Projetil {tipoProjetil = Fogo, duracaoProjetil = 1}] (Projetil {tipoProjetil = Fogo, duracaoProjetil = 5})
-    [Projetil {tipoProjetil = Fogo, duracaoProjetil = 6}]
-    >>> handleNewProjetil [Projetil {tipoProjetil = Gelo, duracaoProjetil = 1}] (Projetil {tipoProjetil = Fogo, duracaoProjetil = 5})
-    []
-    >>> handleNewProjetil [Projetil {tipoProjetil = Fogo, duracaoProjetil = 1}] (Projetil {tipoProjetil = Resina, duracaoProjetil = 5})
-    [Projetil {tipoProjetil = Fogo, duracaoProjetil = 2}]
 -}
 handleNewProjetil :: [Projetil] -> Projetil -> [Projetil]
 handleNewProjetil [] p = [p]
-handleNewProjetil ((Projetil {tipoProjetil = Fogo, duracaoProjetil = dur}):xs) 
-            (Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew}) = (Projetil {tipoProjetil = Fogo, duracaoProjetil = dur+durNew}) : xs
-handleNewProjetil ((Projetil {tipoProjetil = Gelo, duracaoProjetil = dur}):xs) 
-            (Projetil {tipoProjetil = Gelo, duracaoProjetil = durNew}) = (Projetil {tipoProjetil = Gelo, duracaoProjetil = dur+durNew}) : xs
-handleNewProjetil ((Projetil {tipoProjetil = Resina, duracaoProjetil = dur}):xs) 
-            (Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}) = (Projetil {tipoProjetil = Resina, duracaoProjetil = dur+durNew}) : xs
-handleNewProjetil ((Projetil {tipoProjetil = Resina}):xs) 
-            (Projetil {tipoProjetil = Fogo, duracaoProjetil = durFogo}) = (Projetil {tipoProjetil = Fogo, duracaoProjetil = 2*durFogo}) : xs
-handleNewProjetil ((Projetil {tipoProjetil = Fogo, duracaoProjetil = durFogo}):xs) 
-            (Projetil {tipoProjetil = Resina}) = (Projetil {tipoProjetil = Fogo, duracaoProjetil = 2*durFogo}) : xs
-handleNewProjetil ((Projetil {tipoProjetil = Fogo}):xs) (Projetil {tipoProjetil = Gelo}) = xs
-handleNewProjetil ((Projetil {tipoProjetil = Gelo}):xs) (Projetil {tipoProjetil = Fogo}) = xs
+handleNewProjetil [Projetil {tipoProjetil = Fogo, duracaoProjetil = dur}] (Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew}]
+handleNewProjetil [Projetil {tipoProjetil = Resina, duracaoProjetil = dur}] (Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}]
+handleNewProjetil [Projetil {tipoProjetil = Gelo, duracaoProjetil = dur}] (Projetil {tipoProjetil = Gelo, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Gelo, duracaoProjetil = durNew}]
+handleNewProjetil [Projetil {tipoProjetil = Fogo, duracaoProjetil = dur}] (Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Fogo, duracaoProjetil = dur}, Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}]
+handleNewProjetil [Projetil {tipoProjetil = Resina, duracaoProjetil = dur}] (Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew}, Projetil {tipoProjetil = Resina, duracaoProjetil = dur}]
+handleNewProjetil [Projetil {tipoProjetil = Gelo, duracaoProjetil = dur}] (Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Gelo, duracaoProjetil = dur}, Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}]
+handleNewProjetil [Projetil {tipoProjetil = Resina, duracaoProjetil = dur}] (Projetil {tipoProjetil = Gelo, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Gelo, duracaoProjetil = durNew}, Projetil {tipoProjetil = Resina, duracaoProjetil = dur}]
+handleNewProjetil [Projetil {tipoProjetil = Fogo}] (Projetil {tipoProjetil = Gelo}) = []
+handleNewProjetil [Projetil {tipoProjetil = Gelo}] (Projetil {tipoProjetil = Fogo}) = []
 handleNewProjetil l _ = l
 
 {-|

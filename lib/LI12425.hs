@@ -17,7 +17,7 @@ module LI12425 (
     -- ** Entidades
     Base(..), Torre(..), Portal(..), Inimigo(..), TipoProjetil(..), Projetil(..),
     -- ** Jogo
-    Jogo(..), Onda(..), Loja,
+    Jogo(..), Cena(..), Onda(..), Loja, TipoTorre(..), OpcaoMenuInicial(..), OpcaoContinueNew(..), SelectGameMode(..), SelectLevel(..), OpcaoSaveMap(..), EstadoEditor(..), OpcaoModoJogo(..), Config(..), Themes(..), TelaFinal(..) ,SpritePaths,
     -- * Funções auxiliares
     geraAleatorios,
     -- * Funções para instancia Num Duração
@@ -26,9 +26,8 @@ module LI12425 (
     ) where
         
 import System.Random (mkStdGen, randoms)
-import Data.Char (isDigit, isLetter)
-import Text.ParserCombinators.ReadP
-import Control.Applicative ((<|>))
+
+
 -- | Tipo de terreno do mapa.
 data Terreno
   = -- | Torres constroem-se sobre o relvado do mapa.
@@ -123,7 +122,7 @@ data Projetil = Projetil
 data Direcao
   = Norte
   | Sul
-  | Este
+  | Este  
   | Oeste
   deriving (Eq, Show, Read)
 
@@ -145,6 +144,20 @@ data Inimigo = Inimigo
     projeteisInimigo :: [Projetil]
   }
   deriving (Show, Read)
+
+instance Eq Inimigo where
+    i1 == i2 = posicaoInimigo i1 == posicaoInimigo i2 &&
+               direcaoInimigo i1 == direcaoInimigo i2 &&
+               vidaInimigo i1 == vidaInimigo i2 &&
+               velocidadeInimigo i1 == velocidadeInimigo i2 &&
+               ataqueInimigo i1 == ataqueInimigo i2 &&
+               butimInimigo i1 == butimInimigo i2 &&
+               projeteisInimigo i1 == projeteisInimigo i2
+
+instance Eq Projetil where
+    i1 == i2 =  tipoProjetil i1 == tipoProjetil i2 &&
+                duracaoProjetil i1 == duracaoProjetil i2
+
 
 -- | Onda de inimigos que saem de um portal.
 data Onda = Onda
@@ -184,6 +197,83 @@ data Jogo = Jogo
     lojaJogo :: Loja
   }
   deriving (Show, Read)
+
+-- | Tipos de torres disponíveis. Usado para a seleção de torres na loja e no editor de mapas.
+data TipoTorre = Torre1
+               | Torre2 
+               | Torre3 
+
+-- | Opções disponíveis no menu inicial.
+data OpcaoMenuInicial = Jogar 
+                      | Opcoes 
+                      | Sair
+-- | Opções disponíveis para continuar ou iniciar um novo jogo.
+data OpcaoContinueNew = ContinueGame 
+                      | NewGame
+
+-- | Modos de jogo disponíveis.
+data SelectGameMode = Levels 
+                    | Creator
+
+-- | Níveis disponíveis para jogo.
+type SelectLevel = Int 
+
+-- | Opções disponíveis para salvar ou não o mapa. SaveMapa para salvar e NoSaveMapa para não salvar.
+data OpcaoSaveMap = SaveMapa | NoSaveMapa
+
+-- | Estado do editor de mapas.
+data EstadoEditor = OpcaoEditorTerreno Terreno
+                  | OpcaoEditorTorre TipoTorre
+                  | OpcaoEditorBase
+                  | OpcaoEditorPortal
+                  | AdicionaTerreno Terreno (Int,Int)
+                  | AdicionaTorreEditor TipoTorre (Int,Int)
+                  | AdicionaBase (Int,Int)
+                  | AdicionaPortal (Int,Int)
+
+-- | Opções disponíveis no modo de jogo.
+data OpcaoModoJogo = Resumed 
+                   | Pause 
+                   | Loja TipoTorre
+
+-- | Telas que aparecem ao terminar um jogo.
+data TelaFinal = Vitoria OpcaoVitoria
+               | Derrota OpcaoDerrota
+
+-- | Opções disponíveis ao ganhar um jogo.
+data OpcaoVitoria = Menu 
+                  | NextLevel
+
+-- | Opções disponíveis ao perder um jogo.
+data OpcaoDerrota = Menu
+                  | TentarNovamente
+
+-- | Opções de configuração disponíveis.
+data Config = Themes
+            | Audio
+            | Voltar
+          
+-- | Temas disponíveis para o jogo.
+data Themes = Tema1 
+            | Tema2 
+            | Tema3
+
+-- | Cena do jogo.
+data Cena = MenuInicial OpcaoMenuInicial
+          | OpcaoJogar OpcaoContinueNew
+          | SelectGameMode SelectGameMode
+          | SelectLevel SelectLevel
+          | Options Config 
+          | ThemesMenu Themes
+          | EditorDeMapas EstadoEditor
+          | ModoJogo OpcaoModoJogo 
+          | AdicionaTorre TipoTorre (Int,Int)
+          | Debug
+          | LoadGame Int
+          | SaveGame OpcaoSaveMap
+          | TelaFinal TelaFinal
+
+type SpritePaths = [[String]]
 
 -- | Valor inicial que determina a sequência de números pseudo-aleatórios.
 type Semente = Int

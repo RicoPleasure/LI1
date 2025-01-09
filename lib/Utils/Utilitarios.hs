@@ -10,68 +10,6 @@ module Utils.Utilitarios where
 
 import LI12425
 
-
-data TipoTorre = Torre1
-               | Torre2 
-               | Torre3 
-
-data OpcaoMenuInicial = Jogar 
-                      | Opcoes 
-                      | Sair
-
-data OpcaoContinueNew = ContinueGame
-                  | NewGame
-
-data SelectGameMode = Levels
-              | Creator
-
-data SelectLevel = Level1
-                 | Level2
-                 | Level3
-                 | Level4
-                 | Level5
-
-data EditorDeMapas = Editor EstadoEditor
-                  | QuitEditor OpcaoSaveMap
-
-data OpcaoSaveMap = SaveMapa | NoSaveMapa
-
-data EstadoEditor = OpcaoEditorTerreno Terreno
-                  | OpcaoEditorTorre TipoTorre
-                  | OpcaoEditorBase
-                  | OpcaoEditorPortal
-                  | AdicionaTerreno Terreno (Int,Int)
-                  | AdicionaTorreEditor TipoTorre (Int,Int)
-                  | AdicionaBase (Int,Int)
-                  | AdicionaPortal (Int,Int)
-
-
-data OpcaoModoJogo = Resumed 
-                   | Pause 
-                   | Loja TipoTorre
-
-data Config = Themes
-            | Audio
-            | Voltar
-          
-data Themes = Theme1
-            | Theme2
-            | Theme3
-
-data Cena = MenuInicial OpcaoMenuInicial
-          | OpcaoJogar OpcaoContinueNew
-          | SelectGameMode SelectGameMode
-          | SelectLevel SelectLevel
-          | Options Config 
-          | ThemesMenu Themes
-          | EditorDeMapas EditorDeMapas
-          | ModoJogo OpcaoModoJogo 
-          | AdicionaTorre TipoTorre (Int,Int)
-          | Debug
-          | LoadGame Int
-
-type SpritePaths = [[String]]
-
 {-|
   A função utilitária 'verificaDuplosPos' verifica se numa lista de 'Posicao' existem elementos repetidos.
 
@@ -138,13 +76,13 @@ extractValueFromMaybe Nothing = error "No value found in maybe"
 extractValueFromMaybe (Just a) = a
 
 {-|
-    A função 'isValidPos' verifica se uma 'Posicao' é válida num 'Mapa' com uma determinada 'Direcao'.
+  A função 'isValidPos' verifica se uma 'Posicao' é válida num 'Mapa' com uma determinada 'Direcao'.
 
-    ==__Exemplos de utilização__
-    >>> isValidPos (0,0) [] Norte
-    False
-    >>> isValidPos (0,0) [] Norte
-    False
+  ==__Exemplos de utilização__
+  >>> isValidPos (0,0) [] Norte
+  False
+  >>> isValidPos (0,0) [] Norte
+  False
 -}
 isValidPos :: Posicao -> Mapa -> Direcao -> Bool
 isValidPos (x, y) mapa dir = 
@@ -156,13 +94,13 @@ isValidPos (x, y) mapa dir =
     in x' >= 0 && y' >= 0 && y' < length mapa && x' < length (head mapa)
 
 {-|
-    A função 'isTerra' verifica se uma 'Posicao' é terra num 'Mapa' com uma determinada 'Direcao'.
+  A função 'isTerra' verifica se uma 'Posicao' é terra num 'Mapa' com uma determinada 'Direcao'.
 
-    ==__Exemplos de utilização__
-    >>> isTerra (0,0) [] Norte
-    False
-    >>> isTerra (0,0) [] Norte
-    False
+  ==__Exemplos de utilização__
+  >>> isTerra (0,0) [] Norte
+  False
+  >>> isTerra (0,0) [] Norte
+  False
 -}
 isTerra :: Posicao -> Mapa -> Direcao -> Bool
 isTerra (x, y) mapa dir = 
@@ -171,13 +109,13 @@ isTerra (x, y) mapa dir =
         _          -> False
         
 {-|
-    A função 'adjustPosition' ajusta a posição de um 'Inimigo' com base na sua 'Direcao'.
+  A função 'adjustPosition' ajusta a posição de um 'Inimigo' com base na sua 'Direcao'.
 
-    ==__Exemplos de utilização__
-    >>> adjustPosition 0 0 Norte
-    (0,0)
-    >>> adjustPosition 0 0 Norte
-    (0,0)
+  ==__Exemplos de utilização__
+  >>> adjustPosition 0 0 Norte
+  (0,0)
+  >>> adjustPosition 0 0 Norte
+  (0,0)
 -}
 adjustPosition :: Float -> Float -> Direcao -> (Int, Int)
 adjustPosition x y dir = case dir of
@@ -187,13 +125,13 @@ adjustPosition x y dir = case dir of
     Oeste -> (floor x, floor y)
 
 {-|
-    A função 'getPosicaoMapa' devolve o 'Terreno' de uma determinada 'Posicao' num 'Mapa'.
+  A função 'getPosicaoMapa' devolve o 'Terreno' de uma determinada 'Posicao' num 'Mapa'.
 
-    ==__Exemplos de utilização__
-    >>> getPosicaoMapa (0,0) []
-    Nothing
-    >>> getPosicaoMapa (0,0) []
-    Nothing
+  ==__Exemplos de utilização__
+  >>> getPosicaoMapa (0,0) []
+  Nothing
+  >>> getPosicaoMapa (0,0) []
+  Nothing
 -}
 getPosicaoMapa :: (Int, Int) -- ^ Posição
                -> Mapa -- ^ Mapa

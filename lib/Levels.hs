@@ -6,9 +6,9 @@ import Utils.Utilitarios
 level1 :: Jogo
 level1 = Jogo {
         baseJogo = Base {
-            vidaBase = 100,
+            vidaBase = 500,
             posicaoBase = (5,0),
-            creditosBase = 350
+            creditosBase = 10000
         },
         portaisJogo = [ Portal 
         {
@@ -18,7 +18,7 @@ level1 = Jogo {
                         Inimigo {
                                 posicaoInimigo = (5,10),
                                 direcaoInimigo = Norte,
-                                vidaInimigo = 100,
+                                vidaInimigo = 50,
                                 velocidadeInimigo = 1,
                                 ataqueInimigo = 100,
                                 butimInimigo = 200,
@@ -27,7 +27,7 @@ level1 = Jogo {
                         Inimigo {
                                 posicaoInimigo = (5,10),
                                 direcaoInimigo = Norte,
-                                vidaInimigo = 100,
+                                vidaInimigo = 300,
                                 velocidadeInimigo = 1,
                                 ataqueInimigo = 100,
                                 butimInimigo = 200,
@@ -36,7 +36,7 @@ level1 = Jogo {
                         Inimigo {
                                 posicaoInimigo = (5,10),
                                 direcaoInimigo = Norte,
-                                vidaInimigo = 100,
+                                vidaInimigo = 300,
                                 velocidadeInimigo = 1,
                                 ataqueInimigo = 100,
                                 butimInimigo = 200,
@@ -45,7 +45,7 @@ level1 = Jogo {
                         Inimigo {
                                 posicaoInimigo = (5,10),
                                 direcaoInimigo = Norte,
-                                vidaInimigo = 100,
+                                vidaInimigo = 300,
                                 velocidadeInimigo = 1,
                                 ataqueInimigo = 100,
                                 butimInimigo = 200,
@@ -54,66 +54,8 @@ level1 = Jogo {
                         Inimigo {
                                 posicaoInimigo = (5,10),
                                 direcaoInimigo = Norte,
-                                vidaInimigo = 100,
+                                vidaInimigo = 300,
                                 velocidadeInimigo = 1,
-                                ataqueInimigo = 100,
-                                butimInimigo = 200,
-                                projeteisInimigo = []
-                        }        
-                        ],
-                        cicloOnda = 5,
-                        tempoOnda = 2,
-                        entradaOnda = 2
-                }
-                ]
-        
-
-        },Portal 
-        {
-                posicaoPortal = (7,10),
-                ondasPortal = [Onda {
-                        inimigosOnda = [
-                        Inimigo {
-                                posicaoInimigo = (7,10),
-                                direcaoInimigo = Norte,
-                                vidaInimigo = 100,
-                                velocidadeInimigo = 4,
-                                ataqueInimigo = 100,
-                                butimInimigo = 200,
-                                projeteisInimigo = []
-                        }, 
-                        Inimigo {
-                                posicaoInimigo = (7,10),
-                                direcaoInimigo = Norte,
-                                vidaInimigo = 100,
-                                velocidadeInimigo = 4,
-                                ataqueInimigo = 100,
-                                butimInimigo = 200,
-                                projeteisInimigo = []
-                        },
-                        Inimigo {
-                                posicaoInimigo = (7,10),
-                                direcaoInimigo = Norte,
-                                vidaInimigo = 100,
-                                velocidadeInimigo = 4,
-                                ataqueInimigo = 100,
-                                butimInimigo = 200,
-                                projeteisInimigo = []
-                        },
-                        Inimigo {
-                                posicaoInimigo = (7,10),
-                                direcaoInimigo = Norte,
-                                vidaInimigo = 100,
-                                velocidadeInimigo = 4,
-                                ataqueInimigo = 100,
-                                butimInimigo = 200,
-                                projeteisInimigo = [
-                        ]},
-                        Inimigo {
-                                posicaoInimigo = (7,10),
-                                direcaoInimigo = Norte,
-                                vidaInimigo = 100,
-                                velocidadeInimigo = 4,
                                 ataqueInimigo = 100,
                                 butimInimigo = 200,
                                 projeteisInimigo = []
@@ -131,15 +73,16 @@ level1 = Jogo {
         mapaJogo = [
                 [r, r, r, r, r, t, r, r, r, r, r],
                 [r, r, r, r, r, t, r, a, a, a, r],
+                [r, r, r, r, r, t, r, r, a, r, r],
                 [r, r, r, t, t, t, r, r, a, r, r],
                 [r, r, r, t, r, r, r, r, a, r, r],
-                [r, r, r, t, t, t, r, r, a, r, r],
+                [r, r, r, t, t, t, r, r, r, r, r],
                 [r, r, r, r, r, t, r, r, r, r, r],
                 [r, a, a, a, r, t, t, t, r, r, r],
                 [r, r, a, r, r, r, r, t, r, r, r],
                 [r, r, a, r, r, t, t, t, r, r, r],
-                [r, a, a, a, r, t, r, t, r, r, r],
-                [r, r, r, r, r, t, r, t, r, r, r]
+                [r, a, a, a, r, t, r, r, r, r, r],
+                [r, r, r, r, r, t, r, r, r, r, r]
         ],
 
         inimigosJogo = [],

@@ -13,12 +13,9 @@ import Eventos
 import Graphics.Gloss
 import Graphics.Gloss.Interface.IO.Game
 import Graphics.Gloss.Juicy
+import Tempo
 import ImmutableTowers
 import LI12425
-import Tempo
-import System.Directory
-import Utils.Utilitarios
-import System.IO.Unsafe
 
 janela :: Display
 janela = InWindow "Immutable Towers" (1920, 1080) (0, 0)
@@ -35,8 +32,8 @@ fundo = customColor 160 220 220 255
 fr :: Int
 fr = 30
 
-it :: Estado
-it = Estado {cena = MenuInicial Jogar, tema = 0}
+it :: ImmutableTowers
+it = ImmutableTowers {cena = MenuInicial Jogar ,tema = 0}
     
 loadImage :: FilePath -> IO Picture
 loadImage filePath = do

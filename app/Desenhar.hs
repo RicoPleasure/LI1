@@ -29,50 +29,51 @@ import Utils.UtilitariosEditor
 (sprites !! temaAtual) !! 8 -> Pause
 (sprites !! temaAtual) !! 9 -> Terreno alternativo válido (modo de adicionar torre)
 (sprites !! temaAtual) !! 10 -> Terreno alternativo inválido (modo de adicionar torre)
+(sprites !! temaAtual) !! 11 -> Terreno a adicionar (modo de adicionar terreno)
 
  -}
 
-data Estado = Estado { immutableTowers :: ImmutableTowers, cena :: Cena, tema :: Int }
+
 
 {-| Função que desenha o terreno -}
 
 {-| Função principal. Desenha tudo que aparece no jogo com base na cena atual.-}
-desenha :: [[[Picture]]] -> Estado -> IO Picture
-desenha sprites (Estado {cena = MenuInicial Jogar, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 0
-desenha sprites (Estado {cena = MenuInicial Opcoes, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 1
-desenha sprites (Estado {cena = MenuInicial Sair, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 2
-desenha sprites (Estado {cena = Options Themes, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 3
+desenha :: [[[Picture]]] -> ImmutableTowers -> IO Picture
+desenha sprites (ImmutableTowers {cena = MenuInicial Jogar, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 0
+desenha sprites (ImmutableTowers {cena = MenuInicial Opcoes, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 1
+desenha sprites (ImmutableTowers {cena = MenuInicial Sair, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 2
+desenha sprites (ImmutableTowers {cena = Options Themes, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 3
 
 {- Themes -}
 
-desenha sprites (Estado {cena = ThemesMenu Theme1, tema = temaAtual}) = return $ text "Theme 1"
-desenha sprites (Estado {cena = ThemesMenu Theme2, tema = temaAtual}) = return $ text "Theme 2"
-desenha sprites (Estado {cena = ThemesMenu Theme3, tema = temaAtual}) = return $ text "Theme 3"
+desenha sprites (ImmutableTowers {cena = ThemesMenu Tema1, tema = temaAtual}) = return $ text "Theme 1"
+desenha sprites (ImmutableTowers {cena = ThemesMenu Tema2, tema = temaAtual}) = return $ text "Theme 2"
+desenha sprites (ImmutableTowers {cena = ThemesMenu Tema3, tema = temaAtual}) = return $ text "Theme 3"
 
 {- Audio -}
 
-desenha sprites (Estado {cena = Options Audio, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 4
-desenha sprites (Estado {cena = Options Voltar, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 5
-desenha sprites (Estado {cena = OpcaoJogar ContinueGame, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 6
-desenha sprites (Estado {cena = OpcaoJogar NewGame, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 7
-desenha sprites (Estado {cena = SelectGameMode Levels, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 8
-desenha sprites (Estado {cena = SelectGameMode Creator, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 9
+desenha sprites (ImmutableTowers {cena = Options Audio, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 4
+desenha sprites (ImmutableTowers {cena = Options Voltar, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 5
+desenha sprites (ImmutableTowers {cena = OpcaoJogar ContinueGame, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 6
+desenha sprites (ImmutableTowers {cena = OpcaoJogar NewGame, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 7
+desenha sprites (ImmutableTowers {cena = SelectGameMode Levels, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 8
+desenha sprites (ImmutableTowers {cena = SelectGameMode Creator, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 9
 
-desenha sprites (Estado {cena = SelectLevel Level1, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 10
-desenha sprites (Estado {cena = SelectLevel Level2, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 11
-desenha sprites (Estado {cena = SelectLevel Level3, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 12
-desenha sprites (Estado {cena = SelectLevel Level4, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 13
-desenha sprites (Estado {cena = SelectLevel Level5, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 14
+desenha sprites (ImmutableTowers {cena = SelectLevel 1, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 10
+desenha sprites (ImmutableTowers {cena = SelectLevel 2, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 11
+desenha sprites (ImmutableTowers {cena = SelectLevel 3, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 12
+desenha sprites (ImmutableTowers {cena = SelectLevel 4, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 13
+desenha sprites (ImmutableTowers {cena = SelectLevel 5, tema = temaAtual}) = return $ ((sprites !! temaAtual) !! 7) !! 14
 
-desenha sprites (Estado {cena = LoadGame 1, tema = temaAtual}) = do
+desenha sprites (ImmutableTowers {cena = LoadGame 1, tema = temaAtual}) = do
     games <- listGames
     return $ Pictures (gameTextPictures games) 
-desenha sprites (Estado {cena = LoadGame 2, tema = temaAtual}) = return $ text "Carregando jogo 2"
-desenha sprites (Estado {cena = LoadGame 3, tema = temaAtual}) = return $ text "Carregando jogo 3"
+desenha sprites (ImmutableTowers {cena = LoadGame 2, tema = temaAtual}) = return $ text "Carregando jogo 2"
+desenha sprites (ImmutableTowers {cena = LoadGame 3, tema = temaAtual}) = return $ text "Carregando jogo 3"
 
 {-| EDITOR DE MAPAS -}
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Terra)), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno Terra), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -82,7 +83,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Terra)
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Relva)), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno Relva), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -92,7 +93,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Relva)
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Agua)), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno Agua), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -102,7 +103,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Agua))
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre1)), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTorre Torre1), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -112,7 +113,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre1))
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre2)), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTorre Torre2), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -122,7 +123,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre2))
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre3)), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTorre Torre3), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -132,7 +133,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre3))
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor OpcaoEditorBase), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (OpcaoEditorBase), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -142,7 +143,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor OpcaoEditorBase), immutabl
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor OpcaoEditorPortal), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (OpcaoEditorPortal), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -152,7 +153,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor OpcaoEditorPortal), immuta
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor (AdicionaTerreno t (x,y))), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (AdicionaTerreno t (x,y)), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -163,7 +164,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor (AdicionaTerreno t (x,y)))
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo) )
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (x,y))), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (AdicionaTorreEditor t (x,y)), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -174,7 +175,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (x,
                           ++ [desenhaTorre ((sprites !! temaAtual) !! 4) (fromIntegral x, fromIntegral y) (projetilNovaTorre t)])
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor (AdicionaBase (x,y))), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (AdicionaBase (x,y)), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -184,7 +185,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor (AdicionaBase (x,y))), imm
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (Editor (AdicionaPortal (x,y))), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = EditorDeMapas (AdicionaPortal (x,y)), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -194,7 +195,7 @@ desenha sprites (Estado {cena = EditorDeMapas (Editor (AdicionaPortal (x,y))), i
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
              ]
 
-desenha sprites (Estado {cena = EditorDeMapas (QuitEditor SaveMapa), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = SaveGame SaveMapa , jogo = jogo , tema = temaAtual}) = return $
 
     Pictures [
         imagemFundo (sprites !! temaAtual),
@@ -211,7 +212,7 @@ desenha sprites (Estado {cena = EditorDeMapas (QuitEditor SaveMapa), immutableTo
 {- END EDITOR DE MAPAS -}
 
 {-| Desenha o jogo quando se encontra no modo de jogo -}
-desenha sprites (Estado {cena = ModoJogo Resumed, immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = ModoJogo Resumed, jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -221,7 +222,7 @@ desenha sprites (Estado {cena = ModoJogo Resumed, immutableTowers = ImmutableTow
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
              ]
 
-desenha sprites (Estado {cena = Debug, immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers {cena = Debug, jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $
                  Pictures (desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -233,12 +234,16 @@ desenha sprites (Estado {cena = Debug, immutableTowers = ImmutableTowers { jogo 
                         scale 0.5 0.5 $ Translate (-1000) (400) $ text $ show (direcaoInimigo (head (inimigosJogo jogo))), -}
                         scale 0.5 0.5 $ Translate (-1000) (800) $ text $ show (tempoOnda (head (ondasPortal (head (portaisJogo jogo))))),
                         scale 0.5 0.5 $ Translate (-1000) (400) $ text $ show (cicloOnda (head (ondasPortal (head (portaisJogo jogo))))),
-                        scale 0.5 0.5 $ Translate (-1000) (0) $ text $ show (entradaOnda (head (ondasPortal (head (portaisJogo jogo)))))
+                        scale 0.5 0.5 $ Translate (-1000) (0) $ text $ show (entradaOnda (head (ondasPortal (head (portaisJogo jogo))))),
+                        scale 0.5 0.5 $ Translate (-1000) (-400) $ text $ show (tempoTorre (head (torresJogo jogo))),
+                        scale 0.5 0.5 $ Translate (-1000) (-800) $ text $ show (cicloTorre (head (torresJogo jogo))),
+                        scale 0.5 0.5 $ Translate (-1000) (-1000) $ text $ show (vidaInimigo (head (inimigosJogo jogo))),
+                        scale 0.3 0.3 $ Translate (-1400) (600) $ text $ show (projeteisInimigo (head (inimigosJogo jogo)))
              ]
              
              
 {-| Desenha a loja no modo de jogo -}
-desenha sprites (Estado { cena = ModoJogo (Loja t), immutableTowers = ImmutableTowers { jogo = jogo } , tema = temaAtual}) = return $
+desenha sprites (ImmutableTowers { cena = ModoJogo (Loja t), jogo = jogo , tema = temaAtual}) = return $
     Pictures [ imagemFundo (sprites !! temaAtual)
              , Translate ajusteX ajusteY $ Pictures 
                  ( desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
@@ -256,10 +261,10 @@ desenha sprites (Estado { cena = ModoJogo (Loja t), immutableTowers = ImmutableT
         _ -> Blank 
         
 {-| Desenha o jogo quando o está pausado -}
-desenha sprites (Estado { 
+desenha sprites (ImmutableTowers { 
     cena = ModoJogo Pause,
-    immutableTowers = ImmutableTowers { jogo = jogo}, 
-    tema = temaAtual  
+    jogo = jogo,
+    tema = temaAtual
 }) = return $ 
     Pictures [
         imagemFundo (sprites !! temaAtual),
@@ -274,9 +279,9 @@ desenha sprites (Estado {
     ]
 
 {-| Desenha o jogo quando o jogador escolhe a posição da nova torre -}
-desenha sprites (Estado { 
+desenha sprites (ImmutableTowers { 
     cena = AdicionaTorre t (x, y), 
-    immutableTowers = ImmutableTowers { jogo = jogo }, 
+    jogo = jogo,
     tema = temaAtual 
 }) = return $ 
     Pictures [
@@ -291,50 +296,101 @@ desenha sprites (Estado {
             ++ [desenhaTorre ((sprites !! temaAtual) !! 4) (fromIntegral x, fromIntegral y) (projetilNovaTorre t)])
     ]
 
+{-|
+    Desenha tela de vitoria
+-}
+desenha sprites (ImmutableTowers { 
+    cena = TelaFinal Vitoria,
+    jogo = jogo,
+    tema = temaAtual
+}) = return $ 
+    Pictures [
+        imagemFundo (sprites !! temaAtual),
+        Translate ajusteX ajusteY $ Pictures 
+            ( desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
+            ++ [desenhaBase ((sprites !! temaAtual) !! 3) (posicaoBase $ baseJogo jogo)]
+            ++ desenhaPortais ((sprites !! temaAtual) !! 5) (portaisJogo jogo)
+            ++ desenhaTorres ((sprites !! temaAtual) !! 4) (torresJogo jogo)
+            ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo) )
+        ]
 
-{-| Imagem de fundo do jogo -}
+{-|
+    Desenha tela de derrota
+-}
+desenha sprites (ImmutableTowers { 
+    cena = TelaFinal Derrota,
+    jogo = jogo,
+    tema = temaAtual
+}) = return $ 
+    Pictures [
+        imagemFundo (sprites !! temaAtual),
+        Translate ajusteX ajusteY $ Pictures 
+            ( desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
+            ++ [desenhaBase ((sprites !! temaAtual) !! 3) (posicaoBase $ baseJogo jogo)]
+            ++ desenhaPortais ((sprites !! temaAtual) !! 5) (portaisJogo jogo)
+            ++ desenhaTorres ((sprites !! temaAtual) !! 4) (torresJogo jogo)
+            ++ desenhaInimigos ((sprites !! temaAtual) !! 6) (inimigosJogo jogo))
+        ]
+
+{-| 
+    'imagemFundo' é uma função que retorna a imagem de fundo do jogo.
+-}
 imagemFundo :: [[Picture]] -- ^ temaAtual do jogo
             -> Picture -- ^ Imagem de fundo
 imagemFundo sprites = (sprites !! 2) !! 0
 
+{-| 
+    'ajusteX' e 'ajusteY' são ajustes de posição para o mapa.
+-}
 ajusteX :: Float
 ajusteX = 0
 
 ajusteY :: Float
 ajusteY = blocoAltura * 4
 
-{-| Desenha a loja -}
-
-{-| As funções a seguir ajudam a manter a função 'desenha' mais limpa.  -}
-{-| Extrai as posições das torres presentes no jogo. -}
+{-| 
+    'extraiPosicoesTorres' é uma função que extrai as posições das torres presentes no jogo.
+-}
 extraiPosicoesTorres :: [Torre] -- ^ Lista de torres
                      -> [Posicao] -- ^ Lista de posições das torres
 extraiPosicoesTorres = map posicaoTorre
 
-{-| Extrai os tipos dos projéteis das torres presentes no jogo. -}
+{-| 
+    'extraiTiposProjetil' é uma função que extrai os tipos de projéteis presentes nas torres do jogo.
+-}
 extraiTiposProjetil :: [Torre] -- ^ Lista de torres
                     -> [TipoProjetil] -- ^ Lista de tipos de projéteis
 extraiTiposProjetil = map (tipoProjetil . projetilTorre)
 
-{-| Extrai as posições dos portais presentes no jogo. -}
+{-|
+    'extraiPosicoesPortais' é uma função que extrai as posições dos portais presentes no jogo.
+-}
 extraiPosicoesPortais :: [Portal] -- ^ Lista de portais
                       -> [Posicao] -- ^ Lista de posições dos portais
 extraiPosicoesPortais = map posicaoPortal
 
-{-| Extrai as posições dos inimigos presentes no jogo.  -}
+{-|
+    'extraiPosicoesInimigos' é uma função que extrai as posições dos inimigos presentes no jogo.
+-}
 extraiPosicoesInimigos :: [Inimigo] -- ^ Lista de inimigos
                       -> [Posicao] -- ^ Lista de posições dos inimigos
 extraiPosicoesInimigos = map posicaoInimigo
 
-{-| Largura de um único bloco usada para ajustar o mapa no sistema isométrico e ajustar posição dos objetos no mapa -}
+{-|
+    'blocoLargura' é a largura de um bloco usada para ajustar o mapa no sistema isométrico e ajustar posição dos objetos no mapa.
+-}
 blocoLargura :: Float 
 blocoLargura = 100
 
-{-| Largura de um único bloco usada para ajustar o mapa no sistema isométrico e ajustar posição dos objetos no mapa -}
+{-|
+    'blocoAltura' é a altura de um bloco usada para ajustar o mapa no sistema isométrico e ajustar posição dos objetos no mapa.
+-}
 blocoAltura :: Float
 blocoAltura = 50
 
-{-| Função que faz os ajustes das posições reais dos blocos do mapa -}
+{-|
+    'posicaoReal' é uma função que ajusta a posição de um bloco no mapa.
+-}
 posicaoReal :: (Float, Float) -- ^ Coordenadas da grelha do mapa 
             -> Picture -- ^ Bloco (sprite de terreno)  
             -> Picture -- ^ Bloco com a posição ajustada
@@ -343,9 +399,12 @@ posicaoReal (x, y) = Translate realX (-realY)
         realX = (x - y) * (blocoLargura / 2)
         realY = (x + y) * (blocoAltura / 2)
 
-{-| Posição real dos objetos que não usam 'scale'
-
-    Objetos que a utilizam: Base
+{-|
+    'posicaoRealObjetos' é uma função que ajusta a posição de um objeto no mapa.
+    
+    ==Objetos que a utiliza: 
+    * Torres
+    * Base
  -}
 posicaoRealObjetos :: (Float, Float) -- ^ Coordenadas do objeto na grelha do mapa
                    -> Picture -- ^ Sprite do objeto 
@@ -355,9 +414,12 @@ posicaoRealObjetos (x, y) = Translate (realX) (-realY+25)
         realX = (x - y) * (blocoLargura / 2)
         realY = (x + y) * (blocoAltura / 2)
 
-{-| Posição real dos objetos que usam 'scale'
+{-| 
+    'posicaoRealObjetosScale' é uma função que ajusta a posição de um objeto no mapa e escala o objeto.
     
-    Objetos que a utilizam: Torres, Portais
+    ==Objetos que a utiliza:
+    * Inimigos
+    * Portais
 -}
 posicaoRealObjetosScale :: (Float, Float) -- ^ Coordenadas do objeto na grelha do mapa
                    -> Picture -- ^ Sprite do objeto
@@ -367,7 +429,9 @@ posicaoRealObjetosScale (x, y) = Translate (realX) (-realY + 25)
         realX = (x - y) * (blocoLargura)
         realY = (x + y) * (blocoAltura)
 
-{-| Função que desenha o mapa -}
+{-| 
+    'desenhaMapa' é uma função que desenha o mapa do jogo.
+ -}
 desenhaMapa :: [Picture] -- ^ temaAtual dos terrenos
             -> [[Terreno]] -- ^ Grelha do mapa  
             -> (Float,Float) -- ^ Coordenadas da grelha do mapa
@@ -376,7 +440,9 @@ desenhaMapa ts [] _ = []
 desenhaMapa ts (linha:t) (x,y) =
     desenhaLinha ts linha (x,y) ++ desenhaMapa ts t (x, (y+1))
 
-{-| Função que desenha uma linha do mapa -}
+{-| 
+    'desenhaLinha' é uma função auxiliar de 'desenhaMapa' que desenha uma linha do mapa.
+-}
 desenhaLinha :: [Picture] -- ^ temaAtual dos terrenos 
              -> [Terreno] -- ^ Linha do mapa
              -> (Float,Float) -- ^ Coordenadas da grelha do mapa
@@ -386,14 +452,20 @@ desenhaLinha ts (terreno:t) (x,y) =
     posicaoReal (x,y) (scale 3 3 $ (terrenoSprite ts terreno))
     : desenhaLinha ts t ((x+1), y)
 
+
+{-|
+    'desenhaTerreno' é uma função que desenha um terreno no mapa.
+-}
 desenhaTerreno :: [Picture] -- ^ temaAtual dos terrenos
                -> Posicao -- ^ Posição do terreno
                -> Terreno -- ^ Terreno
                -> Picture -- ^ Terreno desenhado
 desenhaTerreno ts (x,y) terreno = posicaoReal (x,y) (scale 3 3 $ (terrenoSprite ts terreno))
 
-{-| Função que seleciona o sprite correto do terreno -}
-terrenoSprite :: [Picture] -- ^ temaAtual dos terrenos 
+{-|
+    'terrenoSprite' é uma função que retorna o sprite de um terreno baseado no 'Terreno'.
+-}
+terrenoSprite :: [Picture] -- ^ sprites dos terrenos 
               -> Terreno -- ^ Terreno
               -> Picture -- ^ Sprite do terreno
 terrenoSprite ts terreno
@@ -404,20 +476,26 @@ terrenoSprite ts terreno
       Agua -> ts !! 2
       Vazio -> ts !! 3
 
-{-| Função que desenha a base do jogador -}
+{-|
+    'desenhaBase' é uma função que desenha a base no mapa.
+-}
 desenhaBase :: [Picture] -- ^ temaAtual da base
             -> Posicao -- ^ Posição da base
             -> Picture -- ^ Base desenhada
 desenhaBase sprites (x,y)
     = posicaoRealObjetos (x,y) $ sprites !! 0 
 
-{-| Função que desenha as torres  -}
+{-|
+    'desenhaTorres' é uma função que desenha as torres no mapa.
+-}
 desenhaTorres :: [Picture] -- ^ temaAtual das torres 
               -> [Torre] -- ^ Lista de torres
               -> [Picture] -- ^ Torres desenhadas
 desenhaTorres sprites torres = zipWith (desenhaTorre sprites) (extraiPosicoesTorres torres) (extraiTiposProjetil torres)
 
-{-| Função que desenha uma única torre -}
+{-|
+    'desenhaTorre' é uma função que desenha uma torre no mapa.
+-}
 desenhaTorre :: [Picture] -- ^ temaAtual das torres 
              -> Posicao -- ^ Posição da torre
              -> TipoProjetil -- ^ Tipo do projétil
@@ -429,35 +507,52 @@ desenhaTorre sprites (x, y) tipo
     Gelo   -> posicaoRealObjetos (x, y) $ sprites !! 1
     Resina -> posicaoRealObjetos (x, y) $ sprites !! 2 
 
-{-| Função que desenha os portais  -}
+{-|
+    'desenhaPortais' é uma função que desenha os portais no mapa.
+-}
 desenhaPortais :: [Picture] -- ^ temaAtual dos portais
                -> [Portal] -- ^ Lista de portais
                -> [Picture] -- ^ Portais desenhados
 desenhaPortais sprites portais = map (desenhaPortal sprites) (extraiPosicoesPortais portais)
 
-{-| Função que desenha um único portal -}
+{-| 
+    'desenhaPortal' é uma função auxiliar de 'desenhaPortais' que desenha um portal no mapa.
+ -}
 desenhaPortal :: [Picture] -- ^ temaAtual dos portais
               -> Posicao -- ^ Posição do portal
               -> Picture -- ^ Portal desenhado
 desenhaPortal sprites (x,y) = scale 0.5 0.5 $ posicaoRealObjetosScale (x,y) $ sprites !! 0
 
-{-| Função que desenha os inimigos -}
+{-|
+    'desenhaInimigos' é uma função que desenha os inimigos no mapa.
+-}
 desenhaInimigos :: [Picture] -- ^ temaAtual dos inimigos
                 -> [Inimigo] -- ^ Lista de inimigos
                 -> [Picture] -- ^ Inimigos desenhados
 desenhaInimigos sprites inimigos = map (desenhaInimigo sprites) (extraiPosicoesInimigos inimigos)
     
-{-| Função que desenha um único inimigo -}
+{-| 
+    'desenhaInimigo' é uma função auxiliar de 'desenhaInimigos' que desenha um inimigo no mapa.
+-}
 desenhaInimigo :: [Picture] -- ^ temaAtual dos inimigos
                -> Posicao -- ^ Posição do inimigo
                -> Picture -- ^ Inimigo desenhado
 desenhaInimigo sprites (x,y) = scale 0.5 0.5 $ posicaoRealObjetosScale (x,y) $ sprites !! 0
 
-{-| Função que desenha a loja -} 
+{-|
+    'desenhaLoja' é uma função que desenha a loja no mapa.
+-}
 desenhaLoja :: Picture -- ^ Sprite da loja
             -> Picture -- ^ Loja desenhada
 desenhaLoja l = Translate (-720) 220 $ Pictures [l]
 
+{-|
+    'desenhaTerrenoAlternativo' é uma função que desenha um terreno alternativo no mapa.
+
+    == Observações:
+    * Se a torre puder ser adicionada, o terreno é desenhado com um sprite dos terrenos em verde.
+    * Se a torre não puder ser adicionada, o terreno é desenhado com um sprite dos terrenos em vermelho.
+-}
 desenhaTerrenoAlternativo :: [[Picture]] -- ^ temaAtual dos terrenos
                           -> Mapa -- ^ Mapa
                           -> TipoTorre -- ^ Tipo da torre
@@ -470,6 +565,17 @@ desenhaTerrenoAlternativo :: [[Picture]] -- ^ temaAtual dos terrenos
 desenhaTerrenoAlternativo sprites mapa tipoTorre torres t (x,y) creditos custo = posicaoReal (x,y) (scale 3 3 $ terrenoSprite spriteCorreto t)
     where spriteCorreto = if adicionaTorreValida (x,y) mapa (insereTorreNaLista torres (x,y) (projetilNovaTorre tipoTorre)) creditos custo then (sprites !! 10) else (sprites !! 9)
 
+{-|
+    'projetilNovaTorre' é uma função que retorna o tipo de projétil de uma torre baseado no tipo da torre.
+
+    ==Exemplo de utilização:
+    >>> projetilNovaTorre Torre1
+    Resina
+    >>> projetilNovaTorre Torre2
+    Fogo
+    >>> projetilNovaTorre Torre3
+    Gelo
+-}
 projetilNovaTorre :: TipoTorre -- ^ Tipo da torre 
                   -> TipoProjetil -- ^ Tipo do projétil
 projetilNovaTorre tipo = case tipo of

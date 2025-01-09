@@ -9,373 +9,479 @@ import Utils.UtilitariosTorre
 import Utils.Utilitarios
 import Utils.UtilitariosBase
 import Utils.UtilitariosEditor
-import Utils.UtilitariosPortal
 import Levels
-import Graphics.Gloss.Juicy
 
 {-| Função que reage ao tempo -}
 
 
 {-| Função que reúne e limita os eventos que acontecem em cada "cena" do jogo -}
-reageEventos :: Event -> Estado -> IO Estado
-reageEventos tecla e@Estado {cena = EditorDeMapas _} = reageEventosEditorDeMapas tecla e
-reageEventos tecla e@Estado {cena = MenuInicial _} = reageEventosMenuInicial tecla e
-reageEventos tecla e@Estado {cena = ModoJogo Resumed} = reageEventosModoJogo tecla e
-reageEventos tecla e@Estado {cena = ModoJogo Pause} = reageEventosModoJogo tecla e
-reageEventos tecla e@Estado {cena = Options _ } = reageEventosOptions tecla e
-reageEventos tecla e@Estado {cena = ModoJogo (Loja _)} = reageEventosLoja tecla e
-reageEventos tecla e@Estado {cena = AdicionaTorre _ _} = reageEventosAdicionaTorre tecla e
-reageEventos tecla e@Estado {cena = OpcaoJogar _} = reageEventosEscolhaDeJogo tecla e
-reageEventos tecla e@Estado {cena = SelectGameMode _} = reageEventosSelectGameMode tecla e
-reageEventos tecla e@Estado {cena = SelectLevel _} = reageEventosSelectLevel tecla e
-reageEventos tecla e@Estado {cena = LoadGame _} = reageEventosLoadGame tecla e
-reageEventos tecla e@Estado {cena = ThemesMenu _} = reageEventosThemesMenu tecla e
+reageEventos :: Event -> ImmutableTowers -> IO ImmutableTowers
+reageEventos tecla e@ImmutableTowers {cena = EditorDeMapas _} = reageEventosEditorDeMapas tecla e
+reageEventos tecla e@ImmutableTowers {cena = MenuInicial _} = reageEventosMenuInicial tecla e
+reageEventos tecla e@ImmutableTowers {cena = ModoJogo Resumed} = reageEventosModoJogo tecla e
+reageEventos tecla e@ImmutableTowers {cena = ModoJogo Pause} = reageEventosModoJogo tecla e
+reageEventos tecla e@ImmutableTowers {cena = Options _ } = reageEventosOptions tecla e
+reageEventos tecla e@ImmutableTowers {cena = ModoJogo (Loja _)} = reageEventosLoja tecla e
+reageEventos tecla e@ImmutableTowers {cena = AdicionaTorre _ _} = reageEventosAdicionaTorre tecla e
+reageEventos tecla e@ImmutableTowers {cena = OpcaoJogar _} = reageEventosEscolhaDeJogo tecla e
+reageEventos tecla e@ImmutableTowers {cena = SelectGameMode _} = reageEventosSelectGameMode tecla e
+reageEventos tecla e@ImmutableTowers {cena = SelectLevel _} = reageEventosSelectLevel tecla e
+reageEventos tecla e@ImmutableTowers {cena = LoadGame _} = reageEventosLoadGame tecla e
+reageEventos tecla e@ImmutableTowers {cena = ThemesMenu _} = reageEventosThemesMenu tecla e
 reageEventos _ w = return $ w
 
 
-{-| _reageEventosMenuInicial_
-
-    Função que reage a eventos no menu inicial do jogo.
- -}
-{-| Navegar entre as opções em "MenuInicial" -}
-reageEventosMenuInicial (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = MenuInicial Jogar} = return $ e {cena = MenuInicial Opcoes}
-reageEventosMenuInicial (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = MenuInicial Opcoes} = return $ e {cena = MenuInicial Jogar}
-reageEventosMenuInicial (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = MenuInicial Opcoes} = return $ e {cena = MenuInicial Sair}
-reageEventosMenuInicial (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = MenuInicial Sair} = return $ e {cena = MenuInicial Opcoes}
-reageEventosMenuInicial (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = MenuInicial Jogar} = return $ e {cena = MenuInicial Sair}
-reageEventosMenuInicial (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = MenuInicial Sair} = return $ e {cena = MenuInicial Jogar}
-
-{-| Acessar as opções em "MenuInicial" -}
-reageEventosMenuInicial (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = MenuInicial Jogar} = return $ e {cena = OpcaoJogar ContinueGame}
-reageEventosMenuInicial (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = MenuInicial Opcoes} = return $ e {cena = Options Themes}
-reageEventosMenuInicial (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = MenuInicial Sair} = exitSuccess
-{-| Caso geral de "reageEventosMenuInicial" -}
+{-| 
+    'reageEventosMenuInicial' reage a eventos no menu inicial do jogo.
+-}
+reageEventosMenuInicial :: Event -> ImmutableTowers -> IO ImmutableTowers
+{-| Navega entre as opções do menu inicial -}
+reageEventosMenuInicial (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = MenuInicial Jogar} = return $ e {cena = MenuInicial Opcoes}
+reageEventosMenuInicial (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = MenuInicial Opcoes} = return $ e {cena = MenuInicial Jogar}
+reageEventosMenuInicial (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = MenuInicial Opcoes} = return $ e {cena = MenuInicial Sair}
+reageEventosMenuInicial (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = MenuInicial Sair} = return $ e {cena = MenuInicial Opcoes}
+reageEventosMenuInicial (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = MenuInicial Jogar} = return $ e {cena = MenuInicial Sair}
+reageEventosMenuInicial (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = MenuInicial Sair} = return $ e {cena = MenuInicial Jogar}
+{-| 
+    Acessar as opções do menu inicial 
+    - Jogar: Acessa a escolha de jogo
+    - Opções: Acessa as opções do jogo
+    - Sair: Fecha o jogo
+-}
+reageEventosMenuInicial (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = MenuInicial Jogar} = return $ e {cena = OpcaoJogar ContinueGame}
+reageEventosMenuInicial (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = MenuInicial Opcoes} = return $ e {cena = Options Themes}
+reageEventosMenuInicial (EventKey (SpecialKey KeyEnter) Down _ _) ImmutableTowers {cena = MenuInicial Sair} = exitSuccess
+{-| Caso geral -}
 reageEventosMenuInicial _ e = return $ e
 
 
-{-| Mudar temas -}
-
-reageEventosThemesMenu (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = Options Themes} = return $ e {cena = ThemesMenu Theme1}
-
-reageEventosThemesMenu (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = ThemesMenu Theme1} = return $ e {cena = ThemesMenu Theme2}
-reageEventosThemesMenu (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = ThemesMenu Theme2} = return $ e {cena = ThemesMenu Theme3}
-reageEventosThemesMenu (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = ThemesMenu Theme3} = return $ e {cena = ThemesMenu Theme1}
-
-reageEventosThemesMenu (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = ThemesMenu Theme1} = return $ e {cena = ThemesMenu Theme3}
-reageEventosThemesMenu (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = ThemesMenu Theme2} = return $ e {cena = ThemesMenu Theme1}
-reageEventosThemesMenu (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = ThemesMenu Theme3} = return $ e {cena = ThemesMenu Theme2}
-
-
-reageEventosThemesMenu (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = ThemesMenu Theme1} = return $ e {cena = MenuInicial Jogar, tema = 0}
-
-reageEventosThemesMenu (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = ThemesMenu Theme2} = return $ e {cena = MenuInicial Jogar, tema = 1}
-
+{-|
+    'reageEventosThemesMenu' reage a eventos no menu de seleção de temas do jogo.
+-}
+reageEventosThemesMenu :: Event -> ImmutableTowers -> IO ImmutableTowers
+{-|
+    Acessa o menu de seleção de temas. 
+-}
+reageEventosThemesMenu (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = Options Themes} = return $ e {cena = ThemesMenu Tema1}
+{-|  
+    Navega entre os temas disponíveis
+    - Theme1: Tema base
+    - Theme2: Natal
+    - Theme3: Noite
+-}
+{- reageEventosThemesMenu (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = ThemesMenu t} = return $ e {cena = proximaO t}
+ -}
+reageEventosThemesMenu (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema2} = return $ e {cena = ThemesMenu Tema3}
+reageEventosThemesMenu (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema3} = return $ e {cena = ThemesMenu Tema1}
+reageEventosThemesMenu (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema1} = return $ e {cena = ThemesMenu Tema3}
+reageEventosThemesMenu (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema2} = return $ e {cena = ThemesMenu Tema1}
+reageEventosThemesMenu (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema3} = return $ e {cena = ThemesMenu Tema2}
+{-|
+    Seleciona o tema escolhido
+-}
+reageEventosThemesMenu (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema1} = return $ e {cena = MenuInicial Jogar, tema = 0}
+reageEventosThemesMenu (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema2} = return $ e {cena = MenuInicial Jogar, tema = 1}
+reageEventosThemesMenu (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema2} = return $ e {cena = MenuInicial Jogar, tema = 2}
+{-| Caso geral -}
 reageEventosThemesMenu _ e = return e
+{- 
+proximaO :: Int -> Int
+proxima n = 1 + n      
+ -}
 
-
-{- OPTION CONINUE OR NEWGAME -}
-
-reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = OpcaoJogar ContinueGame} = return $ e {cena = OpcaoJogar NewGame}
-reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = OpcaoJogar NewGame} = return $ e {cena = OpcaoJogar ContinueGame}
-
-reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = OpcaoJogar ContinueGame} = return $ e {cena = LoadGame 1}
-reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = OpcaoJogar NewGame} = return $ e {cena = SelectGameMode Levels}
-
+{-|
+    'reageEventosEscolhaDeJogo' reage a eventos na escolha de jogo.
+-}
+reageEventosEscolhaDeJogo :: Event -> ImmutableTowers -> IO ImmutableTowers
+{-| 
+    Navega entre as opções de escolha de jogo
+    - ContinueGame: Continuar um jogo
+    - NewGame: Iniciar um novo jogo
+-}
+reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = OpcaoJogar ContinueGame} = return $ e {cena = OpcaoJogar NewGame}
+reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = OpcaoJogar NewGame} = return $ e {cena = OpcaoJogar ContinueGame}
+{-|
+    Seleciona o modo de jogo escolhido
+-}
+reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = OpcaoJogar ContinueGame} = return $ e {cena = LoadGame 1}
+reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = OpcaoJogar NewGame} = return $ e {cena = SelectGameMode Levels}
+{-| Caso geral -}
 reageEventosEscolhaDeJogo _ e = return $ e
 
-{- SELECT GAME MODE -}
-
-reageEventosSelectGameMode (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = SelectGameMode Levels} = return $ e {cena = SelectGameMode Creator}
-reageEventosSelectGameMode (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = SelectGameMode Creator} = return $ e {cena = SelectGameMode Levels}
-
-reageEventosSelectGameMode (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = SelectGameMode Levels} = return $ e {cena = SelectLevel Level1}
-reageEventosSelectGameMode (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = SelectGameMode Creator} = return $ e {immutableTowers = ImmutableTowers (mapaInicialEditorDeMapas) , cena = EditorDeMapas (Editor (OpcaoEditorTerreno Terra))}
-
+{-|
+    'reageEventosSelectGameMode' reage a eventos na seleção de modo de jogo.
+-}
+reageEventosSelectGameMode :: Event -> ImmutableTowers -> IO ImmutableTowers
+{-|
+    Navega entre as opções de modo de jogo
+    - Levels: Modo de jogo normal
+    - Creator: Modo de criação de mapas
+-}
+reageEventosSelectGameMode (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = SelectGameMode Levels} = return $ e {cena = SelectGameMode Creator}
+reageEventosSelectGameMode (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = SelectGameMode Creator} = return $ e {cena = SelectGameMode Levels}
+{-|
+    Seleciona o modo de jogo escolhido
+-}
+reageEventosSelectGameMode (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = SelectGameMode Levels} = return $ e {cena = SelectLevel 1}
+reageEventosSelectGameMode (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = SelectGameMode Creator} = return $ e {jogo = mapaInicialEditorDeMapas , cena = EditorDeMapas (OpcaoEditorTerreno Terra)}
+{-| Caso geral -}
 reageEventosSelectGameMode _ e = return $ e
 
-{- SELECT LEVEL -}
+{-|
+    'reageEventosSelectLevel' reage a eventos na seleção de níveis.  
+-}
+reageEventosSelectLevel :: Event -> ImmutableTowers -> IO ImmutableTowers
+{-|
+    Navega entre os níveis disponíveis
 
-reageEventosSelectLevel (EventKey (SpecialKey KeyRight) Down _ _) e@Estado {cena = SelectLevel Level1} = return $ e {cena = SelectLevel Level2}
-reageEventosSelectLevel (EventKey (SpecialKey KeyLeft) own _ _) e@Estado {cena = SelectLevel Level2} = return $ e {cena = SelectLevel Level1}
-reageEventosSelectLevel (EventKey (SpecialKey KeyRight) Down _ _) e@Estado {cena = SelectLevel Level2} = return $ e {cena = SelectLevel Level3}
-reageEventosSelectLevel (EventKey (SpecialKey KeyLeft) Down _ _) e@Estado {cena = SelectLevel Level3} = return $ e {cena = SelectLevel Level2}
-reageEventosSelectLevel (EventKey (SpecialKey KeyRight) Down _ _) e@Estado {cena = SelectLevel Level3} = return $ e {cena = SelectLevel Level4}
-reageEventosSelectLevel (EventKey (SpecialKey KeyLeft) Down _ _) e@Estado {cena = SelectLevel Level4} = return $ e {cena = SelectLevel Level3}
-reageEventosSelectLevel (EventKey (SpecialKey KeyRight) Down _ _) e@Estado {cena = SelectLevel Level4} = return $ e {cena = SelectLevel Level5}
-reageEventosSelectLevel (EventKey (SpecialKey KeyLeft) Down _ _) e@Estado {cena = SelectLevel Level5} = return $ e {cena = SelectLevel Level4}
+    - Level1: Nível 1
+    - Level2: Nível 2
+    - Level3: Nível 3
+    - Level4: Nível 4
+    - Level5: Nível 5
+-}
+reageEventosSelectLevel (EventKey (SpecialKey KeyRight) Down _ _) e@ImmutableTowers {cena = SelectLevel 1} = return $ e {cena = SelectLevel 2}
+reageEventosSelectLevel (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTowers {cena = SelectLevel 2} = return $ e {cena = SelectLevel 1}
+reageEventosSelectLevel (EventKey (SpecialKey KeyRight) Down _ _) e@ImmutableTowers {cena = SelectLevel 2} = return $ e {cena = SelectLevel 3}
+reageEventosSelectLevel (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTowers {cena = SelectLevel 3} = return $ e {cena = SelectLevel 2}
+reageEventosSelectLevel (EventKey (SpecialKey KeyRight) Down _ _) e@ImmutableTowers {cena = SelectLevel 3} = return $ e {cena = SelectLevel 4}
+reageEventosSelectLevel (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTowers {cena = SelectLevel 4} = return $ e {cena = SelectLevel 3}
+reageEventosSelectLevel (EventKey (SpecialKey KeyRight) Down _ _) e@ImmutableTowers {cena = SelectLevel 4} = return $ e {cena = SelectLevel 5}
+reageEventosSelectLevel (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTowers {cena = SelectLevel 5} = return $ e {cena = SelectLevel 4}
 
-{- LOAD LEVELS -}
-
-reageEventosSelectLevel (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = SelectLevel Level1} = return $ e {immutableTowers = ImmutableTowers (level1), cena = ModoJogo Resumed}
-
-reageEventosSelectLevel (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = SelectLevel Level2} = return $ e {immutableTowers = ImmutableTowers (level2), cena = ModoJogo Resumed}
-
-reageEventosSelectLevel (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = SelectLevel Level3} = return $ e {immutableTowers = ImmutableTowers (level3), cena = ModoJogo Resumed}
-
-reageEventosSelectLevel (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = SelectLevel Level4} = return $ e {immutableTowers = ImmutableTowers (level4), cena = ModoJogo Resumed}
-
-reageEventosSelectLevel (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = SelectLevel Level5} = return $ e {immutableTowers = ImmutableTowers (level5), cena = ModoJogo Resumed}
-
-
+{-|
+    Seleciona e carrega o nível escolhido
+-}
+reageEventosSelectLevel (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = SelectLevel 1} = return $ e {jogo = level1, cena = ModoJogo Resumed}
+reageEventosSelectLevel (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = SelectLevel 2} = return $ e {jogo = level2, cena = ModoJogo Resumed}
+reageEventosSelectLevel (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = SelectLevel 3} = return $ e {jogo = level3, cena = ModoJogo Resumed}
+reageEventosSelectLevel (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = SelectLevel 4} = return $ e {jogo = level4, cena = ModoJogo Resumed}
+reageEventosSelectLevel (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = SelectLevel 5} = return $ e {jogo = level5, cena = ModoJogo Resumed}
+{-| Caso geral -}
 reageEventosSelectLevel _ e = return $ e
 
 
-{-| _reageEventosOptions_
+{-| 
+    'reageEventosOptions' reage a eventos nas opções do jogo.
 
-    Função que reage a eventos no menu de opções do jogo.
- -}
+    - Audio: Opções de áudio
+    - Themes: Opções de temas
+    - Voltar: Volta ao menu inicial    
+-}
+reageEventosOptions :: Event -> ImmutableTowers -> IO ImmutableTowers
 {-| Navegar entre as opções em "Opções" -}
-reageEventosOptions (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = Options Themes} = return $ e {cena = Options Audio}
-reageEventosOptions (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = Options Audio} = return $ e {cena = Options Voltar}
-reageEventosOptions (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = Options Audio} = return $ e {cena = Options Themes}
-reageEventosOptions (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = Options Voltar} = return $ e {cena = Options Audio}
-reageEventosOptions (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = Options Themes} = return $ e {cena = Options Voltar}
-reageEventosOptions (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = Options Voltar} = return $ e {cena = Options Themes}
-{-| Acessar as opções em "Opções" -}
-reageEventosOptions (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = Options Themes} = return $ e {cena = ThemesMenu Theme1}
-reageEventosOptions (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = Options Audio} = return $ e
-reageEventosOptions (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = Options Voltar} = return $ e {cena = MenuInicial Jogar}
-{- Caso geral de "reageEventosOptions" -}
+reageEventosOptions (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = Options Themes} = return $ e {cena = Options Audio}
+reageEventosOptions (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = Options Audio} = return $ e {cena = Options Voltar}
+reageEventosOptions (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = Options Audio} = return $ e {cena = Options Themes}
+reageEventosOptions (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = Options Voltar} = return $ e {cena = Options Audio}
+reageEventosOptions (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = Options Themes} = return $ e {cena = Options Voltar}
+reageEventosOptions (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = Options Voltar} = return $ e {cena = Options Themes}
+{-|
+    Seleciona a opção escolhida
+-}
+reageEventosOptions (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = Options Themes} = return $ e {cena = ThemesMenu Tema1}
+reageEventosOptions (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = Options Audio} = return $ e
+reageEventosOptions (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = Options Voltar} = return $ e {cena = MenuInicial Jogar}
+{- Caso geral -}
 reageEventosOptions _ e = return $ e
 
-{-| _reageEventosModoJogo_
-
-    Função que reage a eventos no modo de jogo
+{-|
+   'reageEventosModoJogo' reage a eventos no modo de jogo.
  -}
-
-{-| Alterna entre as cenas "Pause" e "Resumed"  -}
-reageEventosModoJogo (EventKey (Char 'p') Down _ _) e@Estado {cena = ModoJogo Resumed} = return $ e {cena = ModoJogo Pause}
-reageEventosModoJogo (EventKey (Char 'p') Down _ _) e@Estado {cena = ModoJogo Pause} = return $ e {cena = ModoJogo Resumed}
-{-| Volta ao menu inicial -}
-reageEventosModoJogo (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {cena = ModoJogo Resumed} = return $ e {cena = MenuInicial Jogar}
-reageEventosModoJogo (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {cena = ModoJogo Pause} = return $ e {cena = MenuInicial Jogar}
-{-| Ativa a loja -}
-reageEventosModoJogo (EventKey (Char 'l') Down _ _) e@Estado {cena = ModoJogo Resumed} = return $ e {cena = ModoJogo (Loja Torre1)}
-reageEventosModoJogo  (EventKey (Char 'd') Down _ _) e@Estado {cena = ModoJogo Resumed} = return $ e {cena = Debug}
-reageEventosModoJogo  (EventKey (Char 'd') Down _ _) e@Estado {cena = Debug} = return $ e {cena = ModoJogo Resumed}
-{-| Caso geral de "reageEventosModoJogo"-}
+reageEventosModoJogo :: Event -> ImmutableTowers -> IO ImmutableTowers
+{-| 
+    Alterna entre o jogo a correr e o jogo pausado
+ -}
+reageEventosModoJogo (EventKey (Char 'p') Down _ _) e@ImmutableTowers {cena = ModoJogo Resumed} = return $ e {cena = ModoJogo Pause}
+reageEventosModoJogo (EventKey (Char 'p') Down _ _) e@ImmutableTowers {cena = ModoJogo Pause} = return $ e {cena = ModoJogo Resumed}
+{-| 
+    Sai do jogo e volta ao menu inicial
+-}
+reageEventosModoJogo (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = ModoJogo Resumed} = return $ e {cena = MenuInicial Jogar}
+reageEventosModoJogo (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = ModoJogo Pause} = return $ e {cena = MenuInicial Jogar}
+{-|
+    Acessa a loja de torres
+-}
+reageEventosModoJogo (EventKey (Char 'l') Down _ _) e@ImmutableTowers {cena = ModoJogo Resumed} = return $ e {cena = ModoJogo (Loja Torre1)}
+reageEventosModoJogo  (EventKey (Char 'd') Down _ _) e@ImmutableTowers {cena = ModoJogo Resumed} = return $ e {cena = Debug}
+reageEventosModoJogo  (EventKey (Char 'd') Down _ _) e@ImmutableTowers {cena = Debug} = return $ e {cena = ModoJogo Resumed}
+{-| Caso geral-}
 reageEventosModoJogo _ e = return $ e
 
 {-| _reageEventosLoja_
-
     Função que reage a eventos na loja do jogo.
  -}
-{-| Navegação loja -}
-reageEventosLoja (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = ModoJogo (Loja Torre1)} = return $ e {cena = ModoJogo (Loja Torre2)}
-reageEventosLoja (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = ModoJogo (Loja Torre2)} = return $ e {cena = ModoJogo (Loja Torre3)}
-reageEventosLoja (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = ModoJogo (Loja Torre3)} = return $ e {cena = ModoJogo (Loja Torre1)}
-reageEventosLoja (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = ModoJogo (Loja Torre1)} = return $ e {cena = ModoJogo (Loja Torre3)}
-reageEventosLoja (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = ModoJogo (Loja Torre2)} = return $ e {cena = ModoJogo (Loja Torre1)}
-reageEventosLoja (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = ModoJogo (Loja Torre3)} = return $ e {cena = ModoJogo (Loja Torre2)}
-{-| Ativa a cena "AdicionaTorre" que permite que o jogador selecione o local que quer posicionar a torre -}
-reageEventosLoja (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = ModoJogo (Loja Torre1)} = return $ e {cena = AdicionaTorre Torre1 (4,4)}
-reageEventosLoja (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = ModoJogo (Loja Torre2)} = return $ e {cena = AdicionaTorre Torre2 (4,4)}
-reageEventosLoja (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = ModoJogo (Loja Torre3)} = return $ e {cena = AdicionaTorre Torre3 (4,4)}
-{-| Sai da loja -}
-reageEventosLoja (EventKey (Char 'l') Down _ _) e@Estado {cena = ModoJogo (Loja _)} = return $ e {cena = ModoJogo Resumed}
+reageEventosLoja :: Event -> ImmutableTowers -> IO ImmutableTowers
+{-| 
+    Navega entre as opções de torres disponíveis
+    - Torre1: Torre 1
+    - Torre2: Torre 2
+    - Torre3: Torre 3
+-}
+reageEventosLoja (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja Torre1)} = return $ e {cena = ModoJogo (Loja Torre2)}
+reageEventosLoja (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja Torre2)} = return $ e {cena = ModoJogo (Loja Torre3)}
+reageEventosLoja (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja Torre3)} = return $ e {cena = ModoJogo (Loja Torre1)}
+reageEventosLoja (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja Torre1)} = return $ e {cena = ModoJogo (Loja Torre3)}
+reageEventosLoja (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja Torre2)} = return $ e {cena = ModoJogo (Loja Torre1)}
+reageEventosLoja (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja Torre3)} = return $ e {cena = ModoJogo (Loja Torre2)}
+{-| 
+    Ativa a cena "AdicionaTorre" que permite que o jogador selecione o local que quer posicionar a torre 
+-}
+reageEventosLoja (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja Torre1)} = return $ e {cena = AdicionaTorre Torre1 (4,4)}
+reageEventosLoja (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja Torre2)} = return $ e {cena = AdicionaTorre Torre2 (4,4)}
+reageEventosLoja (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja Torre3)} = return $ e {cena = AdicionaTorre Torre3 (4,4)}
+{-| 
+    Sai da loja 
+-}
+reageEventosLoja (EventKey (Char 'l') Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja _)} = return $ e {cena = ModoJogo Resumed}
+reageEventosLoja (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja _)} = return $ e {cena = ModoJogo Resumed}
+{-| Caso geral -}
 reageEventosLoja _ e = return $ e
 
-{-| _reageEventosAdicionaTorre_
-
-    Função que reage a eventos no modo de adicionar torres.
- -}
-{-| Navegação pelo mapa na cena "AdicionaTorre" -}
-reageEventosAdicionaTorre (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = AdicionaTorre t (x, y)}
-    | validaPosicaoObjeto (fromIntegral x,fromIntegral y+1) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = AdicionaTorre t (x,y + 1)}
+{-| 
+    'reageEventosAdicionaTorre' reage a eventos na cena "AdicionaTorre".
+-}
+reageEventosAdicionaTorre :: Event -> ImmutableTowers -> IO ImmutableTowers
+{-| 
+    Navega entre as posições disponíveis para posicionar a torre 
+-}
+reageEventosAdicionaTorre (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = AdicionaTorre torre (x, y)}
+    | validaPosicaoObjeto (fromIntegral x,fromIntegral y+1) (mapaJogo (jogo e)) = return $ e {cena = AdicionaTorre torre (x,y + 1)}
     | otherwise = return $ e
-reageEventosAdicionaTorre (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = AdicionaTorre t (x, y)}
-    | validaPosicaoObjeto (fromIntegral x,fromIntegral y-1) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = AdicionaTorre t (x,y - 1)}
+reageEventosAdicionaTorre (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = AdicionaTorre torre (x, y)}
+    | validaPosicaoObjeto (fromIntegral x,fromIntegral y-1) (mapaJogo (jogo e)) = return $ e {cena = AdicionaTorre torre (x,y - 1)}
     | otherwise = return $ e
-reageEventosAdicionaTorre (EventKey (SpecialKey KeyRight) Down _ _) e@Estado {cena = AdicionaTorre t (x, y)} 
-    | validaPosicaoObjeto (fromIntegral x+1,fromIntegral y) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = AdicionaTorre t (x+1,y)}
+reageEventosAdicionaTorre (EventKey (SpecialKey KeyRight) Down _ _) e@ImmutableTowers {cena = AdicionaTorre torre (x, y)} 
+    | validaPosicaoObjeto (fromIntegral x+1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = AdicionaTorre torre (x+1,y)}
     | otherwise = return $ e
-reageEventosAdicionaTorre (EventKey (SpecialKey KeyLeft) Down _ _) e@Estado {cena = AdicionaTorre t (x, y)} 
-    | validaPosicaoObjeto (fromIntegral x-1,fromIntegral y) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = AdicionaTorre t (x-1,y)}
+reageEventosAdicionaTorre (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTowers {cena = AdicionaTorre torre (x, y)} 
+    | validaPosicaoObjeto (fromIntegral x-1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = AdicionaTorre torre (x-1,y)}
     | otherwise = return $ e
-{-| Compra a torre -}
-reageEventosAdicionaTorre (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = AdicionaTorre t (x, y), immutableTowers = ImmutableTowers { jogo = jogo }} 
+{-| 
+    Compra a torre, adiciona-a ao jogo e subtrai o custo da torre aos créditos da base 
+-}
+reageEventosAdicionaTorre (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = AdicionaTorre torre (x, y), jogo = jogo} 
     | adicionaTorreValida (fromIntegral x, fromIntegral y) (mapaJogo jogo) newTorres creditos custo = return $ e { 
-        cena = ModoJogo Resumed,
-        immutableTowers = ImmutableTowers {
-            jogo = jogo { 
-                torresJogo = newTorres,
-                baseJogo = (baseJogo jogo) { creditosBase = creditos - custo }
+                cena = ModoJogo Resumed,
+                jogo = Jogo {
+                    torresJogo = newTorres,
+                    baseJogo = (baseJogo jogo) { creditosBase = creditos - custo },
+                    mapaJogo = mapaJogo jogo,
+                    portaisJogo = portaisJogo jogo,
+                    inimigosJogo = inimigosJogo jogo
+                } 
+ 
             }
-        }
-    }
     | otherwise = return $ e
     where
-        newTorres = insereTorreNaLista (torresJogo jogo) (fromIntegral x, fromIntegral y) (projetilNovaTorre t)
+        newTorres = insereTorreNaLista (torresJogo jogo) (fromIntegral x, fromIntegral y) (projetilNovaTorre torre)
         creditos = creditosBase (baseJogo jogo)
-        custo = custoTorre t
-reageEventosAdicionaTorre (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {cena = AdicionaTorre t _} = return $ e {cena = ModoJogo (Loja t)} 
-{-| Caso geral de "reageEventosAdicionaTorre" -}
+        custo = custoTorre torre
+{-| 
+    Sai da cena "AdicionaTorre" e volta à loja
+-}
+reageEventosAdicionaTorre (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = AdicionaTorre torre _} = return $ e {cena = ModoJogo (Loja torre)} 
+{-| Caso geral -}
 reageEventosAdicionaTorre _ e = return $ e
 
 
-{- reageEventosEditorDeMapas 
+{-|
+    'reageEventosEditorDeMapas' reage a eventos no editor de mapas.
+-}
+reageEventosEditorDeMapas :: Event -> ImmutableTowers -> IO ImmutableTowers
+{-| 
+    Navega entre as opções disponíveis no editor de mapas
+    - Terra: Adiciona terreno de terra
+    - Relva: Adiciona terreno de relva
+    - Agua: Adiciona terreno de água
+    - Torre1: Adiciona torre 1
+    - Torre2: Adiciona torre 2
+    - Torre3: Adiciona torre 3
+    - Base: Adiciona base
+    - Portal: Adiciona portal
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno Terra)} = return $ e {cena = EditorDeMapas (OpcaoEditorTerreno Relva)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno Relva)} = return $ e {cena = EditorDeMapas (OpcaoEditorTerreno Agua)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno Agua)} = return $ e {cena = EditorDeMapas (OpcaoEditorTorre Torre1)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTorre Torre1)} = return $ e {cena = EditorDeMapas (OpcaoEditorTorre Torre2)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTorre Torre2)} = return $ e {cena = EditorDeMapas (OpcaoEditorTorre Torre3)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTorre Torre3)} = return $ e {cena = EditorDeMapas OpcaoEditorBase}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas OpcaoEditorBase} = return $ e {cena = EditorDeMapas OpcaoEditorPortal}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas OpcaoEditorPortal} = return $ e {cena = EditorDeMapas (OpcaoEditorTerreno Terra)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno Terra)} = return $ e {cena = EditorDeMapas OpcaoEditorPortal}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas OpcaoEditorPortal} = return $ e {cena = EditorDeMapas OpcaoEditorBase}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas OpcaoEditorBase} = return $ e {cena = EditorDeMapas (OpcaoEditorTorre Torre3)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTorre Torre3)} = return $ e {cena = EditorDeMapas (OpcaoEditorTorre Torre2)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTorre Torre2)} = return $ e {cena = EditorDeMapas (OpcaoEditorTorre Torre1)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTorre Torre1)} = return $ e {cena = EditorDeMapas (OpcaoEditorTerreno Agua)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno Agua)} = return $ e {cena = EditorDeMapas (OpcaoEditorTerreno Relva)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno Relva)} = return $ e {cena = EditorDeMapas (OpcaoEditorTerreno Terra)}
 
-    THIS IS WHERE THE KIDS ARE SEPARATED FROM THE MANS
- -}
+{-|
+   Seleciona o TERRENO escolhido
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno terreno)} = return $ e {cena = EditorDeMapas (AdicionaTerreno terreno (4,4))}
 
-{- Navegação das opções do editor -}
-{- Descer -}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Terra))} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Relva))}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Relva))} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Agua))}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Agua))} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre1))}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre1))} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre2))}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre2))} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre3))}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre3))} = return $ e {cena = EditorDeMapas (Editor OpcaoEditorBase)}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor OpcaoEditorBase)} = return $ e {cena = EditorDeMapas (Editor OpcaoEditorPortal)}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor OpcaoEditorPortal)} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Terra))}
-
-{- Subir -}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Terra))} = return $ e {cena = EditorDeMapas (Editor OpcaoEditorPortal)}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor OpcaoEditorPortal)} = return $ e {cena = EditorDeMapas (Editor OpcaoEditorBase)}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor OpcaoEditorBase)} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre3))}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre3))} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre2))}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre2))} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre1))}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre Torre1))} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Agua))}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Agua))} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Relva))}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Relva))} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTerreno Terra))}
-
-{-| COMANDOS EDITOR ADICIONA TERRA -}
-
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno t))} = return $ e {cena = EditorDeMapas (Editor (AdicionaTerreno t (4,4)))}
-
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaTerreno t (x,y)))} 
-    | validaPosicaoObjeto (fromIntegral x,fromIntegral y+1) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaTerreno t (x, y+1)))}
+{-|
+    Navega entre as posições disponíveis para adicionar o terreno
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTerreno terreno (x,y))} 
+    | validaPosicaoObjeto (fromIntegral x,fromIntegral y+1) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTerreno terreno (x, y+1))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaTerreno t (x,y)))} 
-    | validaPosicaoObjeto (fromIntegral x,fromIntegral y-1) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaTerreno t (x, y-1)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTerreno terreno (x,y))} 
+    | validaPosicaoObjeto (fromIntegral x,fromIntegral y-1) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTerreno terreno (x, y-1))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyRight) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaTerreno t (x,y)))} 
-    | validaPosicaoObjeto (fromIntegral x+1,fromIntegral y) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaTerreno t (x+1, y)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyRight) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTerreno terreno (x,y))} 
+    | validaPosicaoObjeto (fromIntegral x+1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTerreno terreno (x+1, y))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaTerreno t (x,y)))} 
-    | validaPosicaoObjeto (fromIntegral x-1,fromIntegral y) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaTerreno t (x-1, y)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTerreno terreno (x,y))} 
+    | validaPosicaoObjeto (fromIntegral x-1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTerreno terreno (x-1, y))}
     | otherwise = return $ e
 
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaTerreno t (x,y))), immutableTowers = ImmutableTowers { jogo = jogo }} = return $ e { 
-    cena = EditorDeMapas (Editor (OpcaoEditorTerreno t)),
-    immutableTowers = ImmutableTowers {
-        jogo = jogo { 
-            mapaJogo = insereTerrenoNaPosicao (mapaJogo jogo) (x,y) t
-        }
+{-|
+    Efetua a adição do terreno na posição escolhida
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTerreno terreno (x,y)), jogo = jogo} = return $  ImmutableTowers {
+        cena = EditorDeMapas (OpcaoEditorTerreno terreno), 
+        jogo = jogo {
+            mapaJogo = insereTerrenoNaPosicao (mapaJogo jogo) (x,y) terreno
+        },
+        tema = tema e
     }
-}
 
-{-| COMANDOS PARA ADICIONAR TORRES -}
+{-|
+    Seleciona a TORRE escolhida
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTorre torre)} = return $ e {cena = EditorDeMapas (AdicionaTorreEditor torre (4,4))}
 
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTorre t))} = return $ e {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (4,4)))}
-
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x,fromIntegral y+1) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (x, y+1)))}
+{-|
+    Navega entre as posições disponíveis para adicionar a torre
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTorreEditor torre (x,y))}
+    | validaPosicaoObjeto (fromIntegral x,fromIntegral y+1) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTorreEditor torre (x, y+1))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x,fromIntegral y-1) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (x, y-1)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTorreEditor torre (x,y))}
+    | validaPosicaoObjeto (fromIntegral x,fromIntegral y-1) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTorreEditor torre (x, y-1))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyRight) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x+1,fromIntegral y) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (x+1, y)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyRight) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTorreEditor torre (x,y))}
+    | validaPosicaoObjeto (fromIntegral x+1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTorreEditor torre (x+1, y))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x-1,fromIntegral y) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (x-1, y)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTorreEditor torre (x,y))}
+    | validaPosicaoObjeto (fromIntegral x-1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTorreEditor torre (x-1, y))}
     | otherwise = return $ e
 
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaTorreEditor t _))} = return $ e {cena = EditorDeMapas (Editor (OpcaoEditorTorre t))}
+{-|
+    Sai do modo de seleção de posição da torre
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTorreEditor torre (x,y))} = return $ e {cena = EditorDeMapas (OpcaoEditorTorre torre)}
 
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaTorreEditor t (x, y))), immutableTowers = ImmutableTowers { jogo = jogo }} 
+{-|
+    Adiciona a torre escolhida na posição escolhida
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTorreEditor torre (x, y)), jogo = jogo}
     | isValidTower (fromIntegral x, fromIntegral y) (mapaJogo jogo) newTorres = return $ e { 
-        cena = EditorDeMapas (Editor (OpcaoEditorTorre t)),
-        immutableTowers = ImmutableTowers {
-            jogo = jogo { 
-                torresJogo = newTorres
-            }
-        }
-    }
+        cena = EditorDeMapas (OpcaoEditorTorre torre),
+        jogo = jogo { 
+            torresJogo = newTorres
+        }}
     | otherwise = return $ e
     where
-        newTorres = insereTorreNaLista (torresJogo jogo) (fromIntegral x, fromIntegral y) (projetilNovaTorre t)
+        newTorres = insereTorreNaLista (torresJogo jogo) (fromIntegral x, fromIntegral y) (projetilNovaTorre torre)
 
-{-| COMANDOS PARA ADICIONAR BASE -}
+{-|
+    Seleciona a opção BASE
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = EditorDeMapas OpcaoEditorBase} = return $ e {cena = EditorDeMapas (AdicionaBase (4,4))}  
 
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = EditorDeMapas (Editor OpcaoEditorBase)} = return $ e {cena = EditorDeMapas (Editor (AdicionaBase (4,4)))}  
-
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaBase (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x,fromIntegral y+1) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaBase (x, y+1)))}
+{-|
+    Navega entre as posições disponíveis para adicionar a base
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaBase (x,y))}
+    | validaPosicaoObjeto (fromIntegral x,fromIntegral y+1) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaBase (x,y+1))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaBase (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x,fromIntegral y-1) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaBase (x, y-1)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaBase (x,y))}
+    | validaPosicaoObjeto (fromIntegral x,fromIntegral y-1) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaBase (x,y-1))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyRight) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaBase (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x+1,fromIntegral y) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaBase (x+1, y)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyRight) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaBase (x,y))}
+    | validaPosicaoObjeto (fromIntegral x+1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaBase (x+1, y))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaBase (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x-1,fromIntegral y) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaBase (x-1, y)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaBase (x,y))}
+    | validaPosicaoObjeto (fromIntegral x-1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaBase (x-1, y))}
     | otherwise = return $ e
-
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaBase (x, y))), immutableTowers = ImmutableTowers { jogo = jogo }} 
+{-|
+    Adiciona a base na posição escolhida
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaBase (x,y)),jogo = jogo} 
     | validaBase (mapaJogo jogo) (fromIntegral x, fromIntegral y) (creditosBase newBase) = return $ e { 
-        cena = EditorDeMapas (Editor (OpcaoEditorBase)),
-        immutableTowers = ImmutableTowers {
-            jogo = jogo { 
-                baseJogo = newBase
-            }
+        cena = EditorDeMapas (OpcaoEditorBase),
+       jogo = jogo { 
+            baseJogo = newBase
         }
     }
     | otherwise = return $ e
     where
         newBase = Base { posicaoBase = (fromIntegral x, fromIntegral y), vidaBase = 100, creditosBase = 100 }
 
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaBase _))} = return $ e {cena = EditorDeMapas (Editor OpcaoEditorBase)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaBase _)} = return $ e {cena = EditorDeMapas OpcaoEditorBase}
 
-{-| COMANDOS PARA ADICIONAR PORTAL -}
-
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = EditorDeMapas (Editor OpcaoEditorPortal)} = return $ e {cena = EditorDeMapas (Editor (AdicionaPortal (4,4)))}
-
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaPortal (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x,fromIntegral y+1) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaPortal (x, y+1)))}
+{-|
+    Seleciona a opção PORTAL
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = EditorDeMapas OpcaoEditorPortal} = return $ e {cena = EditorDeMapas (AdicionaPortal (4,4))}
+{-|
+    Navega entre as posições disponíveis para adicionar o portal
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaPortal (x,y))}
+    | validaPosicaoObjeto (fromIntegral x,fromIntegral y+1) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaPortal (x,y+1))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaPortal (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x,fromIntegral y-1) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaPortal (x, y-1)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaPortal (x,y))}
+    | validaPosicaoObjeto (fromIntegral x,fromIntegral y-1) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaPortal (x,y-1))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyRight) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaPortal (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x+1,fromIntegral y) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaPortal (x+1, y)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyRight) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaPortal (x,y))}
+    | validaPosicaoObjeto (fromIntegral x+1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaPortal (x+1, y))}
     | otherwise = return $ e
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaPortal (x,y)))}
-    | validaPosicaoObjeto (fromIntegral x-1,fromIntegral y) (mapaJogo (jogo (immutableTowers e))) = return $ e {cena = EditorDeMapas (Editor (AdicionaPortal (x-1, y)))}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaPortal (x,y))}
+    | validaPosicaoObjeto (fromIntegral x-1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaPortal (x-1, y))}
     | otherwise = return $ e
-
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaPortal (x, y))), immutableTowers = ImmutableTowers { jogo = jogo }}
+{-|
+    Adiciona o portal na posição escolhida
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaPortal (x,y)), jogo = jogo}
     | validaPortalEditor (x,y) (mapaJogo jogo) = return $ e { 
-        cena = EditorDeMapas (Editor (OpcaoEditorPortal)),
-        immutableTowers = ImmutableTowers {
-            jogo = jogo { 
-                portaisJogo = novosPortaisJogo
-            }
+        cena = EditorDeMapas (OpcaoEditorPortal),
+       jogo = jogo { 
+            portaisJogo = novosPortaisJogo
         }
     }
     | otherwise = return $ e
     where
         novosPortaisJogo = inserePortalNaLista (portaisJogo jogo) (fromIntegral x, fromIntegral y)
-
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {cena = EditorDeMapas (Editor (AdicionaPortal _))} = return $ e {cena = EditorDeMapas (Editor OpcaoEditorPortal)}
-
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@Estado {cena = EditorDeMapas (Editor (OpcaoEditorTerreno _)) } = return $ e {cena = EditorDeMapas (QuitEditor SaveMapa)}
-
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = EditorDeMapas (QuitEditor SaveMapa)} = do
-    saveGame (jogo (immutableTowers e))
+{-|
+    Sai do modo de seleção de posição do portal
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaPortal _)} = return $ e {cena = EditorDeMapas OpcaoEditorPortal}
+{-|
+    Vai para a cena de salvar o mapa
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno _) } = return $ e {cena = SaveGame SaveMapa}
+{-|
+    Salva o mapa
+-}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = SaveGame SaveMapa} = do
+    saveGame (jogo e)
     return $ e {cena = MenuInicial Jogar}
 
 reageEventosEditorDeMapas _ e = return $ e
 
-{-| COMANDOS PARA SALVAR MAPA -}
-
+{-|
+    'reageEventosMenuInicial' reage a eventos na tela de carregamento de jogo.
+-}
+reageEventosLoadGame :: Event -> ImmutableTowers -> IO ImmutableTowers
 {-| Caso geral de "reageEventosEditorDeMapas" -}
 
-reageEventosLoadGame (EventKey (SpecialKey KeyEnter) Down _ _) e@Estado {cena = LoadGame t} = do
-    game <- loadGame t
-    return $ e {immutableTowers = ImmutableTowers game, cena = ModoJogo Resumed}
+reageEventosLoadGame (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = LoadGame save} = do
+    game <- loadGame save
+    return $ e {jogo = game, cena = ModoJogo Resumed}
     
 
 reageEventosLoadGame _ e = return $ e

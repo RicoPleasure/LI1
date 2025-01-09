@@ -8,7 +8,7 @@ Utilitarios necessários para o trabalho com as torres no Jogo. Estes utilitario
 -}
 module Utils.UtilitariosTorre where
 
-import LI12425
+import LI12425 
 import Utils.Utilitarios
 
 
@@ -67,7 +67,6 @@ validaTorre mapa (Torre {posicaoTorre = pos, alcanceTorre = alcance, rajadaTorre
 verificaCollisionTorres :: [Torre] -> Bool  
 verificaCollisionTorres torres = verificaDuplosPos (converteTorresEmListaPos torres)
 
-
 {-|
   'converteTorresEmListaPos' converte uma lista de objetos do tipo 'Torre' em uma lista do tipo 'Posicao' ou seja extrai as respetivas posições para uma coleção
 
@@ -80,15 +79,52 @@ verificaCollisionTorres torres = verificaDuplosPos (converteTorresEmListaPos tor
 converteTorresEmListaPos :: [Torre] -> [Posicao]
 converteTorresEmListaPos = map (\(Torre {posicaoTorre = pos} ) -> pos)
 
+
+{-|  
+  A função 'adicionaTorreValida' verifica se é possível adicionar uma torre a um mapa.
+
+  ==__Validações__
+  * Verificação de que a 'Torre' se encontra num bloco do tipo 'Relva'
+  * Verificação de que não existe colisão entre as torres
+  * Verificação de que o jogador tem créditos suficientes para adicionar a torre
+
+  ==__Exemplos de utilização__
+  >>> adicionaTorreValida (0,0) [[Relva]] [] 100 100
+  True
+  >>> adicionaTorreValida (0,0) [[Relva]] [Torre {posicaoTorre = (0,0)}] 100 100
+  False
+  >>> adicionaTorreValida (0,0) [[Terra]] [] 100 100
+  False
+-}
 adicionaTorreValida :: Posicao -> Mapa -> [Torre] -> Creditos -> Creditos -> Bool
 adicionaTorreValida (x,y) mapa torres creditos custoTorre = checkPositionRelva (x,y) mapa && not (verificaCollisionTorres torres) && creditos >= custoTorre
 
+{-| 
+  A função 'insereTorreNaLista' insere uma torre numa lista de torres.
+
+  ==__Exemplos de utilização__
+  >>> insereTorreNaLista [] (0,0) Fogo
+  [Torre {posicaoTorre = (0,0), danoTorre = 20, alcanceTorre = 30, rajadaTorre = 1, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = 5}}]
+  >>> insereTorreNaLista [Torre {posicaoTorre = (0,0), danoTorre = 20, alcanceTorre = 30, rajadaTorre = 1, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = 5}}] (1,1) Resina
+  [Torre {posicaoTorre = (0,0), danoTorre = 20, alcanceTorre = 30, rajadaTorre = 1, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = 5}},Torre {posicaoTorre = (1,1), danoTorre = 30, alcanceTorre = 20, rajadaTorre = 2, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Resina, duracaoProjetil = 5}}]
+-}
 insereTorreNaLista :: [Torre] -> Posicao -> TipoProjetil -> [Torre]  
 insereTorreNaLista torres (x,y) tipo = case tipo of 
-    Fogo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 20, alcanceTorre = 30, rajadaTorre = 1, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = 5}}]
-    Resina -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 30, alcanceTorre = 20, rajadaTorre = 2, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Resina, duracaoProjetil = 5}}]
-    Gelo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 20, alcanceTorre = 15, rajadaTorre = 3, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Gelo, duracaoProjetil = 5}}]
+    Fogo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 20, alcanceTorre = 5, rajadaTorre = 3, cicloTorre = 5, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = 5}}]
+    Resina -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 30, alcanceTorre = 5, rajadaTorre = 3, cicloTorre = 5, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Resina, duracaoProjetil = 2}}]
+    Gelo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 20, alcanceTorre = 5, rajadaTorre = 3, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Gelo, duracaoProjetil = 1}}]
 
+{-|
+  A função 'custoTorre' devolve o custo de uma torre conforme o seu tipo.
+
+  ==__Exemplos de utilização__
+  >>> custoTorre Torre1 
+  100
+  >>> custoTorre Torre2
+  200
+  >>> custoTorre Torre3
+  400
+-}
 custoTorre :: TipoTorre -> Creditos
 custoTorre tipoTorre = case tipoTorre of
     Torre1 -> 100
