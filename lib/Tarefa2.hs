@@ -98,4 +98,3 @@ ganhouJogo (Jogo {baseJogo = Base {vidaBase}, inimigosJogo = inimigos, portaisJo
 -}
 perdeuJogo :: Jogo -> Bool
 perdeuJogo (Jogo {baseJogo = Base {vidaBase}}) = vidaBase <= 0
-

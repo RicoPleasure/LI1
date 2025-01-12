@@ -7,6 +7,38 @@ import Utils.UtilitariosPortal
 import TData.TDataTarefa2
 import Control.Exception (try, evaluate, SomeException)
 
+import Test.HUnit
+
+-- Test Jogo não terminou
+testJogoNaoTerminou :: Test
+testJogoNaoTerminou = TestCase $ do
+  let jogo = Jogo { baseJogo = Base {vidaBase = 0}, inimigosJogo = [], portaisJogo = [] }
+  assertBool "Test Jogo Não Terminou" (terminouJogo jogo == True)
+
+-- Test do Jogo ganhou
+testJogoGanhou :: Test
+testJogoGanhou = TestCase $ do
+  let jogo = Jogo { baseJogo = Base {vidaBase = 10}, inimigosJogo = [], portaisJogo = [] }
+  assertBool "Test Jogo Ganhou" (ganhouJogo jogo == True)
+
+-- Test do Jogo não ganhou
+testJogoNaoGanhou :: Test
+testJogoNaoGanhou = TestCase $ do
+  let jogo = Jogo { baseJogo = Base {vidaBase = 10}, inimigosJogo = [Inimigo {vidaInimigo = 10}], portaisJogo = [] }
+  assertBool "Test Jogo Não Ganhou" (ganhouJogo jogo == False)
+
+-- Test do Jogo perdeu
+testJogoPerdeu :: Test
+testJogoPerdeu = TestCase $ do
+  let jogo = Jogo { baseJogo = Base {vidaBase = 0}, inimigosJogo = [], portaisJogo = [] }
+  assertBool "Test Jogo Perdeu" (perdeuJogo jogo == True)
+
+-- Test do Jogo não perdeu
+testJogoNaoPerdeu :: Test
+testJogoNaoPerdeu = TestCase $ do
+  let jogo = Jogo { baseJogo = Base {vidaBase = 10}, inimigosJogo = [], portaisJogo = [] }
+  assertBool "Test Jogo Não Perdeu" (perdeuJogo jogo == False)
+
 -- Inimigo sem projeteis
 testInimigoSemProjAtingGelo :: Test
 testInimigoSemProjAtingGelo = TestCase $ do
@@ -176,6 +208,7 @@ testesTarefa2 =
         testInimigoComResinaAtingFogo,
         testInimigoComResinaAtingGelo,
 
+<<<<<<< HEAD
         -- testes inimigosNoAlcance
         testInimigosNoAlcance,
 
@@ -183,4 +216,27 @@ testesTarefa2 =
         testeNaoTerminouJogo,
         testeTerminouJogo
         
+=======
+<<<<<<< HEAD
+        -- testes terminouJogo
+        testJogoNaoTerminou,
+        
+        -- testes ganhouJogo
+        testJogoGanhou,
+        testJogoNaoGanhou,
+
+        -- testes perdeuJogo
+        testJogoPerdeu,
+        testJogoNaoPerdeu
+=======
+        -- testes ativaInimigo
+        testPortalComOndaAtivaEInimigoParaAtivar,
+        testPortalSemOndaAtiva,
+        testPortalComOndaAtivaSemInimigoParaAtivar,
+        testPortalMultOndas,
+
+        -- testes extra
+        testInsertOndaAtivaInOndas
+>>>>>>> main
+>>>>>>> 83d13f644be0830c75088d2ecc0934a12bc245d4
       ]
