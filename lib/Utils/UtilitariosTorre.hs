@@ -110,9 +110,9 @@ adicionaTorreValida (x,y) mapa torres creditos custoTorre = checkPositionRelva (
 -}
 insereTorreNaLista :: [Torre] -> Posicao -> TipoProjetil -> [Torre]  
 insereTorreNaLista torres (x,y) tipo = case tipo of 
-    Fogo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 20, alcanceTorre = 5, rajadaTorre = 3, cicloTorre = 5, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = 5}}]
-    Resina -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 30, alcanceTorre = 5, rajadaTorre = 3, cicloTorre = 5, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Resina, duracaoProjetil = 2}}]
-    Gelo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 20, alcanceTorre = 5, rajadaTorre = 3, cicloTorre = 2, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Gelo, duracaoProjetil = 1}}]
+    Fogo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 40, alcanceTorre = 2, rajadaTorre = 3, cicloTorre = 4, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = Finita 5}}]
+    Resina -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 30, alcanceTorre = 3, rajadaTorre = 3, cicloTorre = 5, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Resina, duracaoProjetil = Infinita}}]
+    Gelo -> torres ++ [Torre {posicaoTorre = (x,y), danoTorre = 20, alcanceTorre = 5, rajadaTorre = 3, cicloTorre = 5, tempoTorre = 0, projetilTorre = Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 1}}]
 
 {-|
   A função 'custoTorre' devolve o custo de uma torre conforme o seu tipo.
@@ -127,6 +127,6 @@ insereTorreNaLista torres (x,y) tipo = case tipo of
 -}
 custoTorre :: TipoTorre -> Creditos
 custoTorre tipoTorre = case tipoTorre of
-    Torre1 -> 100
-    Torre2 -> 200
-    Torre3 -> 400
+    Torre1 -> 200
+    Torre2 -> 700
+    Torre3 -> 300

@@ -17,7 +17,7 @@ module LI12425 (
     -- ** Entidades
     Base(..), Torre(..), Portal(..), Inimigo(..), TipoProjetil(..), Projetil(..),
     -- ** Jogo
-    Jogo(..), Cena(..), Onda(..), Loja, TipoTorre(..), OpcaoMenuInicial(..), OpcaoContinueNew(..), SelectGameMode(..), SelectLevel(..), OpcaoSaveMap(..), EstadoEditor(..), OpcaoModoJogo(..), Config(..), Themes(..), TelaFinal(..) ,SpritePaths,
+    Jogo(..), Cena(..), Onda(..), Loja, TipoTorre(..), OpcaoMenuInicial(..), OpcaoContinueNew(..), SelectGameMode(..), SelectLevel(..), OpcaoSaveMap(..), EstadoEditor(..), OpcaoModoJogo(..), Config(..), Themes(..), TelaFinal(..) ,SpritePaths, OpcaoVitoria(..), OpcaoDerrota(..),
     -- * Funções auxiliares
     geraAleatorios,
     -- * Funções para instancia Num Duração
@@ -212,7 +212,7 @@ data OpcaoContinueNew = ContinueGame
                       | NewGame
 
 -- | Modos de jogo disponíveis.
-data SelectGameMode = Levels 
+data SelectGameMode = Levels
                     | Creator
 
 -- | Níveis disponíveis para jogo.
@@ -241,11 +241,11 @@ data TelaFinal = Vitoria OpcaoVitoria
                | Derrota OpcaoDerrota
 
 -- | Opções disponíveis ao ganhar um jogo.
-data OpcaoVitoria = Menu 
+data OpcaoVitoria = MenuVitoria
                   | NextLevel
 
 -- | Opções disponíveis ao perder um jogo.
-data OpcaoDerrota = Menu
+data OpcaoDerrota = MenuDerrota
                   | TentarNovamente
 
 -- | Opções de configuração disponíveis.

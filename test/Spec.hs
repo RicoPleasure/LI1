@@ -6,7 +6,12 @@ import LI12425
 import Tarefa1Spec
 import Tarefa2Spec
 import Tarefa3Spec
+import UtilitariosSpec
+import UtilitariosTorreSpec
+import UtilitariosInimigosSpec
 import Utils.Utilitarios
+import Utils.UtilitariosTorre
+import Utils.UtilitariosInimigo
 import Control.Exception (SomeException, evaluate, try, displayException)
 import Data.List (isInfixOf)
 
@@ -53,4 +58,4 @@ testSuite =
       ]
 
 main :: IO ()
-main = runTestTTAndExit $ test [testSuite, testesTarefa1, testesTarefa2, testesTarefa3]
+main = runTestTTAndExit $ test [testSuite, testesTarefa1, testesTarefa2, testesTarefa3, testesUtilitarios, testesUtilitariosTorre, testesUtilitariosInimigos]

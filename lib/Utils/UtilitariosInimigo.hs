@@ -11,6 +11,7 @@ module Utils.UtilitariosInimigo where
 import LI12425
 import Utils.Utilitarios
 import Utils.UtilitariosTorre
+import Utils.UtilitariosPortal
 import Data.List
 
 {-| 
@@ -193,29 +194,8 @@ converteInimigosEmListaPos = map (\(Inimigo {posicaoInimigo = pos} ) -> pos)
 -}
 handleHitByProjetil :: Inimigo -> Projetil -> Inimigo
 handleHitByProjetil inimigo projetil = inimigo {
-  projeteisInimigo = handleNewProjetil (projeteisInimigo inimigo) projetil,
-  velocidadeInimigo = newVelocidade,
-  vidaInimigo = newDano
-} 
-  where
-    (newDano, newVelocidade) = applyEffect projetil (vidaInimigo inimigo) (velocidadeInimigo inimigo)
-
-{-|
-  'applyEffect' aplica o efeito de um 'Projetil' a um 'Inimigo', retornando a nova vida e velocidade do 'Inimigo' após a aplicação do efeito.
-
-  ==__Exemplos de utilização__
-  >>> applyEffect (Projetil {tipoProjetil = Fogo}) 10 10
-  (0.0,10.0)
-  >>> applyEffect (Projetil {tipoProjetil = Resina}) 10 10
-  (10.0,5.0)
-  >>> applyEffect (Projetil {tipoProjetil = Gelo}) 10 10
-  (10.0,5.0)
--}
-applyEffect :: Projetil -> Float -> Float -> (Float, Float)
-applyEffect p@Projetil {tipoProjetil = Fogo} vida velocidade = (vida - 10, velocidade)
-applyEffect p@Projetil {tipoProjetil = Resina} vida velocidade = (vida, velocidade * 0.5)
-applyEffect p@Projetil {tipoProjetil = Gelo} vida velocidade = (vida, velocidade * 0)
-
+  projeteisInimigo = handleNewProjetil (projeteisInimigo inimigo) projetil
+}
 
 {-| 
   'handleNewProjetil' adiciona um novo 'Projetil' à lista de projeteis de um 'Inimigo'
@@ -225,15 +205,34 @@ applyEffect p@Projetil {tipoProjetil = Gelo} vida velocidade = (vida, velocidade
 -}
 handleNewProjetil :: [Projetil] -> Projetil -> [Projetil]
 handleNewProjetil [] p = [p]
-handleNewProjetil [Projetil {tipoProjetil = Fogo, duracaoProjetil = dur}] (Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew}]
-handleNewProjetil [Projetil {tipoProjetil = Resina, duracaoProjetil = dur}] (Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}]
-handleNewProjetil [Projetil {tipoProjetil = Gelo, duracaoProjetil = dur}] (Projetil {tipoProjetil = Gelo, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Gelo, duracaoProjetil = durNew}]
-handleNewProjetil [Projetil {tipoProjetil = Fogo, duracaoProjetil = dur}] (Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Fogo, duracaoProjetil = dur}, Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}]
-handleNewProjetil [Projetil {tipoProjetil = Resina, duracaoProjetil = dur}] (Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew}, Projetil {tipoProjetil = Resina, duracaoProjetil = dur}]
+{-| Fogo com Fogo aumenta a duração de Fogo -}
+handleNewProjetil [Projetil {tipoProjetil = Fogo, duracaoProjetil = dur}] (Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Fogo, duracaoProjetil = dur+durNew}]
+{-| Resina com Resina
+  ==_Observações_==
+    * Como a duração do projétil do tipo Resina é Infinita, a duração mantém-se Infinita
+-}
+handleNewProjetil [Projetil {tipoProjetil = Resina, duracaoProjetil = dur}] (Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Resina, duracaoProjetil = dur+durNew}]
+{-| Gelo com Gelo aumenta a duração de Gelo -}
+handleNewProjetil [Projetil {tipoProjetil = Gelo, duracaoProjetil = dur}] (Projetil {tipoProjetil = Gelo, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Gelo, duracaoProjetil = dur+durNew}]
+
+{-| Fogo com Resina aumenta a duração de Fogo -}
+handleNewProjetil [Projetil {tipoProjetil = Fogo, duracaoProjetil = dur}] (Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Fogo, duracaoProjetil = dur * 2}]
+
+{-| Resina com Fogo aumenta a duração de Fogo -}
+handleNewProjetil [Projetil {tipoProjetil = Resina, duracaoProjetil = dur}] (Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Fogo, duracaoProjetil = durNew * 2}]
+
+{-| Fogo com Gelo apenas adiciona o novo projétil -}
+
+{-| Gelo com Resina apenas adiciona o novo projétil -}
 handleNewProjetil [Projetil {tipoProjetil = Gelo, duracaoProjetil = dur}] (Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Gelo, duracaoProjetil = dur}, Projetil {tipoProjetil = Resina, duracaoProjetil = durNew}]
+
+{-| Resina com Gelo apenas adiciona o novo projétil -}
 handleNewProjetil [Projetil {tipoProjetil = Resina, duracaoProjetil = dur}] (Projetil {tipoProjetil = Gelo, duracaoProjetil = durNew}) = [Projetil {tipoProjetil = Gelo, duracaoProjetil = durNew}, Projetil {tipoProjetil = Resina, duracaoProjetil = dur}]
+
+{-| Fogo e Gelo anulam-se -}
 handleNewProjetil [Projetil {tipoProjetil = Fogo}] (Projetil {tipoProjetil = Gelo}) = []
 handleNewProjetil [Projetil {tipoProjetil = Gelo}] (Projetil {tipoProjetil = Fogo}) = []
+
 handleNewProjetil l _ = l
 
 {-|
@@ -247,7 +246,7 @@ handleNewProjetil l _ = l
 -}
 inimigoVivo :: Inimigo -- ^ Inimigo 
             -> Bool -- ^ Bool
-inimigoVivo (Inimigo {vidaInimigo = vida}) = vida > 0
+inimigoVivo (Inimigo {vidaInimigo = vida}) = vida >= 0
 
 {-|
     A função 'calculaNovaPosicao' é responsável por calcular a nova posição de um 'Inimigo' com o passar do 'Tempo'.
@@ -258,45 +257,46 @@ inimigoVivo (Inimigo {vidaInimigo = vida}) = vida > 0
     >>> calculaNovaPosicao Norte (0,0) [] 1 2
     (0.0,-2.0)
 -}
-calculaNovaPosicao :: Direcao -- ^ Direção
+calculaNovaPosicao :: [Projetil] 
+                   -> Direcao -- ^ Direção
                    -> Posicao -- ^ Posição
                    -> Mapa -- ^ Mapa
                    -> Float -- ^ Velocidade
                    -> Float -- ^ Tempo
                    -> Posicao -- ^ Nova Posição
-calculaNovaPosicao dir (x, y) _ v t = case dir of
+calculaNovaPosicao ps dir (x, y) _ v t = case map tipoProjetil ps of 
+  [Resina] ->  case dir of
+    Norte -> (x, y - v * t * 0.5)
+    Sul   -> (x, y + v * t * 0.5)
+    Este  -> (x + v * t * 0.5, y)
+    Oeste -> (x - v * t * 0.5, y)
+  [Gelo] -> case dir of 
+    Norte -> (x, y - v * t * 0)
+    Sul   -> (x, y + v * t * 0)
+    Este  -> (x + v * t * 0, y)
+    Oeste -> (x - v * t * 0, y)
+  [Gelo, Resina] -> case dir of
+    Norte -> (x, y - v * t * 0)
+    Sul   -> (x, y + v * t * 0)
+    Este  -> (x + v * t * 0, y)
+    Oeste -> (x - v * t * 0, y)
+  [Resina, Gelo] -> case dir of 
+    Norte -> (x, y - v * t * 0)
+    Sul   -> (x, y + v * t * 0)
+    Este  -> (x + v * t * 0, y)
+    Oeste -> (x - v * t * 0, y)
+  [] -> case dir of
     Norte -> (x, y - v * t)
     Sul   -> (x, y + v * t)
     Este  -> (x + v * t, y)
     Oeste -> (x - v * t, y)
+  _ -> case dir of 
+    Norte -> (x, y - v * t)
+    Sul   -> (x, y + v * t)
+    Este  -> (x + v * t, y)
+    Oeste -> (x - v * t, y)
+ 
 
-{-|
-    A função 'calculaNovaDirecao' é responsável por calcular a nova direção de um 'Inimigo' com o passar do 'Tempo'.
-
-    ==__Exemplos de utilização__
-    >>> calculaNovaDirecao Norte [] (0,0) 1 2
-    Norte
-    >>> calculaNovaDirecao Norte [] (0,0) 1 2
-    Norte
--}
-calculaNovaDirecao :: Direcao -- ^ Direção
-                   -> Mapa -- ^ Mapa
-                   -> Posicao -- ^ Posição
-                   -> Float -- ^ Velocidade
-                   -> Float -- ^ Tempo
-                   -> Direcao -- ^ Nova Direção
-calculaNovaDirecao dir mapa (x, y) v t
-    | not (isValidPos novaPos mapa dir && isTerra novaPos mapa dir) = case filter isValidAndTerra [Norte, Sul, Este, Oeste] of
-        (newDir:_) -> newDir
-        []         -> dir
-    | otherwise = dir
-    where
-        novaPos = proximaPosicao dir (x, y) v t
-        isValidAndTerra d = let pos = proximaPosicao d (x, y) v t in isValidPos pos mapa d && isTerra pos mapa d && d /= oposta dir && pos /= novaPos
-        oposta Norte = Sul
-        oposta Sul   = Norte
-        oposta Este  = Oeste
-        oposta Oeste = Este
 
 {-|
     A função 'handleProjeteisInimigo' é responsável por atualizar os projéteis de um 'Inimigo' com o passar do 'Tempo'.
@@ -308,8 +308,60 @@ calculaNovaDirecao dir mapa (x, y) v t
     Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 3.0}], velocidadeInimigo = 1.0}
 -}      
 proximaPosicao :: Direcao -> Posicao -> Float -> Float -> Posicao
-proximaPosicao dir (x, y) v t = case dir of
-    Norte -> (x, y - v * t)
-    Sul   -> (x, y + v * t)
-    Este  -> (x + v * t, y)
-    Oeste -> (x - v * t, y)
+proximaPosicao dir (x, y) v t = 
+    case dir of
+      Norte -> (x, y - v * t)
+      Sul   -> (x, y + v * t)
+      Este  -> (x + v * t, y)
+      Oeste -> (x - v * t, y)
+{-|
+    A função 'calculaNovaDirecao' é responsável por calcular a nova direção de um 'Inimigo' com o passar do 'Tempo'.
+
+    ==__Exemplos de utilização__
+    >>> calculaNovaDirecao Norte [] (0,0) 1 2
+    Norte
+    >>> calculaNovaDirecao Norte [] (0,0) 1 2
+    Norte
+-}
+-- | Direction calculation considering valid directions and using BFS if necessary
+calculaNovaDirecao :: Direcao -- ^ Direção
+                   -> Base -- ^ Base
+                   -> Mapa -- ^ Mapa
+                   -> Posicao -- ^ Posição
+                   -> Float -- ^ Velocidade
+                   -> Float -- ^ Tempo
+                   -> Direcao -- ^ Nova Direção
+calculaNovaDirecao dir base mapa (x, y) v t
+    | not (isValidPos novaPos mapa dir && isTerra novaPos mapa dir) = case dirValidas of
+        (newDir:_) -> newDir
+        _ -> dir
+    | otherwise = dir
+    where
+        dirValidas = filter isValidAndTerra [Norte, Sul, Este, Oeste]
+        novaPos = proximaPosicao dir (x, y) v t
+        isValidAndTerra d = let pos = proximaPosicao d (x, y) v t in isValidPos pos mapa d && isTerra pos mapa d && d /= oposta dir && pos /= novaPos
+        oposta Norte = Sul
+        oposta Sul   = Norte
+        oposta Este  = Oeste
+        oposta Oeste = Este
+
+{-|
+    A função 'inimigoChegouBase' verifica se um 'Inimigo' chegou à 'Base'.
+
+    ==__Exemplos de utilização__
+    >>> inimigoChegouBase (Inimigo {posicaoInimigo = (0,0)}) (Base {posicaoBase = (0,0)})
+    True
+    >>> inimigoChegouBase (Inimigo {posicaoInimigo = (0,0)}) (Base {posicaoBase = (1,1)})
+    False
+-}
+inimigoChegouBase :: Inimigo -- ^ Inimigo 
+                  -> Base -- ^ Base
+                  -> Bool -- ^ Bool
+inimigoChegouBase (Inimigo {posicaoInimigo = (xInimigo,yInimigo)}) (Base {posicaoBase = (xBase,yBase)}) = 
+    (round yInimigo) == (round yBase) && (round xInimigo) == (round xBase)
+
+
+
+filtraInimigosVivos :: [Inimigo] -> [Inimigo]
+filtraInimigosVivos = filter (\inimigo -> vidaInimigo inimigo > 0)
+

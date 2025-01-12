@@ -16,7 +16,7 @@ testInimigoSemProjAtingGelo = TestCase $ do
       assertFailure "Ocorreu um erro na função testInimigoSemProjAtingGelo"
     Right (Inimigo {vidaInimigo = vida, projeteisInimigo = proj}) ->
       assertBool "Test Proj. Gelo Inimigo sem Proj."
-                 (vida == (-5) && length proj == 1 && tipoProjetil (head proj) == Gelo)
+                 (vida == 80 && length proj == 1 && tipoProjetil (head proj) == Gelo)
 
 testInimigoSemProjAtingFogo :: Test
 testInimigoSemProjAtingFogo = TestCase $ do
@@ -26,8 +26,8 @@ testInimigoSemProjAtingFogo = TestCase $ do
       assertFailure "Ocorreu um erro na função testInimigoSemProjAtingFogo"
     Right (Inimigo {vidaInimigo = vida, projeteisInimigo = proj}) ->
       assertBool "Test Proj. Fogo Inimigo sem Proj."
-                 (vida == (-5) && length proj == 1 && tipoProjetil (head proj) == Fogo)
-
+                 (vida == 60 && length proj == 1 && tipoProjetil (head proj) == Fogo)
+ 
 testInimigoSemProjAtingResina :: Test
 testInimigoSemProjAtingResina = TestCase $ do
   result <- try (evaluate (atingeInimigo torreResina inimigoSemProjeteis)) :: IO (Either SomeException Inimigo)
@@ -36,7 +36,8 @@ testInimigoSemProjAtingResina = TestCase $ do
       assertFailure "Ocorreu um erro na função testInimigoSemProjAtingResina"
     Right (Inimigo {vidaInimigo = vida, projeteisInimigo = proj}) ->
       assertBool "Test Proj. Resina Inimigo sem Proj."
-                 (vida == (-5) && length proj == 1 && tipoProjetil (head proj) == Resina)
+                 (vida == 70 && length proj == 1 && tipoProjetil (head proj) == Resina)
+
 
 -- Inimigo com Fogo
 testInimigoComFogoAtingResina :: Test
@@ -47,7 +48,7 @@ testInimigoComFogoAtingResina = TestCase $ do
       assertFailure "Ocorreu um erro na função testInimigoComFogoAtingResina"
     Right (Inimigo {vidaInimigo = vida, projeteisInimigo = proj}) ->
       assertBool "Test Proj. Resina Inimigo com Fogo."
-                 (vida == (-5) && length proj == 1 && tipoProjetil (head proj) == Fogo && duracaoProjetil (head proj) == Finita 20)
+                 (vida == 70 && length proj == 1 && tipoProjetil (head proj) == Fogo && duracaoProjetil (head proj) == Finita 10)
 
 testInimigoComFogoAtingGelo :: Test
 testInimigoComFogoAtingGelo = TestCase $ do
@@ -57,7 +58,7 @@ testInimigoComFogoAtingGelo = TestCase $ do
       assertFailure "Ocorreu um erro na função testInimigoComFogoAtingGelo"
     Right (Inimigo {vidaInimigo = vida, projeteisInimigo = proj}) ->
       assertBool "Test Proj. Gelo Inimigo com Fogo."
-                 (vida == (-5) && null proj)
+                 (vida == 80 && null proj)
 
 testInimigoComFogoAtingFogo :: Test
 testInimigoComFogoAtingFogo = TestCase $ do
@@ -67,7 +68,7 @@ testInimigoComFogoAtingFogo = TestCase $ do
       assertFailure "Ocorreu um erro na função testInimigoComFogoAtingFogo"
     Right (Inimigo {vidaInimigo = vida, projeteisInimigo = proj}) ->
       assertBool "Test Proj. Fogo Inimigo com Fogo."
-                 (vida == (-5) && length proj == 1 && tipoProjetil (head proj) == Fogo && duracaoProjetil (head proj) == Finita 20)
+                 (vida == 60 && length proj == 1 && tipoProjetil (head proj) == Fogo && duracaoProjetil (head proj) == Finita 10)
 
 -- Inimigo com Gelo
 testInimigoComGeloAtingFogo :: Test
@@ -78,8 +79,9 @@ testInimigoComGeloAtingFogo = TestCase $ do
       assertFailure "Ocorreu um erro na função testInimigoComGeloAtingFogo"
     Right (Inimigo {vidaInimigo = vida, projeteisInimigo = proj}) ->
       assertBool "Test Proj. Fogo Inimigo com Gelo."
-                 (vida == (-5) && null proj)
+                 (vida == 60 && null proj)
 
+-- Inimigo com Gelo
 testInimigoComGeloAtingGelo :: Test
 testInimigoComGeloAtingGelo = TestCase $ do
   result <- try (evaluate (atingeInimigo torreGelo inimigoComGelo)) :: IO (Either SomeException Inimigo)
@@ -88,8 +90,7 @@ testInimigoComGeloAtingGelo = TestCase $ do
       assertFailure "Ocorreu um erro na função testInimigoComGeloAtingGelo"
     Right (Inimigo {vidaInimigo = vida, projeteisInimigo = proj}) ->
       assertBool "Test Proj. Gelo Inimigo com Gelo."
-                 (vida == (-5) && length proj == 1 && tipoProjetil (head proj) == Gelo && duracaoProjetil (head proj) == Finita 20)
-
+                 (vida == 80 && length proj == 1 && tipoProjetil (head proj) == Gelo && duracaoProjetil (head proj) == Finita 2)
 
 -- Inimigo com Resina
 testInimigoComResinaAtingResina :: Test
@@ -100,7 +101,7 @@ testInimigoComResinaAtingResina = TestCase $ do
       assertFailure "Ocorreu um erro na função testInimigoComResinaAtingResina"
     Right (Inimigo {vidaInimigo = vida, projeteisInimigo = proj}) ->
       assertBool "Test Proj. Resina Inimigo com Resina."
-                 (vida == (-5) && length proj == 1 && tipoProjetil (head proj) == Resina && duracaoProjetil (head proj) == Finita 20)
+                 (vida == 70 && length proj == 1 && tipoProjetil (head proj) == Resina && duracaoProjetil (head proj) == Infinita)
 
 testInimigoComResinaAtingFogo :: Test
 testInimigoComResinaAtingFogo = TestCase $ do
@@ -110,7 +111,7 @@ testInimigoComResinaAtingFogo = TestCase $ do
       assertFailure "Ocorreu um erro na função testInimigoComResinaAtingFogo"
     Right (Inimigo {vidaInimigo = vida, projeteisInimigo = proj}) ->
       assertBool "Test Proj. Fogo Inimigo com Resina."
-                 (vida == (-5) && length proj == 1 && tipoProjetil (head proj) == Fogo && duracaoProjetil (head proj) == Finita 20)
+                 (vida == 60 && length proj == 1 && tipoProjetil (head proj) == Fogo && duracaoProjetil (head proj) == Finita 10)
 
 testInimigoComResinaAtingGelo :: Test
 testInimigoComResinaAtingGelo = TestCase $ do
@@ -120,67 +121,44 @@ testInimigoComResinaAtingGelo = TestCase $ do
       assertFailure "Ocorreu um erro na função testInimigoComResinaAtingGelo"
     Right (Inimigo {vidaInimigo = vida, projeteisInimigo = proj}) ->
       assertBool "Test Proj. Gelo Inimigo com Resina."
-                 (vida == (-5) && length proj == 1 && tipoProjetil (head proj) == Resina && duracaoProjetil (head proj) == Finita 10)
+                 (vida == 80 && length proj == 2 && tipoProjetil (head proj) == Gelo && duracaoProjetil (head proj) == Finita 1)
 
--- Definição testes ativaInimigo
+{- Inimigos no alcance -}
 
-testPortalComOndaAtivaEInimigoParaAtivar :: Test
-testPortalComOndaAtivaEInimigoParaAtivar = TestCase $ do
-  result <- try (evaluate (ativaInimigo portalComOndaAtivaEInimigoParaAtivar [])) :: IO (Either SomeException (Portal, [Inimigo]))
+testInimigosNoAlcance :: Test
+testInimigosNoAlcance = TestCase $ do
+  result <- try (evaluate (inimigosNoAlcance torreGelo [inimigoSemProjeteis, inimigoComFogo, inimigoComGelo, inimigoComResina])) :: IO (Either SomeException [Inimigo])
   case result of
     Left _ ->
-      assertFailure "Ocorreu um erro na função testPortalComOndaAtivaEInimigoParaAtivar"
-    Right (portal, is) ->
-      assertBool "Test portal com onda ativa e inimigo por ativar"
-                 (length is == 1 && null (inimigosOnda onda) && tempoOnda onda == cicloOnda onda && vida == 0)
-      where
-        onda = head (ondasPortal portal)
-        vida = vidaInimigo (head is)
+      assertFailure "Ocorreu um erro na função testInimigosNoAlcance"
+    Right inimigos ->
+      assertBool "Test Inimigos no Alcance"
+                 (length inimigos == 4)
 
-testPortalMultOndas :: Test
-testPortalMultOndas = TestCase $ do
-  result <- try (evaluate (ativaInimigo portalComOndaAtivaEInimigoParaAtivarMultOndas [])) :: IO (Either SomeException (Portal, [Inimigo]))
+{- Terminou jogo -}
+
+testeNaoTerminouJogo :: Test
+testeNaoTerminouJogo = TestCase $ do
+  result <- try (evaluate (terminouJogo jogoValido)) :: IO (Either SomeException Bool)
   case result of
     Left _ ->
-      assertFailure "Ocorreu um erro na função testPortalMultOndas"
-    Right (portal, is) ->
-      assertBool "Test portal com onda ativa e inimigo por ativar (múltiplas ondas)"
-                 (length is == 1 && null (inimigosOnda onda) && tempoOnda onda == cicloOnda onda)
-      where
-        onda = last (ondasPortal portal)
+      assertFailure "Ocorreu um erro na função testeTerminouJogo"
+    Right terminou ->
+      assertBool "Test Terminou Jogo"
+                 (not terminou)
 
-testPortalSemOndaAtiva :: Test
-testPortalSemOndaAtiva = TestCase $ do
-  result <- try (evaluate (ativaInimigo portalSemOndaAtiva [])) :: IO (Either SomeException (Portal, [Inimigo]))
+testeTerminouJogo :: Test
+testeTerminouJogo = TestCase $ do
+  result <- try (evaluate (terminouJogo jogoTerminado)) :: IO (Either SomeException Bool)
   case result of
     Left _ ->
-      assertFailure "Ocorreu um erro na função testPortalSemOndaAtiva"
-    Right (portal, is) ->
-      assertBool "Test portal sem onda ativa"
-                 (null is && length (inimigosOnda (head (ondasPortal portal))) == 1)
+      assertFailure "Ocorreu um erro na função testeTerminouJogo2"
+    Right terminou ->
+      assertBool "Test Terminou Jogo 2"
+                 terminou
 
-testPortalComOndaAtivaSemInimigoParaAtivar :: Test
-testPortalComOndaAtivaSemInimigoParaAtivar = TestCase $ do
-  result <- try (evaluate (ativaInimigo portalComOndaAtivaSemInimigoParaAtivar [])) :: IO (Either SomeException (Portal, [Inimigo]))
-  case result of
-    Left _ ->
-      assertFailure "Ocorreu um erro na função testPortalComOndaAtivaSemInimigoParaAtivar"
-    Right (portal, is) ->
-      assertBool "Test portal com onda ativa sem inimigo por ativar"
-                 (null is && length (inimigosOnda (head (ondasPortal portal))) == 1)
+{- Testes -}
 
--- Teste extra Utils.UtilitariosPortal
-testInsertOndaAtivaInOndas :: Test
-testInsertOndaAtivaInOndas = TestCase $ do
-  result <- try (evaluate (insertOndaAtivaInOndas tOnda [])) :: IO (Either SomeException [Onda])
-  case result of
-    Left _ ->
-      assertFailure "Ocorreu um erro na função testInsertOndaAtivaInOndas"
-    Right os ->
-      assertBool "Teste extra insertOndaAtivaInOndas com lista de Ondas vazia."
-                 (length os == 1)         
-
--- Testsuite Tarefa 2
 testesTarefa2 :: Test
 testesTarefa2 =
   TestLabel "Testes Tarefa 2" $
@@ -198,12 +176,11 @@ testesTarefa2 =
         testInimigoComResinaAtingFogo,
         testInimigoComResinaAtingGelo,
 
-        -- testes ativaInimigo
-        testPortalComOndaAtivaEInimigoParaAtivar,
-        testPortalSemOndaAtiva,
-        testPortalComOndaAtivaSemInimigoParaAtivar,
-        testPortalMultOndas,
+        -- testes inimigosNoAlcance
+        testInimigosNoAlcance,
 
-        -- testes extra
-        testInsertOndaAtivaInOndas
+        -- testes terminouJogo
+        testeNaoTerminouJogo,
+        testeTerminouJogo
+        
       ]

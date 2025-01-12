@@ -33,7 +33,7 @@ fr :: Int
 fr = 30
 
 it :: ImmutableTowers
-it = ImmutableTowers {cena = MenuInicial Jogar ,tema = 0}
+it = ImmutableTowers {cena = MenuInicial Jogar ,tema = 0, slotSave = 0}
     
 loadImage :: FilePath -> IO Picture
 loadImage filePath = do
@@ -74,11 +74,11 @@ main = do
   m08 <- loadImage (path ++ "menu/newgame.png")
   m09 <- loadImage (path ++ "menu/levels.png")
   m10 <- loadImage (path ++ "menu/creator.png")
-  m11 <- loadImage (path ++ "menu/level1.png")
-  m12 <- loadImage (path ++ "menu/level2.png")
-  m13 <- loadImage (path ++ "menu/level3.png")
-  m14 <- loadImage (path ++ "menu/level4.png")
-  m15 <- loadImage (path ++ "menu/level5.png")
+  m11 <- loadImage (path ++ "menu/level-1.png")
+  m12 <- loadImage (path ++ "menu/level-2.png")
+  m13 <- loadImage (path ++ "menu/level-3.png")
+  m14 <- loadImage (path ++ "menu/level-4.png")
+  m15 <- loadImage (path ++ "menu/level-5.png")
   p02 <- loadImage (path ++ "pause/paused.png")
   p03 <- loadImage (path ++ "pause/quit-editor-save.png")
   g02 <- loadImage (path ++ "terreno/grass-blocked.png")
@@ -90,6 +90,36 @@ main = do
   g04 <- loadImage (path ++ "terreno/grass-editor.png")
   d04 <- loadImage (path ++ "terreno/dirt-editor.png")
   w04 <- loadImage (path ++ "terreno/water-editor.png")
+  rb <- loadImage (path ++ "utils/red-bar.png")
+  n0 <- loadImage (path ++ "numbers/0.png")
+  n1 <- loadImage (path ++ "numbers/1.png")
+  n2 <- loadImage (path ++ "numbers/2.png")
+  n3 <- loadImage (path ++ "numbers/3.png")
+  n4 <- loadImage (path ++ "numbers/4.png")
+  n5 <- loadImage (path ++ "numbers/5.png")
+  n6 <- loadImage (path ++ "numbers/6.png")
+  n7 <- loadImage (path ++ "numbers/7.png")
+  n8 <- loadImage (path ++ "numbers/8.png")
+  n9 <- loadImage (path ++ "numbers/9.png")
+  et <- loadImage (path ++ "editor/editor-terra.png")
+  er <- loadImage (path ++ "editor/editor-relva.png")
+  ea <- loadImage (path ++ "editor/editor-agua.png")
+  eres <- loadImage (path ++ "editor/editor-resina.png")
+  efog <- loadImage (path ++ "editor/editor-fogo.png")
+  egel <- loadImage (path ++ "editor/editor-gelo.png")
+  ebase <- loadImage (path ++ "editor/editor-base.png")
+  eport <- loadImage (path ++ "editor/editor-portal.png")
+  eadd <- loadImage (path ++ "editor/editor-adicionar.png")
+  save <- loadImage (path ++ "save/save.png")
+  nsave <- loadImage (path ++ "save/sairsave.png")
+  tema1 <- loadImage (path ++ "opt-temas/tema-padrao.png")
+  tema2 <- loadImage (path ++ "opt-temas/tema-natal.png")
+  tema3 <- loadImage (path ++ "opt-temas/tema-noite.png")
+  vm <- loadImage (path ++ "endgame/vitoria-voltar.png")
+  dm <- loadImage (path ++ "endgame/derrota-voltar.png")
+  vn <- loadImage (path ++ "endgame/vitoria-next.png")
+  dt <- loadImage (path ++ "endgame/derrota-tryagain.png")
+  
 
   {- Tema Natal -}
   r02 <- loadImage (path ++ "terreno/grass-2.png")
@@ -97,9 +127,9 @@ main = do
   w05 <- loadImage (path ++ "terreno/water-2.png")
   bg2 <- loadImage (path ++ "fundo/bg2.png")
 
-  let temaInicial = [[l01, l02, l03],[r01, d01, w01, v01],[bg1],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02],[g03, d03, w03],[g04, d04, w04]] 
+  let temaInicial = [[l01, l02, l03],[r01, d01, w01, v01],[bg1],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02],[g03, d03, w03],[g04, d04, w04], [rb], [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9], [et, er, ea, eres, efog, egel, ebase, eport, eadd], [save, nsave], [tema1, tema2, tema3], [vm, dm, vn, dt]] 
 
-  let temaNatal = [[l01, l02, l03],[r02, d05, w05, v01],[bg2],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02],[g03, d03, w03],[g04, d04, w04]]
+  let temaNatal = [[l01, l02, l03],[r02, d05, w05, v01],[bg2],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02],[g03, d03, w03],[g04, d04, w04], [rb], [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9], [et, er, ea, eres, efog, egel, ebase, eport, eadd], [save, nsave], [tema1, tema2, tema3], [vm, dm, vn, dt]]
 
 
   playIO janela fundo fr it (desenha [temaInicial, temaNatal]) reageEventos reageTempo

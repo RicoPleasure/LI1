@@ -57,7 +57,7 @@ validaPortal p@(Portal {posicaoPortal = posPortal, ondasPortal = ondas}) m b =
  
   ==__Exemplos de utilização__
   >>> verificaCaminhoAux (0,0) (2,1) (0,0) [[Terra, Relva, Agua], [Terra, Terra, Terra]]
-  True
+  True  
   >>> verificaCaminhoAux (0,0) (2,1) (0,0) [[Terra, Relva, Agua], [Agua, Terra, Terra]]
   False
 -}
