@@ -85,13 +85,10 @@ extractValueFromMaybe (Just a) = a
   False
 -}
 isValidPos :: Posicao -> Mapa -> Direcao -> Bool
-isValidPos (x, y) mapa dir = 
-    let (x', y') = case dir of
-                    Norte -> (round x, floor y)
-                    Sul   -> (round x, ceiling y)
-                    Este  -> (ceiling x, round y)
-                    Oeste -> (floor x, round y)
-    in x' >= 0 && y' >= 0 && y' < length mapa && x' < length (head mapa)
+isValidPos (x, y) mapa dir =
+    let (col, row) = adjustPosition x y dir
+    in row >= 0 && row < length mapa && 
+       col >= 0 && col < length (head mapa)
 
 {-|
   A função 'isTerra' verifica se uma 'Posicao' é terra num 'Mapa' com uma determinada 'Direcao'.

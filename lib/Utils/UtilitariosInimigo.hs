@@ -13,6 +13,9 @@ import Utils.Utilitarios
 import Utils.UtilitariosTorre
 import Utils.UtilitariosPortal
 import Data.List
+import System.Random (randomRIO)
+import System.IO.Unsafe (unsafePerformIO)
+
 
 {-| 
   'validaInimigos' verifica se todos os inimigos são válidos
@@ -163,7 +166,7 @@ verificaColisaoInimigosTorres is ts = verificaDuplosPos listPos
   Inimigo {vidaInimigo = 0}
 -}
 reduzVidaInimigo :: Inimigo -> Float -> Inimigo
-reduzVidaInimigo inimigo dano = inimigo {vidaInimigo = max 0 (vida - dano)}
+reduzVidaInimigo inimigo dano = inimigo {vidaInimigo = vida - dano}
     where
         vida = vidaInimigo inimigo
 
@@ -246,7 +249,7 @@ handleNewProjetil l _ = l
 -}
 inimigoVivo :: Inimigo -- ^ Inimigo 
             -> Bool -- ^ Bool
-inimigoVivo (Inimigo {vidaInimigo = vida}) = vida >= 0
+inimigoVivo (Inimigo {vidaInimigo = vida}) = vida > 0
 
 {-|
     A função 'calculaNovaPosicao' é responsável por calcular a nova posição de um 'Inimigo' com o passar do 'Tempo'.
@@ -307,13 +310,13 @@ calculaNovaPosicao ps dir (x, y) _ v t = case map tipoProjetil ps of
     >>> handleProjeteisInimigo (Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 5}]}) 2
     Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 3.0}], velocidadeInimigo = 1.0}
 -}      
-proximaPosicao :: Direcao -> Posicao -> Float -> Float -> Posicao
+{- proximaPosicao :: Direcao -> Posicao -> Float -> Float -> Posicao
 proximaPosicao dir (x, y) v t = 
     case dir of
       Norte -> (x, y - v * t)
       Sul   -> (x, y + v * t)
       Este  -> (x + v * t, y)
-      Oeste -> (x - v * t, y)
+      Oeste -> (x - v * t, y) -}
 {-|
     A função 'calculaNovaDirecao' é responsável por calcular a nova direção de um 'Inimigo' com o passar do 'Tempo'.
 
@@ -323,7 +326,6 @@ proximaPosicao dir (x, y) v t =
     >>> calculaNovaDirecao Norte [] (0,0) 1 2
     Norte
 -}
--- | Direction calculation considering valid directions and using BFS if necessary
 calculaNovaDirecao :: Direcao -- ^ Direção
                    -> Base -- ^ Base
                    -> Mapa -- ^ Mapa
@@ -338,12 +340,26 @@ calculaNovaDirecao dir base mapa (x, y) v t
     | otherwise = dir
     where
         dirValidas = filter isValidAndTerra [Norte, Sul, Este, Oeste]
-        novaPos = proximaPosicao dir (x, y) v t
+        novaPos = proximaPosicao dir (x, y) v t 
         isValidAndTerra d = let pos = proximaPosicao d (x, y) v t in isValidPos pos mapa d && isTerra pos mapa d && d /= oposta dir && pos /= novaPos
         oposta Norte = Sul
         oposta Sul   = Norte
         oposta Este  = Oeste
         oposta Oeste = Este
+
+proximaPosicao :: Direcao -> Posicao -> Float -> Float -> Posicao
+proximaPosicao dir (x, y) v t = 
+    case dir of
+      Norte -> (x, y - v * t)
+      Sul   -> (x, y + v * t)
+      Este  -> (x + v * t, y)
+      Oeste -> (x - v * t, y)
+
+{- escolheDirecao :: [Direcao] -> Direcao
+escolheDirecao ds = unsafePerformIO $ do
+    n <- randomRIO (0, length ds - 1)
+    return (ds !! n)
+ -}
 
 {-|
     A função 'inimigoChegouBase' verifica se um 'Inimigo' chegou à 'Base'.
@@ -359,9 +375,3 @@ inimigoChegouBase :: Inimigo -- ^ Inimigo
                   -> Bool -- ^ Bool
 inimigoChegouBase (Inimigo {posicaoInimigo = (xInimigo,yInimigo)}) (Base {posicaoBase = (xBase,yBase)}) = 
     (round yInimigo) == (round yBase) && (round xInimigo) == (round xBase)
-
-
-
-filtraInimigosVivos :: [Inimigo] -> [Inimigo]
-filtraInimigosVivos = filter (\inimigo -> vidaInimigo inimigo > 0)
-

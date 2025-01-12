@@ -12,11 +12,11 @@ level1 = Jogo {
         },
         portaisJogo = [ Portal 
         {
-                posicaoPortal = (7,11),
+                posicaoPortal = (5,11),
                 ondasPortal = [Onda {
                         inimigosOnda = [
                         Inimigo {
-                                posicaoInimigo = (7,11),
+                                posicaoInimigo = (5,11),
                                 direcaoInimigo = Norte,
                                 vidaInimigo = 200,
                                 velocidadeInimigo = 1,
@@ -25,7 +25,7 @@ level1 = Jogo {
                                 projeteisInimigo = []
                         }, 
                         Inimigo {
-                                posicaoInimigo = (7,11),
+                                posicaoInimigo = (5,11),
                                 direcaoInimigo = Norte,
                                 vidaInimigo = 200,
                                 velocidadeInimigo = 1,
@@ -34,7 +34,7 @@ level1 = Jogo {
                                 projeteisInimigo = []
                         },
                         Inimigo {
-                                posicaoInimigo = (7,11),
+                                posicaoInimigo = (5,11),
                                 direcaoInimigo = Norte,
                                 vidaInimigo = 200,
                                 velocidadeInimigo = 1,
@@ -43,7 +43,7 @@ level1 = Jogo {
                                 projeteisInimigo = []
                         },
                         Inimigo {
-                                posicaoInimigo = (7,11),
+                                posicaoInimigo = (5,11),
                                 direcaoInimigo = Norte,
                                 vidaInimigo = 200,
                                 velocidadeInimigo = 1,
@@ -52,7 +52,7 @@ level1 = Jogo {
                                 projeteisInimigo = [
                         ]},
                         Inimigo {
-                                posicaoInimigo = (7,11),
+                                posicaoInimigo = (5,11),
                                 direcaoInimigo = Norte,
                                 vidaInimigo = 200,
                                 velocidadeInimigo = 1,

@@ -51,7 +51,6 @@ atualizaJogo t
     (inimigosFinal, baseFinal) = atualizaInimigos inimigosDanoAplicado base mapa t
 
 
--- Funções auxiliares
 atualizaTorres :: Tempo -> [Torre] -> [Inimigo] -> ([Torre], [Inimigo])
 atualizaTorres _ [] inimigos = ([], inimigos)
 atualizaTorres t (torre:ts) inimigos =
@@ -69,7 +68,7 @@ atualizaTorre t torre inimigos
     inimigosZonaTorre = take (rajadaTorre torre) $ inimigosNoAlcance torre inimigos
     inimigosDanoAplicado = map (atingeInimigo torre) inimigosZonaTorre
     inimigosRestantes = filter (`notElem` inimigosZonaTorre) inimigos
-    inimigosAtualizados = filtraInimigosVivos (inimigosDanoAplicado ++ inimigosRestantes)
+    inimigosAtualizados = inimigosDanoAplicado ++ inimigosRestantes
     torreAtualizada = torre {tempoTorre = cicloTorre torre}
 
 {-| 
@@ -136,40 +135,22 @@ atualizaOnda t onda
     >>> atualizaInimigos 2 [Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, vidaInimigo = 10, velocidadeInimigo = 1, ataqueInimigo = 10, butimInimigo = 2, projeteisInimigo = []}] (Base {vidaBase=10, posicaoBase = (0,0), creditosBase = 120}) [] 2
     ([Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, vidaInimigo = 10.0, velocidadeInimigo = 1.0, ataqueInimigo = 10.0, butimInimigo = 2, projeteisInimigo = []}], Base {vidaBase = 10, posicaoBase = (0.0,0.0), creditosBase = 120})
 -}
-{- atualizaInimigos :: [Inimigo] -- ^ Lista de Inimigos 
-                 -> Base -- ^ Base
-                 -> Mapa -- ^ Mapa
-                 -> Tempo -- ^ Tempo 
-                 -> ([Inimigo], Base) -- ^ Lista de retorno de Inimigos e Base
-atualizaInimigos [] base _ _  = ([], base)
-atualizaInimigos (i:is) base mapa t 
-    | inimigoChegouBase i base = atualizaInimigos is baseAtualizada mapa t
-    | not (inimigoVivo inimigoAtualizado) = atualizaInimigos is baseComButim mapa t
-    | otherwise = (inimigoAtualizado : restantes, novaBase)
-  where 
-    inimigoAtualizado = atualizaInimigo i base mapa t
-    baseAtualizada = base {vidaBase = vidaBase base - ataqueInimigo i}
-    baseComButim = base {creditosBase = creditosBase base + butimInimigo i}
-    (restantes, novaBase) = atualizaInimigos is baseComButim mapa t -}
 
-atualizaInimigos :: [Inimigo] -- ^ Lista de Inimigos 
-                 -> Base -- ^ Base
-                 -> Mapa -- ^ Mapa
-                 -> Tempo -- ^ Tempo 
-                 -> ([Inimigo], Base) -- ^ Lista de retorno de Inimigos e Base
-atualizaInimigos [] base _ _  = ([], base)
+atualizaInimigos :: [Inimigo] -> Base -> Mapa -> Tempo -> ([Inimigo], Base)
+atualizaInimigos [] base _ _ = ([], base)
 atualizaInimigos (i:is) base mapa t
     | inimigoChegouBase i base = atualizaInimigos is baseAtualizada mapa t
-    | not (inimigoVivo inimigoAtualizado) = atualizaInimigos is baseComButim mapa t
-    | otherwise = (inimigoAtualizado : restantes, novaBase)
+    | not (inimigoVivo i) = 
+        let (restantes, baseDepois) = atualizaInimigos is baseComButim mapa t
+        in (restantes, baseDepois)
+    | otherwise = 
+        let (restantes, baseDepois) = atualizaInimigos is base mapa t
+        in (inimigoAtualizado : restantes, baseDepois)
     where
         inimigoAtualizado = atualizaInimigo i base mapa t
         baseAtualizada = base {vidaBase = vidaBase base - ataqueInimigo i}
         baseComButim = base {creditosBase = creditosBase base + butimInimigo i}
-        (restantes, novaBase) = atualizaInimigos is 
-            (if inimigoVivo inimigoAtualizado 
-            then base 
-            else baseComButim) mapa t
+
 {-| 
     A função 'atualizaInimigo' é responsável por atualizar um objeto do tipo 'Inimigo' com o passar do 'Tempo'. Para tal, recorre á função 'atualizaPosicaoInimigo' para atualizar a posição do inimigo e 'handleProjeteisInimigo' para atualizar os projéteis do inimigo.
 
@@ -179,14 +160,13 @@ atualizaInimigos (i:is) base mapa t
     >>> atualizaInimigo (Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, vidaInimigo = 10, velocidadeInimigo = 1, ataqueInimigo = 10, butimInimigo = 2, projeteisInimigo = []}) (Base {vidaBase=10, posicaoBase = (0,0), creditosBase = 120}) [] 2
     Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, vidaInimigo = 10.0, velocidadeInimigo = 1.0, ataqueInimigo = 10.0, butimInimigo = 2, projeteisInimigo = []}
 -}
-
 atualizaInimigo :: Inimigo -> Base -> Mapa -> Tempo -> Inimigo
 atualizaInimigo i base mapa t = (atualizaProjetil t inimigoPosicaoAtualizada) {vidaInimigo = novaVida}
     where inimigoPosicaoAtualizada = atualizaPosicaoInimigo base i mapa t
-          novaVida = atualizaVida t i 
+          novaVida = atualizaVidaInimigo t i 
 
-atualizaVida :: Tempo -> Inimigo -> Float
-atualizaVida t i = case map tipoProjetil (projeteisInimigo i) of
+atualizaVidaInimigo :: Tempo -> Inimigo -> Float
+atualizaVidaInimigo t i = case map tipoProjetil (projeteisInimigo i) of
     [Fogo] -> vidaInimigo i - 5 * t
     _ -> vidaInimigo i
 
@@ -213,6 +193,7 @@ atualizaProjetil t inimigo = inimigo {
     >>> atualizaPosicaoInimigo (Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, velocidadeInimigo = 1}) [] 2
     Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, velocidadeInimigo = 1}
 -}
+
 atualizaPosicaoInimigo :: Base
                        -> Inimigo -- ^ Inimigo
                        -> Mapa -- ^ Mapa
@@ -223,10 +204,4 @@ atualizaPosicaoInimigo base inimigo@(Inimigo { posicaoInimigo = (x, y), direcaoI
     where 
         novaDir = calculaNovaDirecao dir base mapa (x, y) v t
         novaPosicao = calculaNovaPosicao (projeteisInimigo inimigo) novaDir (x, y) mapa v t
-
--- mod pelo numero de imagens total
-
-
-{- jogoInimigosTorres :: Jogo
-jogoInimigosTorres = Jogo {baseJogo = Base {vidaBase = 500.0, posicaoBase = (5.0,0.0), creditosBase = 9100}, portaisJogo = [Portal {posicaoPortal = (5.0,11.0), ondasPortal = [Onda {inimigosOnda = [Inimigo {posicaoInimigo = (5.0,11.0), direcaoInimigo = Norte, vidaInimigo = 200.0, velocidadeInimigo = 1.0, ataqueInimigo = 100.0, butimInimigo = 200, projeteisInimigo = []},Inimigo {posicaoInimigo = (5.0,11.0), direcaoInimigo = Norte, vidaInimigo = 200.0, velocidadeInimigo = 1.0, ataqueInimigo = 100.0, butimInimigo = 200, projeteisInimigo = []},Inimigo {posicaoInimigo = (5.0,11.0), direcaoInimigo = Norte, vidaInimigo = 200.0, velocidadeInimigo = 1.0, ataqueInimigo = 100.0, butimInimigo = 200, projeteisInimigo = []},Inimigo {posicaoInimigo = (5.0,11.0), direcaoInimigo = Norte, vidaInimigo = 200.0, velocidadeInimigo = 1.0, ataqueInimigo = 100.0, butimInimigo = 200, projeteisInimigo = []}], cicloOnda = 5.0, tempoOnda = 2.3333359, entradaOnda = -3.3332776e-2}]},Portal {posicaoPortal = (7.0,11.0), ondasPortal = [Onda {inimigosOnda = [Inimigo {posicaoInimigo = (7.0,11.0), direcaoInimigo = Norte, vidaInimigo = 200.0, velocidadeInimigo = 1.0, ataqueInimigo = 100.0, butimInimigo = 200, projeteisInimigo = []},Inimigo {posicaoInimigo = (7.0,11.0), direcaoInimigo = Norte, vidaInimigo = 200.0, velocidadeInimigo = 1.0, ataqueInimigo = 100.0, butimInimigo = 200, projeteisInimigo = []},Inimigo {posicaoInimigo = (7.0,11.0), direcaoInimigo = Norte, vidaInimigo = 200.0, velocidadeInimigo = 1.0, ataqueInimigo = 100.0, butimInimigo = 200, projeteisInimigo = []},Inimigo {posicaoInimigo = (7.0,11.0), direcaoInimigo = Norte, vidaInimigo = 200.0, velocidadeInimigo = 1.0, ataqueInimigo = 100.0, butimInimigo = 200, projeteisInimigo = []}], cicloOnda = 5.0, tempoOnda = 2.3333359, entradaOnda = -3.3332776e-2}]}], torresJogo = [Torre {posicaoTorre = (4.0,4.0), danoTorre = 30.0, alcanceTorre = 3.0, rajadaTorre = 3, cicloTorre = 5.0, tempoTorre = 0.0, projetilTorre = Projetil {tipoProjetil = Resina, duracaoProjetil = Infinita}},Torre {posicaoTorre = (2.0,4.0), danoTorre = 40.0, alcanceTorre = 2.0, rajadaTorre = 3, cicloTorre = 4.0, tempoTorre = 0.0, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = Finita 5.0}}], mapaJogo = [[Relva,Relva,Relva,Relva,Relva,Terra,Relva,Relva,Relva,Relva,Relva],[Relva,Relva,Relva,Relva,Relva,Terra,Relva,Agua,Agua,Agua,Relva],[Relva,Relva,Relva,Relva,Relva,Terra,Relva,Relva,Agua,Relva,Relva],[Relva,Relva,Relva,Terra,Terra,Terra,Relva,Relva,Agua,Relva,Relva],[Relva,Relva,Relva,Terra,Relva,Relva,Relva,Relva,Agua,Relva,Relva],[Relva,Relva,Relva,Terra,Terra,Terra,Relva,Relva,Relva,Relva,Relva],[Relva,Relva,Relva,Relva,Relva,Terra,Relva,Relva,Relva,Relva,Relva],[Relva,Agua,Agua,Agua,Relva,Terra,Terra,Terra,Relva,Relva,Relva],[Relva,Relva,Agua,Relva,Relva,Relva,Relva,Terra,Relva,Relva,Relva],[Relva,Relva,Agua,Relva,Relva,Terra,Terra,Terra,Relva,Relva,Relva],[Relva,Agua,Agua,Agua,Relva,Terra,Relva,Terra,Relva,Relva,Relva],[Relva,Relva,Relva,Relva,Relva,Terra,Relva,Terra,Relva,Relva,Relva]], inimigosJogo = [Inimigo {posicaoInimigo = (5.7333326,9.033307), direcaoInimigo = Este, vidaInimigo = 200.0, velocidadeInimigo = 1.0, ataqueInimigo = 100.0, butimInimigo = 200, projeteisInimigo = []},Inimigo {posicaoInimigo = (7.0,8.299964), direcaoInimigo = Norte, vidaInimigo = 200.0, velocidadeInimigo = 1.0, ataqueInimigo = 100.0, butimInimigo = 200, projeteisInimigo = []}], lojaJogo = []} -}
 
