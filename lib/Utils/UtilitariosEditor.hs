@@ -11,8 +11,6 @@ module Utils.UtilitariosEditor where
 import LI12425
 import Utils.UtilitariosTorre
 import Utils.Utilitarios
-import Utils.UtilitariosPortal
-import System.Directory
 
 {-|
     A função 'insereTerrenoNaPosicao' insere um 'Terreno' numa dada posição do 'Mapa'.

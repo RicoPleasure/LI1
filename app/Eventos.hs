@@ -240,7 +240,7 @@ reageEventosLoja (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {ce
 reageEventosLoja (EventKey (Char 'l') Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja _)} = return $ e {cena = ModoJogo Resumed}
 reageEventosLoja (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = ModoJogo (Loja _)} = return $ e {cena = ModoJogo Resumed}
 {-| Caso geral -}
-reageEventosLoja _ e = return $ e
+reageEventosLoja _ e = return e
 
 {-| 
     'reageEventosAdicionaTorre' reage a eventos na cena "AdicionaTorre".
@@ -277,7 +277,7 @@ reageEventosAdicionaTorre (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableT
                 } 
  
             }
-    | otherwise = return $ e
+    | otherwise = return e
     where
         newTorres = insereTorreNaLista (torresJogo jogo) (fromIntegral x, fromIntegral y) (projetilNovaTorre torre)
         creditos = creditosBase (baseJogo jogo)
@@ -287,7 +287,7 @@ reageEventosAdicionaTorre (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableT
 -}
 reageEventosAdicionaTorre (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = AdicionaTorre torre _} = return $ e {cena = ModoJogo (Loja torre)} 
 {-| Caso geral -}
-reageEventosAdicionaTorre _ e = return $ e
+reageEventosAdicionaTorre _ e = return e
 
 
 {-|
@@ -332,16 +332,16 @@ reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableT
 -}
 reageEventosEditorDeMapas (EventKey (SpecialKey KeyDown) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTerreno terreno (x,y))} 
     | validaPosicaoObjeto (fromIntegral x,fromIntegral y+1) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTerreno terreno (x, y+1))}
-    | otherwise = return $ e
+    | otherwise = return e
 reageEventosEditorDeMapas (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTerreno terreno (x,y))} 
     | validaPosicaoObjeto (fromIntegral x,fromIntegral y-1) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTerreno terreno (x, y-1))}
-    | otherwise = return $ e
+    | otherwise = return e
 reageEventosEditorDeMapas (EventKey (SpecialKey KeyRight) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTerreno terreno (x,y))} 
     | validaPosicaoObjeto (fromIntegral x+1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTerreno terreno (x+1, y))}
-    | otherwise = return $ e
+    | otherwise = return e
 reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTerreno terreno (x,y))} 
     | validaPosicaoObjeto (fromIntegral x-1,fromIntegral y) (mapaJogo (jogo e)) = return $ e {cena = EditorDeMapas (AdicionaTerreno terreno (x-1, y))}
-    | otherwise = return $ e
+    | otherwise = return e
 
 {-|
     Efetua a adição do terreno na posição escolhida
@@ -379,7 +379,7 @@ reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTo
 {-|
     Sai do modo de seleção de posição da torre
 -}
-reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTorreEditor torre (x,y))} = return $ e {cena = EditorDeMapas (OpcaoEditorTorre torre)}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaTorreEditor torre (_,_))} = return $ e {cena = EditorDeMapas (OpcaoEditorTorre torre)}
 
 {-|
     Adiciona a torre escolhida na posição escolhida
@@ -419,7 +419,7 @@ reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTo
 -}
 reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaBase (x,y)),jogo = jogo} 
     | validaBase (mapaJogo jogo) (fromIntegral x, fromIntegral y) (creditosBase newBase) = return $ e { 
-        cena = EditorDeMapas (OpcaoEditorBase),
+        cena = EditorDeMapas OpcaoEditorBase,
        jogo = jogo { 
             baseJogo = newBase
         }
@@ -454,12 +454,12 @@ reageEventosEditorDeMapas (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTo
 -}
 reageEventosEditorDeMapas (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (AdicionaPortal (x,y)), jogo = jogo}
     | validaPortalEditor (x,y) (mapaJogo jogo) = return $ e { 
-        cena = EditorDeMapas (OpcaoEditorPortal),
+        cena = EditorDeMapas OpcaoEditorPortal,
        jogo = jogo {
             portaisJogo = novosPortaisJogo
         }
     }
-    | otherwise = return $ e
+    | otherwise = return e
     where
         novosPortaisJogo = inserePortalNaLista (portaisJogo jogo) (fromIntegral x, fromIntegral y)
 {-|
@@ -527,9 +527,9 @@ reageEventosLoadGame :: Event -> ImmutableTowers -> IO ImmutableTowers
 reageEventosLoadGame (EventKey (SpecialKey KeyUp) Down _ _) e@(ImmutableTowers {cena = LoadGame t, slotSave = slot}) =
     return $ e { cena = LoadGame (max 1 (t - 1)), slotSave = max 0 (slot - 1)}
 
-reageEventosLoadGame (EventKey (SpecialKey KeyDown) Down _ _) e@(ImmutableTowers {cena = LoadGame t}) = do
+reageEventosLoadGame (EventKey (SpecialKey KeyDown) Down _ _) e@(ImmutableTowers {cena = LoadGame t, slotSave = slot}) = do
     games <- listGames
-    return $ e { cena = LoadGame (min (length games) (t + 1)), slotSave = t + 1}
+    return $ e { cena = LoadGame (min (length games) (t + 1)), slotSave = max ((length games) - 1) (slot + 1)}
 
 reageEventosLoadGame (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = LoadGame save, slotSave = slot} = do
     games <- listGames
@@ -540,7 +540,8 @@ reageEventosLoadGame (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers
                 putStrLn "Slot inválido"
                 return $ e {cena = MenuInicial Jogar}
             else do
-                game <- loadGame save
+                putStrLn (show (save-1))
+                game <- loadGame (games !! (save-1))
                 return $ e {jogo = game, cena = ModoJogo Resumed, slotSave = save}
 
 reageEventosLoadGame (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = LoadGame _} = return $ e {cena = MenuInicial Jogar}

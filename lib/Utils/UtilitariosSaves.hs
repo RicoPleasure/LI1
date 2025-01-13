@@ -9,6 +9,8 @@ module Utils.UtilitariosSaves where
 
 import LI12425
 import System.Directory
+import Data.List
+import Data.Char
 
 {-|
     A função 'saveGame' guarda o estado do jogo num ficheiro.
@@ -20,7 +22,7 @@ import System.Directory
 saveGame :: Int -> Jogo -> IO ()
 saveGame slotSave jogo
     | otherwise = do
-        let nomeArquivo = "games/Level" ++ show (slotSave) ++ ".txt"
+        let nomeArquivo = "games/" ++ show (slotSave) ++ ".txt"
         writeFile nomeArquivo (show jogo)
         putStrLn $ "Salvo em: " ++ nomeArquivo
 
@@ -33,9 +35,10 @@ saveGame slotSave jogo
     >>> loadGame 2
     *** Exception: Save não encontrado
 -}
-loadGame :: Int -> IO Jogo
+loadGame :: String -> IO Jogo
 loadGame saveSlot = do
-    let nomeArquivo = "games/Level" ++ show saveSlot ++ ".txt"
+    putStrLn saveSlot
+    let nomeArquivo = "games/" ++ saveSlot
     fileExists <- doesFileExist nomeArquivo  -- Check if the file exists
     if fileExists
         then do
@@ -43,6 +46,12 @@ loadGame saveSlot = do
             return (read conteudo :: Jogo)
         else    
             error "Save não encontrado"  -- Error if file doesn't exist
+
+extractNumber :: String -> Int
+extractNumber = read . takeWhile isDigit
+
+sortFileNames :: [String] -> [String]
+sortFileNames = sortOn extractNumber
 
 {-|
     A função 'listGames' lista os ficheiros de jogos guardados.
@@ -56,4 +65,4 @@ loadGame saveSlot = do
 listGames :: IO [String]
 listGames = do
     files <- listDirectory "games"
-    return files
+    return $ sortFileNames files
