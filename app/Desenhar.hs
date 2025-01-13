@@ -545,7 +545,7 @@ terrenoSprite :: [Picture] -- ^ sprites dos terrenos
               -> Terreno -- ^ Terreno
               -> Picture -- ^ Sprite do terreno
 terrenoSprite ts terreno
-  | length ts < 3 = Blank
+  | length ts < 4 = Blank
   | otherwise = case terreno of
       Relva -> ts !! 0
       Terra -> ts !! 1
@@ -712,18 +712,21 @@ desenhaCreditos sprites creditos = Translate 470 450 $ scale 0.2 0.2 $ Pictures 
 mostrarJogos :: Int -> [String] -> Picture
 mostrarJogos sel games =
   Translate (-125) 300 $
-  pictures $
-    zipWith
-      (\index game ->
-         let
-            saveName = extraiNomeSave game 
-            umSave = translate 0 (fromIntegral (-100 * index)) (scale 0.5 0.5 $ text ("Level " ++ saveName))
-         in if index == sel
-              then color red umSave
-              else umSave
-      )
-      [1..]
-      games
+    Pictures $
+      zipWith
+        (\index game ->
+           let
+             saveName = extraiNomeSave game
+             umSave =
+               if saveName == "Empty save"
+                 then Translate 0 (fromIntegral (-100 * index)) (Scale 0.5 0.5 $ Text "Empty")
+                 else Translate 0 (fromIntegral (-100 * index)) (Scale 0.5 0.5 $ Text ("Level " ++ saveName))
+           in if index == sel
+                then Color red umSave
+                else umSave
+        )
+        [1..]
+        games
 
 {-|
     'extraiNomeSave' é uma função que extrai o nome do jogo salvo.

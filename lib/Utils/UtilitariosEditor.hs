@@ -49,7 +49,367 @@ isValidTower (x,y) mapa torres = checkPositionRelva (x,y) mapa && not (verificaC
 -}
 inserePortalNaLista :: [Portal] -> Posicao -> [Portal]  
 inserePortalNaLista portais (x,y) = portais ++ [Portal {posicaoPortal = (x,y), ondasPortal = [
-    Onda {inimigosOnda = [Inimigo {posicaoInimigo = (x,y), vidaInimigo = 10, velocidadeInimigo = 1, direcaoInimigo = Norte}], cicloOnda = 3, tempoOnda = 20, entradaOnda = 20}
+    Onda {
+                inimigosOnda = [
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    }
+                    ,
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    }
+                    ,
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    }
+                    ,
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (x,y),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    }
+                ],
+                cicloOnda = 2,
+                tempoOnda = 2,
+                entradaOnda = 3
+            }
 ]}] 
 
 {-|

@@ -35,21 +35,36 @@ saveGame slotSave jogo
     >>> loadGame 2
     *** Exception: Save não encontrado
 -}
-loadGame :: String -> IO Jogo
+loadGame :: String -> IO (Maybe Jogo)
 loadGame saveSlot = do
-    putStrLn saveSlot
-    let nomeArquivo = "games/" ++ saveSlot
-    fileExists <- doesFileExist nomeArquivo  -- Check if the file exists
+    let nomeArquivo = "games/" ++ saveSlot ++ ".txt"
+    fileExists <- doesFileExist nomeArquivo
     if fileExists
         then do
             conteudo <- readFile nomeArquivo
-            return (read conteudo :: Jogo)
-        else    
-            error "Save não encontrado"  -- Error if file doesn't exist
+            putStrLn "Arquivo encontrado e carregado com sucesso!"
+            return $ Just (read conteudo :: Jogo)
+        else do
+            putStrLn "Save não encontrado"
+            return Nothing
 
+{-|
+    'extractNumber' é uma função auxiliar que extrai um número de uma string.
+
+    ==__Exemplos de utilização__
+    >>> extractNumber "game1.txt"
+    1
+-}
 extractNumber :: String -> Int
 extractNumber = read . takeWhile isDigit
 
+{-|
+    'sortFileNames' é uma função auxiliar que ordena uma lista de strings de acordo com o número que contêm.
+
+    ==__Exemplos de utilização__
+    >>> sortFileNames ["game1.txt", "game.txt"]
+    ["game.txt", "game1.txt"]
+-}
 sortFileNames :: [String] -> [String]
 sortFileNames = sortOn extractNumber
 
@@ -58,11 +73,12 @@ sortFileNames = sortOn extractNumber
 
     ==__Exemplos de utilização__
     >>> listGames
-    ["game.txt"]
-    >>> listGames
-    ["game.txt", "game1.txt"]
+    ["Empty save","Empty save","Empty save","Empty save","Empty save","Empty save"]
 -}
 listGames :: IO [String]
 listGames = do
     files <- listDirectory "games"
-    return $ sortFileNames files
+    let ficheirosOrdenados = sortFileNames files
+        slots = map extractNumber ficheirosOrdenados
+        slotsPreenchidos = [if n `elem` slots then show n else "Empty save" | n <- [1..6]]
+    return slotsPreenchidos

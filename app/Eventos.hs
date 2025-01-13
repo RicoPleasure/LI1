@@ -107,7 +107,7 @@ reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowe
 {-|
     Seleciona o modo de jogo escolhido
 -}
-reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = OpcaoJogar ContinueGame, slotSave = save} = return $ e {cena = LoadGame 1, slotSave = save}
+reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = OpcaoJogar ContinueGame, slotSave = save} = return $ e {cena = LoadGame 1, slotSave = 1}
 reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = OpcaoJogar NewGame} = return $ e {cena = SelectGameMode Levels}
 {-| Caso geral -}
 reageEventosEscolhaDeJogo _ e = return $ e  
@@ -471,6 +471,10 @@ reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTow
     Vai para a cena de salvar o mapa
 -}
 reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTerreno _) } = return $ e {cena = SaveGame SaveMapa}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = EditorDeMapas (OpcaoEditorTorre _) } = return $ e {cena = SaveGame SaveMapa}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = EditorDeMapas OpcaoEditorBase } = return $ e {cena = SaveGame SaveMapa}
+reageEventosEditorDeMapas (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = EditorDeMapas OpcaoEditorPortal } = return $ e {cena = SaveGame SaveMapa}
+
 
 reageEventosEditorDeMapas _ e = return $ e
 
@@ -534,15 +538,21 @@ reageEventosLoadGame (EventKey (SpecialKey KeyDown) Down _ _) e@(ImmutableTowers
 reageEventosLoadGame (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = LoadGame save, slotSave = slot} = do
     games <- listGames
     if null games
-        then return $ e {cena = MenuInicial Jogar}
+        then return $ e {cena = MenuInicial Jogar}  -- No saves available
         else if save < 0 || save > length games
             then do
                 putStrLn "Slot inválido"
-                return $ e {cena = MenuInicial Jogar}
+                return $ e {cena = MenuInicial Jogar}  -- Invalid slot
             else do
-                putStrLn (show (save-1))
-                game <- loadGame (games !! (save-1))
-                return $ e {jogo = game, cena = ModoJogo Resumed, slotSave = save}
+                let selectedSlot = save - 1
+                putStrLn $ "Tentando carregar o slot: " ++ show selectedSlot
+                gameMaybe <- loadGame (games !! selectedSlot)
+                case gameMaybe of
+                    Just game -> return $ e {jogo = game, cena = ModoJogo Resumed, slotSave = save}
+                    Nothing   -> do
+                        putStrLn "Save não encontrado. Retornando ao menu."
+                        return $ e {cena = MenuInicial Jogar}
+
 
 reageEventosLoadGame (EventKey (SpecialKey KeyEsc) Down _ _) e@ImmutableTowers {cena = LoadGame _} = return $ e {cena = MenuInicial Jogar}
 
