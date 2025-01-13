@@ -17,7 +17,7 @@ module LI12425 (
     -- ** Entidades
     Base(..), Torre(..), Portal(..), Inimigo(..), TipoProjetil(..), Projetil(..),
     -- ** Jogo
-    Jogo(..), Cena(..), Onda(..), Loja, TipoTorre(..), OpcaoMenuInicial(..), OpcaoContinueNew(..), SelectGameMode(..), SelectLevel(..), OpcaoSaveMap(..), EstadoEditor(..), OpcaoModoJogo(..), Config(..), Themes(..), TelaFinal(..) ,SpritePaths, OpcaoVitoria(..), OpcaoDerrota(..),
+    Jogo(..), Cena(..), Onda(..), Loja, TipoTorre(..), OpcaoMenuInicial(..), OpcaoContinueNew(..), SelectGameMode(..), SelectLevel(..), OpcaoSaveMap(..), EstadoEditor(..), OpcaoModoJogo(..), Config(..), Themes(..), TelaFinal(..), OpcaoVitoria(..), OpcaoDerrota(..),
     -- * Funções auxiliares
     geraAleatorios,
     -- * Funções para instancia Num Duração
@@ -272,8 +272,6 @@ data Cena = MenuInicial OpcaoMenuInicial
           | LoadGame Int
           | SaveGame OpcaoSaveMap
           | TelaFinal TelaFinal
-
-type SpritePaths = [[String]]
 
 -- | Valor inicial que determina a sequência de números pseudo-aleatórios.
 type Semente = Int

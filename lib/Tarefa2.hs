@@ -15,7 +15,7 @@ import Utils.UtilitariosPortal
 import Utils.Utilitarios
 import Data.Maybe
 
-{- 
+{-|
     Implementação da função que retorna os inimigos que estão no alcance da torre.
 
     ==__Exemplo de utilização__
@@ -27,7 +27,7 @@ import Data.Maybe
 inimigosNoAlcance :: Torre -> [Inimigo] -> [Inimigo]
 inimigosNoAlcance (Torre {posicaoTorre = posicaoT, alcanceTorre = alcanceT}) inimigos = filter (\inimigo -> noAlcance posicaoT (posicaoInimigo inimigo) alcanceT) inimigos
 
-{- 
+{-|
     Implementação da função que verifica se um inimigo está no alcance da torre.
 
     ==__Exemplo de utilização__

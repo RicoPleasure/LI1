@@ -1,20 +1,25 @@
+{-|
+Module      : Utils.UtilitariosEditor
+Description : Coleção de funções utilitarias para o editor de mapas
+Copyright   : Enrico Silva Prazeres <a112068@alunos.uminho.pt>
+              Leandro Filipe Lourenço Carvalho <a112021@alunos.uminho.pt>
+
+Utilitarios necessários para o trabalho com o editor de mapas.
+-}
 module Utils.UtilitariosEditor where
 
 import LI12425
 import Utils.UtilitariosTorre
 import Utils.Utilitarios
 import Utils.UtilitariosPortal
-import System.IO.Unsafe (unsafePerformIO)
 import System.Directory
 
-{-| 
-    A função 'validaPosicaoObjeto' verifica se uma dada posição é válida no mapa.
-    
+{-|
+    A função 'insereTerrenoNaPosicao' insere um 'Terreno' numa dada posição do 'Mapa'.
+
     ==__Exemplos de utilização__
-    >>> validaPosicaoObjeto (1,1) [[Terra, Relva], [Agua, Terra]]
-    True
-    >>> validaPosicaoObjeto (1,2) [[Terra, Relva], [Agua, Terra]]
-    False
+    >>> insereTerrenoNaPosicao [[Terra, Relva], [Agua, Terra]] (1,1) Relva
+    [[Terra, Relva], [Agua, Relva]]
 -}
 insereTerrenoNaPosicao :: Mapa -> (Int, Int) -> Terreno -> Mapa
 insereTerrenoNaPosicao mapa (x, y) terreno =
@@ -28,25 +33,21 @@ insereTerrenoNaPosicao mapa (x, y) terreno =
         ]
 
 {-| 
-    A função 'validaPosicaoObjeto' verifica se uma dada posição é válida no mapa.
-    
+    A função 'isValidTower' verifica se uma dada posição é válida no mapa.
+
     ==__Exemplos de utilização__
-    >>> validaPosicaoObjeto (1,1) [[Terra, Relva], [Agua, Terra]]
+    >>> isValidTower (1,1) [[Terra, Relva], [Agua, Terra]] [Torre {posicaoTorre = (0,0), alcanceTorre = 1, danoTorre = 5, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = 15}}]
     True
-    >>> validaPosicaoObjeto (1,2) [[Terra, Relva], [Agua, Terra]]
-    False
 -}
 isValidTower :: Posicao -> Mapa -> [Torre] -> Bool
 isValidTower (x,y) mapa torres = checkPositionRelva (x,y) mapa && not (verificaCollisionTorres torres)
 
 {-| 
-    A função 'validaPosicaoObjeto' verifica se uma dada posição é válida no mapa.
-    
+    A função 'inserePortalNaLista' insere um 'Portal' numa dada posição da lista de 'Portais'.
+
     ==__Exemplos de utilização__
-    >>> validaPosicaoObjeto (1,1) [[Terra, Relva], [Agua, Terra]]
-    True
-    >>> validaPosicaoObjeto (1,2) [[Terra, Relva], [Agua, Terra]]
-    False
+    >>> inserePortalNaLista [] (1,1)
+    [Portal {posicaoPortal = (1,1), ondasPortal = [Onda {inimigosOnda = [Inimigo {posicaoInimigo = (1,1), vidaInimigo = 10, velocidadeInimigo = 1, direcaoInimigo = Norte}], cicloOnda = 3, tempoOnda = 20, entradaOnda = 20}]}]
 -}
 inserePortalNaLista :: [Portal] -> Posicao -> [Portal]  
 inserePortalNaLista portais (x,y) = portais ++ [Portal {posicaoPortal = (x,y), ondasPortal = [
@@ -65,55 +66,4 @@ inserePortalNaLista portais (x,y) = portais ++ [Portal {posicaoPortal = (x,y), o
 validaPortalEditor :: (Int,Int) -> Mapa -> Bool
 validaPortalEditor (x,y) m =
     validaPosicaoObjeto (fromIntegral x, fromIntegral y) m && checkPositionTerra (fromIntegral x, fromIntegral y) m
-
-{-|
-    A função 'saveGame' guarda o estado do jogo num ficheiro.
-
-    ==__Exemplos de utilização__
-    >>> saveGame (Jogo { mapaJogo = [[Agua, Terra, Relva], [Relva, Terra, Terra], [Relva, Relva, Relva]], baseJogo = Base { posicaoBase = (0,0), vidaBase = 10 }, portaisJogo = [Portal { posicaoPortal = (0,0), inimigosPortal = [Inimigo { posicaoInimigo = (0,0), vidaInimigo = 10, projeteisInimigo = [] }] }], torresJogo = [Torre { posicaoTorre = (0,0), alcanceTorre = 1, danoTorre = 5, projetilTorre = Projetil { tipoProjetil = Fogo, duracaoProjetil = 15 } }], lojaJogo = Loja { torresLoja = [Torre { posicaoTorre = (0,0), alcanceTorre = 1, danoTorre = 5, projetilTorre = Projetil { tipoProjetil = Fogo, duracaoProjetil = 15 } }] })
-    File already exists, saving as: games/game1.txt
--}
-
-
-saveGame :: Int -> Jogo -> IO ()
-saveGame slotSave jogo
-    | otherwise = do
-        let nomeArquivo = "games/Level" ++ show (slotSave) ++ ".txt"
-        writeFile nomeArquivo (show jogo)
-        putStrLn $ "Salvo em: " ++ nomeArquivo
-
-    
-{-|
-    A função 'loadGame' carrega o estado do jogo de um ficheiro.
-
-    ==__Exemplos de utilização__                                                
-    >>> loadGame 1
-    Jogo {mapaJogo = [[Agua,Terra,Relva],[Relva,Terra,Terra],[Relva,Relva,Relva]], baseJogo = Base {posicaoBase = (0.0,0.0), vidaBase = 10}, portaisJogo = [Portal {posicaoPortal = (0.0,0.0), ondasPortal = [Onda {inimigosOnda = [Inimigo {posicaoInimigo = (0.0,0.0), vidaInimigo = 10, velocidadeInimigo = 1}], cicloOnda = 3, tempoOnda = 20, entradaOnda = 20}]}, torresJogo = [Torre {posicaoTorre = (0.0,0.0), alcanceTorre = 1.0, danoTorre = 5, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = 15}}], lojaJogo = Loja {torresLoja = [Torre {posicaoTorre = (0.0,0.0), alcanceTorre = 1.0, danoTorre = 5, projetilTorre = Projetil {tipoProjetil = Fogo, duracaoProjetil = 15}}]}}
-    >>> loadGame 2
-    *** Exception: Save não encontrado
--}
-loadGame :: Int -> IO Jogo
-loadGame saveSlot = do
-    let nomeArquivo = "games/Level" ++ show saveSlot ++ ".txt"
-    fileExists <- doesFileExist nomeArquivo  -- Check if the file exists
-    if fileExists
-        then do
-            conteudo <- readFile nomeArquivo
-            return (read conteudo :: Jogo)
-        else    
-            error "Save não encontrado"  -- Error if file doesn't exist
-
-{-|
-    A função 'listGames' lista os ficheiros de jogos guardados.
-
-    ==__Exemplos de utilização__
-    >>> listGames
-    ["game.txt"]
-    >>> listGames
-    ["game.txt", "game1.txt"]
--}
-listGames :: IO [String]
-listGames = do
-    files <- listDirectory "games"
-    return files
 

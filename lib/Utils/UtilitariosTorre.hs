@@ -130,3 +130,20 @@ custoTorre tipoTorre = case tipoTorre of
     Torre1 -> 200
     Torre2 -> 700
     Torre3 -> 300
+
+{-|
+  A função 'alcanceTorreTipo' devolve o alcance de uma torre conforme o seu tipo.
+
+  ==__Exemplos de utilização__
+  >>> alcanceTorreTipo Torre1
+  3.0
+  >>> alcanceTorreTipo Torre2
+  2.0
+  >>> alcanceTorreTipo Torre3
+  5.0
+-}
+alcanceTorreTipo :: TipoTorre -> Float
+alcanceTorreTipo tipo = case tipo of
+    Torre1 -> 3
+    Torre2 -> 2
+    Torre3 -> 5

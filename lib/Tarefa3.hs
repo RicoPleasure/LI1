@@ -10,7 +10,6 @@ Módulo para a realização da Tarefa 3 de LI1 em 2024/25.
 module Tarefa3 where
 
 import LI12425
-
 import Tarefa2
 import Utils.UtilitariosPortal
 import Utils.UtilitariosInimigo
@@ -51,6 +50,13 @@ atualizaJogo t
     (inimigosFinal, baseFinal) = atualizaInimigos inimigosDanoAplicado base mapa t
 
 
+{-|
+    A função 'atualizaTorres' é responsável por atualizar uma lista de objetos do tipo 'Torre' com o passar do 'Tempo'. Para tal, recorre á função 'atualizaTorre' para atualizar cada objeto.
+
+    ==__Exemplos de utilização__
+    >>> atualizaTorres 2 [Torre {posicaoTorre = (0,0), tipoTorre = Laser, alcanceTorre = 1, rajadaTorre = 1, cicloTorre = 1, tempoTorre = 0}] [Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, vidaInimigo = 10, velocidadeInimigo = 1, ataqueInimigo = 10, butimInimigo = 2, projeteisInimigo = []}]
+    ([Torre {posicaoTorre = (0,0), tipoTorre = Laser, alcanceTorre = 1, rajadaTorre = 1, cicloTorre = 1, tempoTorre = 1}], [Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, vidaInimigo = 0, velocidadeInimigo = 1, ataqueInimigo = 10, butimInimigo = 2, projeteisInimigo = []}])      
+-}
 atualizaTorres :: Tempo -> [Torre] -> [Inimigo] -> ([Torre], [Inimigo])
 atualizaTorres _ [] inimigos = ([], inimigos)
 atualizaTorres t (torre:ts) inimigos =
@@ -58,7 +64,13 @@ atualizaTorres t (torre:ts) inimigos =
         (torresAtualizadas, inimigosFinal) = atualizaTorres t ts inimigosAtualizados
     in (torreAtualizada : torresAtualizadas, inimigosFinal)
 
+{-|
+    A função 'atualizaTorre' é responsável por atualizar um objeto do tipo 'Torre' com o passar do 'Tempo'. Para tal, recorre á função 'atualizaTorre' para atualizar cada objeto.
 
+    ==__Exemplos de utilização__
+    >>> atualizaTorre 2 (Torre {posicaoTorre = (0,0), tipoTorre = Laser, alcanceTorre = 1, rajadaTorre = 1, cicloTorre = 1, tempoTorre = 0}) [Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, vidaInimigo = 10, velocidadeInimigo = 1, ataqueInimigo = 10, butimInimigo = 2, projeteisInimigo = []}]
+    (Torre {posicaoTorre = (0.0,0.0), tipoTorre = Laser, alcanceTorre = 1.0, rajadaTorre = 1, cicloTorre = 1.0, tempoTorre = 1.0}, [Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, vidaInimigo = 0.0, velocidadeInimigo = 1.0, ataqueInimigo = 10.0, butimInimigo = 2, projeteisInimigo = []}])
+-}
 atualizaTorre :: Tempo -> Torre -> [Inimigo] -> (Torre, [Inimigo])
 atualizaTorre t torre inimigos
     | tempoTorre torre > 0 = (torre {tempoTorre = max 0 (tempoTorre torre - t)}, inimigos)
@@ -133,7 +145,7 @@ atualizaOnda t onda
     >>> atualizaInimigos 2 [Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, vidaInimigo = 10, velocidadeInimigo = 1, ataqueInimigo = 10, butimInimigo = 2, projeteisInimigo = []}] (Base {vidaBase=10, posicaoBase = (0,0), creditosBase = 120}) [] 2
     ([], Base {vidaBase = 10, posicaoBase = (0.0,0.0), creditosBase = 120})
     >>> atualizaInimigos 2 [Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, vidaInimigo = 10, velocidadeInimigo = 1, ataqueInimigo = 10, butimInimigo = 2, projeteisInimigo = []}] (Base {vidaBase=10, posicaoBase = (0,0), creditosBase = 120}) [] 2
-    ([Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, vidaInimigo = 10.0, velocidadeInimigo = 1.0, ataqueInimigo = 10.0, butimInimigo = 2, projeteisInimigo = []}], Base {vidaBase = 10, posicaoBase = (0.0,0.0), creditosBase = 120})
+    ([], Base {vidaBase = 10, posicaoBase = (0.0,0.0), creditosBase = 120})
 -}
 
 atualizaInimigos :: [Inimigo] -> Base -> Mapa -> Tempo -> ([Inimigo], Base)
@@ -165,12 +177,25 @@ atualizaInimigo i base mapa t = (atualizaProjetil t inimigoPosicaoAtualizada) {v
     where inimigoPosicaoAtualizada = atualizaPosicaoInimigo base i mapa t
           novaVida = atualizaVidaInimigo t i 
 
+{-|
+    A função 'atualizaVidaInimigo' é responsável por atualizar a vida de um 'Inimigo' com o passar do 'Tempo'.
+
+    ==__Exemplos de utilização__
+    >>> atualizaVidaInimigo 2 (Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, vidaInimigo = 10, velocidadeInimigo = 1, ataqueInimigo = 10, butimInimigo = 2, projeteisInimigo = []})
+    10.0
+-}
 atualizaVidaInimigo :: Tempo -> Inimigo -> Float
 atualizaVidaInimigo t i = case map tipoProjetil (projeteisInimigo i) of
     [Fogo] -> vidaInimigo i - 5 * t
     _ -> vidaInimigo i
 
+{-|
+    A função 'atualizaProjetil' é responsável por atualizar os projéteis de um 'Inimigo' com o passar do 'Tempo'.
 
+    ==__Exemplos de utilização__
+    >>> atualizaProjetil 2 (Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, vidaInimigo = 10, velocidadeInimigo = 1, ataqueInimigo = 10, butimInimigo = 2, projeteisInimigo = [Projetil {posicaoProjetil = (0,0), direcaoProjetil = Norte, tipoProjetil = Fogo, duracaoProjetil = Finita 5}]})
+    Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, vidaInimigo = 10.0, velocidadeInimigo = 1.0, ataqueInimigo = 10.0, butimInimigo = 2, projeteisInimigo = [Projetil {posicaoProjetil = (0.0,0.0), direcaoProjetil = Norte, tipoProjetil = Fogo, duracaoProjetil = Finita 3.0}]
+-}
 atualizaProjetil :: Tempo -> Inimigo -> Inimigo
 atualizaProjetil t inimigo = inimigo {
   projeteisInimigo = projeteisAtivos
@@ -179,6 +204,13 @@ atualizaProjetil t inimigo = inimigo {
     projeteisAtualizados = map (atualizaDuracaoProjetil t) (projeteisInimigo inimigo)
     projeteisAtivos = filter (\p -> duracaoProjetil p > Finita 0 || duracaoProjetil p == Infinita) projeteisAtualizados
 
+    {-|
+    A função 'atualizaDuracaoProjetil' é responsável por atualizar a duração de um 'Projetil' com o passar do 'Tempo'.
+    
+    ==__Exemplos de utilização__
+    >>> atualizaDuracaoProjetil 2 (Projetil {posicaoProjetil = (0,0), direcaoProjetil = Norte, tipoProjetil = Fogo, duracaoProjetil = Finita 5})
+    Projetil {posicaoProjetil = (0.0,0.0), direcaoProjetil = Norte, tipoProjetil = Fogo, duracaoProjetil = Finita 3.0}
+    -}
     atualizaDuracaoProjetil :: Tempo -> Projetil -> Projetil
     atualizaDuracaoProjetil t p@Projetil { duracaoProjetil = Finita d } =
       p { duracaoProjetil = Finita (max 0 (d - t)) }
@@ -193,7 +225,6 @@ atualizaProjetil t inimigo = inimigo {
     >>> atualizaPosicaoInimigo (Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, velocidadeInimigo = 1}) [] 2
     Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, velocidadeInimigo = 1}
 -}
-
 atualizaPosicaoInimigo :: Base
                        -> Inimigo -- ^ Inimigo
                        -> Mapa -- ^ Mapa

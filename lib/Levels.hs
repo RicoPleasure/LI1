@@ -1,14 +1,25 @@
+{-|
+Module      : Levels
+Description : Levels do jogo
+Copyright   : Enrico Silva Prazeres <a112068@alunos.uminho.pt>
+              Leandro Filipe Lourenço Carvalho <a112021@alunos.uminho.pt>
+
+Este módulo contém a definição dos níveis do jogo.
+-}
 module Levels where
 
 import LI12425
 import Utils.Utilitarios
 
+{-|
+    Nível 1 do jogo.
+-}
 level1 :: Jogo
 level1 = Jogo {
         baseJogo = Base {
             vidaBase = 500,
             posicaoBase = (5,0),
-            creditosBase = 10000
+            creditosBase = 500
         },
         portaisJogo = [ Portal 
         {
@@ -18,7 +29,7 @@ level1 = Jogo {
                         Inimigo {
                                 posicaoInimigo = (5,11),
                                 direcaoInimigo = Norte,
-                                vidaInimigo = 200,
+                                vidaInimigo = 100,
                                 velocidadeInimigo = 1,
                                 ataqueInimigo = 100,
                                 butimInimigo = 200,
@@ -27,7 +38,7 @@ level1 = Jogo {
                         Inimigo {
                                 posicaoInimigo = (5,11),
                                 direcaoInimigo = Norte,
-                                vidaInimigo = 200,
+                                vidaInimigo = 100,
                                 velocidadeInimigo = 1,
                                 ataqueInimigo = 100,
                                 butimInimigo = 200,
@@ -36,7 +47,7 @@ level1 = Jogo {
                         Inimigo {
                                 posicaoInimigo = (5,11),
                                 direcaoInimigo = Norte,
-                                vidaInimigo = 200,
+                                vidaInimigo = 100,
                                 velocidadeInimigo = 1,
                                 ataqueInimigo = 100,
                                 butimInimigo = 200,
@@ -45,7 +56,7 @@ level1 = Jogo {
                         Inimigo {
                                 posicaoInimigo = (5,11),
                                 direcaoInimigo = Norte,
-                                vidaInimigo = 200,
+                                vidaInimigo = 100,
                                 velocidadeInimigo = 1,
                                 ataqueInimigo = 100,
                                 butimInimigo = 200,
@@ -54,7 +65,7 @@ level1 = Jogo {
                         Inimigo {
                                 posicaoInimigo = (5,11),
                                 direcaoInimigo = Norte,
-                                vidaInimigo = 200,
+                                vidaInimigo = 100,
                                 velocidadeInimigo = 1,
                                 ataqueInimigo = 100,
                                 butimInimigo = 200,
@@ -68,67 +79,7 @@ level1 = Jogo {
                 ]
         
 
-        },
-        Portal 
-        {
-                posicaoPortal = (7,11),
-                ondasPortal = [Onda {
-                        inimigosOnda = [
-                        Inimigo {
-                                posicaoInimigo = (7,11),
-                                direcaoInimigo = Norte,
-                                vidaInimigo = 200,
-                                velocidadeInimigo = 1,
-                                ataqueInimigo = 100,
-                                butimInimigo = 200,
-                                projeteisInimigo = []
-                        }, 
-                        Inimigo {
-                                posicaoInimigo = (7,11),
-                                direcaoInimigo = Norte,
-                                vidaInimigo = 200,
-                                velocidadeInimigo = 1,
-                                ataqueInimigo = 100,
-                                butimInimigo = 200,
-                                projeteisInimigo = []
-                        },
-                        Inimigo {
-                                posicaoInimigo = (7,11),
-                                direcaoInimigo = Norte,
-                                vidaInimigo = 200,
-                                velocidadeInimigo = 1,
-                                ataqueInimigo = 100,
-                                butimInimigo = 200,
-                                projeteisInimigo = []
-                        },
-                        Inimigo {
-                                posicaoInimigo = (7,11),
-                                direcaoInimigo = Norte,
-                                vidaInimigo = 200,
-                                velocidadeInimigo = 1,
-                                ataqueInimigo = 100,
-                                butimInimigo = 200,
-                                projeteisInimigo = [
-                        ]},
-                        Inimigo {
-                                posicaoInimigo = (7,11),
-                                direcaoInimigo = Norte,
-                                vidaInimigo = 200,
-                                velocidadeInimigo = 1,
-                                ataqueInimigo = 100,
-                                butimInimigo = 200,
-                                projeteisInimigo = []
-                        }        
-                        ],
-                        cicloOnda = 5,
-                        tempoOnda = 2,
-                        entradaOnda = 2
-                }
-                ]
-        
-
-        }
-        ],
+        }],
         torresJogo = [] ,
         mapaJogo = [
                 [r, r, r, r, r, t, r, r, r, r, r],
@@ -141,14 +92,17 @@ level1 = Jogo {
                 [r, a, a, a, r, t, t, t, r, r, r],
                 [r, r, a, r, r, r, r, t, r, r, r],
                 [r, r, a, r, r, t, t, t, r, r, r],
-                [r, a, a, a, r, t, r, t, r, r, r],
-                [r, r, r, r, r, t, r, t, r, r, r]
+                [r, a, a, a, r, t, r, r, r, r, r],
+                [r, r, r, r, r, t, r, r, r, r, r]
         ],
 
         inimigosJogo = [],
         lojaJogo = []
     }
 
+{-|
+    Nível 2 do jogo.
+-}
 level2 :: Jogo
 level2 = Jogo {
     baseJogo = Base {
@@ -164,7 +118,7 @@ level2 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,9),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -173,7 +127,7 @@ level2 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,9),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -182,7 +136,7 @@ level2 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,9),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -191,7 +145,7 @@ level2 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,9),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -200,7 +154,7 @@ level2 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,9),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -216,7 +170,7 @@ level2 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,9),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -225,7 +179,7 @@ level2 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,9),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -234,7 +188,7 @@ level2 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,9),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -243,7 +197,7 @@ level2 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,9),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -252,7 +206,7 @@ level2 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,9),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -282,6 +236,10 @@ level2 = Jogo {
     inimigosJogo = [],
     lojaJogo = []
 }
+
+{-|
+    Nível 3 do jogo.
+-}
 level3 :: Jogo
 level3 = Jogo {
     baseJogo = Base {
@@ -297,25 +255,7 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 2,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (0,1),
-                        direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 4,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (0,1),
-                        direcaoInimigo = Este,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -324,8 +264,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -333,8 +273,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -342,8 +282,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -351,8 +291,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -360,8 +300,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -369,8 +309,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -378,8 +318,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -387,8 +327,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -396,8 +336,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -405,8 +345,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -414,8 +354,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -423,8 +363,26 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (0,1),
+                        direcaoInimigo = Este,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (0,1),
+                        direcaoInimigo = Este,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -439,25 +397,7 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 2,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (0,1),
-                        direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 4,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (0,1),
-                        direcaoInimigo = Este,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -466,8 +406,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -475,8 +415,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -484,8 +424,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -493,8 +433,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -502,8 +442,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -511,8 +451,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -520,8 +460,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -529,8 +469,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -538,8 +478,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -547,8 +487,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -556,8 +496,8 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -565,8 +505,26 @@ level3 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,1),
                         direcaoInimigo = Este,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (0,1),
+                        direcaoInimigo = Este,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (0,1),
+                        direcaoInimigo = Este,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -596,7 +554,9 @@ level3 = Jogo {
     lojaJogo = []
 }
 
-
+{-|
+    Nível 4 do jogo.
+-}
 level4 :: Jogo
 level4 = Jogo {
     baseJogo = Base {
@@ -612,25 +572,7 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 2,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (0,0),
-                        direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 4,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (0,0),
-                        direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -639,8 +581,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -648,8 +590,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -657,8 +599,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -666,8 +608,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -675,8 +617,26 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (0,0),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (0,0),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -691,25 +651,7 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 2,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (0,0),
-                        direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 4,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (0,0),
-                        direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -718,8 +660,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -727,8 +669,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -736,8 +678,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -745,8 +687,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -754,8 +696,26 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (0,0),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (0,0),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -770,25 +730,7 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 2,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (0,0),
-                        direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 4,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (0,0),
-                        direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -797,8 +739,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -806,8 +748,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -815,8 +757,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -824,8 +766,8 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -833,8 +775,26 @@ level4 = Jogo {
                     Inimigo {
                         posicaoInimigo = (0,0),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (0,0),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (0,0),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -864,6 +824,9 @@ level4 = Jogo {
     lojaJogo = []
 }
 
+{-|
+    Nível 5 do jogo.
+-}
 level5 :: Jogo
 level5 = Jogo {
     baseJogo = Base {
@@ -879,25 +842,7 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 2,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (3,10),
-                        direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 4,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (3,10),
-                        direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -906,8 +851,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -915,8 +860,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -924,8 +869,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -933,8 +878,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -942,8 +887,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -951,8 +896,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -960,8 +905,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -969,8 +914,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -978,8 +923,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -987,8 +932,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -996,8 +941,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1005,8 +950,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1014,8 +959,26 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (3,10),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (3,10),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1024,8 +987,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1034,8 +997,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1044,8 +1007,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1053,8 +1016,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1062,8 +1025,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1071,8 +1034,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1080,8 +1043,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1089,8 +1052,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1098,8 +1061,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1107,8 +1070,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1116,8 +1079,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1125,8 +1088,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1134,8 +1097,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1143,8 +1106,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1152,8 +1115,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1161,8 +1124,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1170,8 +1133,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1179,8 +1142,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1188,8 +1151,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1197,8 +1160,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1206,8 +1169,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1215,8 +1178,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1224,8 +1187,8 @@ level5 = Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1240,7 +1203,7 @@ level5 = Jogo {
                         Inimigo {
                         posicaoInimigo = (7,11),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -1272,12 +1235,15 @@ level5 = Jogo {
     lojaJogo = []
 }
 
+{-|
+    Estado inicial do editor de mapas do jogo.
+-}
 mapaInicialEditorDeMapas :: Jogo
 mapaInicialEditorDeMapas =  Jogo {
         baseJogo = Base {
             vidaBase = 100,
             posicaoBase = (0,0),
-            creditosBase = 350
+            creditosBase = 500
         },
         portaisJogo = [ Portal {
         posicaoPortal = (3,10),
@@ -1287,25 +1253,7 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 2,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (3,10),
-                        direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 4,
-                        ataqueInimigo = 100,
-                        butimInimigo = 200,
-                        projeteisInimigo = []
-                    },
-                    Inimigo {
-                        posicaoInimigo = (3,10),
-                        direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -1314,8 +1262,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1323,8 +1271,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1332,8 +1280,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1341,8 +1289,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1350,8 +1298,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1359,8 +1307,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1368,8 +1316,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1377,8 +1325,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1386,8 +1334,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1395,8 +1343,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1404,8 +1352,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1413,8 +1361,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1422,8 +1370,26 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (3,10),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
+                        ataqueInimigo = 100,
+                        butimInimigo = 200,
+                        projeteisInimigo = []
+                    },
+                    Inimigo {
+                        posicaoInimigo = (3,10),
+                        direcaoInimigo = Norte,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1432,8 +1398,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1442,8 +1408,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1452,8 +1418,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1461,8 +1427,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1470,8 +1436,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1479,8 +1445,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1488,8 +1454,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1497,8 +1463,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1506,8 +1472,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1515,8 +1481,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1524,8 +1490,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1533,8 +1499,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1542,8 +1508,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1551,8 +1517,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1560,8 +1526,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1569,8 +1535,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1578,8 +1544,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1587,8 +1553,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1596,8 +1562,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1605,8 +1571,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1614,8 +1580,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1623,8 +1589,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1632,8 +1598,8 @@ mapaInicialEditorDeMapas =  Jogo {
                     Inimigo {
                         posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
-                        velocidadeInimigo = 3,
+                        vidaInimigo = 100,
+                        velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
                         projeteisInimigo = []
@@ -1648,7 +1614,7 @@ mapaInicialEditorDeMapas =  Jogo {
                         Inimigo {
                         posicaoInimigo = (7,11),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 200,
+                        vidaInimigo = 100,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -1723,15 +1689,26 @@ mapaInicialEditorDeMapas =  Jogo {
                                                 }})]
         }
 
-
+{-|
+    Terreno terra
+-}
 t :: Terreno 
 t = Terra
 
+{-|
+    Terreno relva
+-}
 r :: Terreno
 r = Relva
 
+{-|
+    Terreno água
+-}
 a :: Terreno
 a = Agua
 
+{-|
+    Terreno vazio (utilizado para o editor de mapas)
+-}
 v :: Terreno
 v = Vazio

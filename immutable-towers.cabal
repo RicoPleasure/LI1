@@ -21,6 +21,7 @@ library
         Utils.UtilitariosTorre
         Utils.UtilitariosInimigo
         Utils.UtilitariosEditor
+        Utils.UtilitariosSaves
         Levels
 
     hs-source-dirs:   lib

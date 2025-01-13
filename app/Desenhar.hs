@@ -15,6 +15,7 @@ import LI12425
 import Utils.Utilitarios
 import Utils.UtilitariosTorre
 import Utils.UtilitariosEditor
+import Utils.UtilitariosSaves
 import Data.Char (digitToInt)
 
 {-| Legenda dos temaAtual
@@ -32,6 +33,11 @@ import Data.Char (digitToInt)
 (sprites !! temaAtual) !! 10 -> Terreno alternativo inválido (modo de adicionar torre)
 (sprites !! temaAtual) !! 11 -> Terreno a adicionar (modo de adicionar terreno)
 (sprites !! temaAtual) !! 12 -> Vida da base e dos inimigos
+(sprites !! temaAtual) !! 13 -> Projetil
+(sprites !! temaAtual) !! 14 -> Editor de Mapas
+(sprites !! temaAtual) !! 15 -> Menu de Temas
+(sprites !! temaAtual) !! 16 -> Temas
+
 
  -}
 
@@ -284,6 +290,7 @@ desenha sprites (ImmutableTowers { cena = ModoJogo (Loja t), jogo = jogo , tema 
                  ++ desenhaTorres ((sprites !! temaAtual) !! 4) (torresJogo jogo)
                  ++ desenhaInimigos ((sprites !! temaAtual) !! 6) ((sprites !! temaAtual) !! 12) (inimigosJogo jogo) )
              ,  scale 0.9 0.9 $ spriteLoja t
+             , desenhaCreditos ((sprites !! temaAtual) !! 13) (creditosBase (baseJogo jogo))
              ]
   where
     spriteLoja indexTorre = case indexTorre of
@@ -308,6 +315,7 @@ desenha sprites (ImmutableTowers {
             ++ desenhaInimigos ((sprites !! temaAtual) !! 6) ((sprites !! temaAtual) !! 12) (inimigosJogo jogo) ),
         Color (makeColor 0 0 0 0.5) $ Polygon [(-960, -540), (960, -540), (960, 540), (-960, 540)],
         ((sprites !! temaAtual) !! 8) !! 0
+        , desenhaCreditos ((sprites !! temaAtual) !! 13) (creditosBase (baseJogo jogo))
     ]
 
 {-| Desenha o jogo quando o jogador escolhe a posição da nova torre -}
@@ -320,12 +328,14 @@ desenha sprites (ImmutableTowers {
         imagemFundo (sprites !! temaAtual),
         Translate ajusteX ajusteY $ Pictures 
             ( desenhaMapa ((sprites !! temaAtual) !! 1) (mapaJogo jogo) (0, 0)
+            ++ [desenhaCirculoAlcance (fromIntegral x, fromIntegral y) (alcanceTorreTipo t)]
             ++ [desenhaTerrenoAlternativo (sprites !! temaAtual) (mapaJogo jogo) t (torresJogo jogo) ((mapaJogo jogo !! y) !! x) (fromIntegral x, fromIntegral y) (creditosBase (baseJogo jogo)) (custoTorre t)]
             ++ [desenhaBase ((sprites !! temaAtual) !! 3) (posicaoBase $ baseJogo jogo)]
             ++ desenhaPortais ((sprites !! temaAtual) !! 5) (portaisJogo jogo)
             ++ desenhaTorres ((sprites !! temaAtual) !! 4) (torresJogo jogo)
             ++ desenhaInimigos ((sprites !! temaAtual) !! 6) ((sprites !! temaAtual) !! 12) (inimigosJogo jogo)
             ++ [desenhaTorre ((sprites !! temaAtual) !! 4) (fromIntegral x, fromIntegral y) (projetilNovaTorre t)])
+            , desenhaCreditos ((sprites !! temaAtual) !! 13) (creditosBase (baseJogo jogo))
     ]
 
 {-|
@@ -632,6 +642,11 @@ desenhaTerrenoAlternativo :: [[Picture]] -- ^ temaAtual dos terrenos
 desenhaTerrenoAlternativo sprites mapa tipoTorre torres t (x,y) creditos custo = posicaoReal (x,y) (scale 3 3 $ terrenoSprite spriteCorreto t)
     where spriteCorreto = if adicionaTorreValida (x,y) mapa (insereTorreNaLista torres (x,y) (projetilNovaTorre tipoTorre)) creditos custo then (sprites !! 10) else (sprites !! 9)
 
+desenhaCirculoAlcance :: Posicao -- ^ Posição da torre
+                      -> Float -- ^ Raio do círculo
+                      -> Picture -- ^ Círculo de alcance
+desenhaCirculoAlcance (x,y) f = posicaoReal (x,y) $ scale 55 30 $ Color (makeColor 0 0 200 0.5) $ circleSolid f
+
 {-|
     'projetilNovaTorre' é uma função que retorna o tipo de projétil de uma torre baseado no tipo da torre.
 
@@ -650,12 +665,21 @@ projetilNovaTorre tipo = case tipo of
   Torre2 -> Fogo
   Torre3 -> Gelo
 
+{-|
+    'desenhaVidaBase' é uma função que desenha a vida da base, com auxílio da função 'desenhaVida'.
+-}
 desenhaVidaBase :: [Picture] -> Float -> (Float, Float) -> [Picture]
 desenhaVidaBase sprites vida (x, y) = desenhaVida sprites vida (x, y) 500 (-29, 40)
 
+{-|
+    'desenhaVidaInimigo' é uma função que desenha a vida de um inimigo, com auxílio da função 'desenhaVida'.
+-}
 desenhaVidaInimigo :: [Picture] -> Float -> (Float, Float) -> [Picture]
-desenhaVidaInimigo sprites vida (x, y) = desenhaVida sprites vida (x, y) 200 (-29,20)
+desenhaVidaInimigo sprites vida (x, y) = desenhaVida sprites vida (x, y) 100 (-29,20)
 
+{-|
+    'desenhaVida' é uma função que desenha a vida de um objeto.
+-}
 desenhaVida :: [Picture] -> Float -> (Float, Float) -> Float -> (Float,Float) -> [Picture]
 desenhaVida sprites vida (x, y) vidaM (tx,ty) =
   let numeroBarras = 10
@@ -667,15 +691,24 @@ desenhaVida sprites vida (x, y) vidaM (tx,ty) =
       spritesVida = [ Translate (x + i * espacamento) y sprite | i <- [0 .. barrasAtuais - 1] ]
   in [Translate tx ty $ (posicaoRealObjetosLista (x, y) spritesVida)]
 
+{-|
+    'posicaoRealObjetosLista' é uma função que ajusta a posição de uma lista de objetos no mapa.
+-}
 posicaoRealObjetosLista :: (Float, Float) -> [Picture] -> Picture
 posicaoRealObjetosLista (x, y) p = Translate realX (-realY + 25) (Pictures p)
   where
     realX = (x - y) * (blocoLargura / 2)
     realY = (x + y) * (blocoAltura / 2)
 
+{-|
+    'desenhaCreditos' é uma função que desenha os créditos do jogador.
+-}
 desenhaCreditos :: [Picture] -> Creditos -> Picture
-desenhaCreditos sprites creditos = Translate 600 450 $ scale 0.2 0.2 $ Pictures [Translate (i * 200) 0 (sprites !! (digitToInt c)) | (i, c) <- zip [0..] (show creditos)]
+desenhaCreditos sprites creditos = Translate 470 450 $ scale 0.2 0.2 $ Pictures [Translate (i * 200) 0 (sprites !! (digitToInt c)) | (i, c) <- zip [0..] (show creditos)]
 
+{-|
+    'mostrarJogos' é uma função que desenha os jogos salvos.
+-}
 mostrarJogos :: Int -> [String] -> Picture
 mostrarJogos sel games =
   Translate (-125) 300 $
@@ -692,5 +725,8 @@ mostrarJogos sel games =
       [1..]
       games
 
+{-|
+    'extraiNomeSave' é uma função que extrai o nome do jogo salvo.
+-}
 extraiNomeSave :: String -> String
 extraiNomeSave game = takeWhile (/= '.') game

@@ -299,24 +299,6 @@ calculaNovaPosicao ps dir (x, y) _ v t = case map tipoProjetil ps of
     Este  -> (x + v * t, y)
     Oeste -> (x - v * t, y)
  
-
-
-{-|
-    A função 'handleProjeteisInimigo' é responsável por atualizar os projéteis de um 'Inimigo' com o passar do 'Tempo'.
-
-    ==__Exemplos de utilização__
-    >>> handleProjeteisInimigo (Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 5}]}) 2
-    Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 3.0}], velocidadeInimigo = 1.0}
-    >>> handleProjeteisInimigo (Inimigo {posicaoInimigo = (0,0), direcaoInimigo = Norte, projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 5}]}) 2
-    Inimigo {posicaoInimigo = (0.0,0.0), direcaoInimigo = Norte, projeteisInimigo = [Projetil {tipoProjetil = Gelo, duracaoProjetil = Finita 3.0}], velocidadeInimigo = 1.0}
--}      
-{- proximaPosicao :: Direcao -> Posicao -> Float -> Float -> Posicao
-proximaPosicao dir (x, y) v t = 
-    case dir of
-      Norte -> (x, y - v * t)
-      Sul   -> (x, y + v * t)
-      Este  -> (x + v * t, y)
-      Oeste -> (x - v * t, y) -}
 {-|
     A função 'calculaNovaDirecao' é responsável por calcular a nova direção de um 'Inimigo' com o passar do 'Tempo'.
 
@@ -347,6 +329,15 @@ calculaNovaDirecao dir base mapa (x, y) v t
         oposta Este  = Oeste
         oposta Oeste = Este
 
+{-|
+    A função 'proximaPosicao' é responsável por calcular a próxima posição de um 'Inimigo' com o passar do 'Tempo'.
+
+    ==__Exemplos de utilização__
+    >>> proximaPosicao Norte (0,0) 1 2
+    (0.0,-2.0)
+    >>> proximaPosicao Norte (0,0) 1 2
+    (0.0,-2.0)
+-}
 proximaPosicao :: Direcao -> Posicao -> Float -> Float -> Posicao
 proximaPosicao dir (x, y) v t = 
     case dir of
@@ -354,12 +345,6 @@ proximaPosicao dir (x, y) v t =
       Sul   -> (x, y + v * t)
       Este  -> (x + v * t, y)
       Oeste -> (x - v * t, y)
-
-{- escolheDirecao :: [Direcao] -> Direcao
-escolheDirecao ds = unsafePerformIO $ do
-    n <- randomRIO (0, length ds - 1)
-    return (ds !! n)
- -}
 
 {-|
     A função 'inimigoChegouBase' verifica se um 'Inimigo' chegou à 'Base'.

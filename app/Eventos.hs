@@ -9,6 +9,7 @@ import Utils.UtilitariosTorre
 import Utils.Utilitarios
 import Utils.UtilitariosBase
 import Utils.UtilitariosEditor
+import Utils.UtilitariosSaves
 import Levels
 
 {-| Função que reage ao tempo -}
@@ -84,7 +85,7 @@ reageEventosThemesMenu (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowers 
 -}
 reageEventosThemesMenu (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema1} = return $ e {cena = MenuInicial Jogar, tema = 0}
 reageEventosThemesMenu (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema2} = return $ e {cena = MenuInicial Jogar, tema = 1}
-reageEventosThemesMenu (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema2} = return $ e {cena = MenuInicial Jogar, tema = 2}
+reageEventosThemesMenu (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = ThemesMenu Tema3} = return $ e {cena = MenuInicial Jogar, tema = 2}
 {-| Caso geral -}
 reageEventosThemesMenu _ e = return e
 {- 
@@ -106,7 +107,7 @@ reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyUp) Down _ _) e@ImmutableTowe
 {-|
     Seleciona o modo de jogo escolhido
 -}
-reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = OpcaoJogar ContinueGame} = return $ e {cena = LoadGame 1, slotSave = 1}
+reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = OpcaoJogar ContinueGame, slotSave = save} = return $ e {cena = LoadGame 1, slotSave = save}
 reageEventosEscolhaDeJogo (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = OpcaoJogar NewGame} = return $ e {cena = SelectGameMode Levels}
 {-| Caso geral -}
 reageEventosEscolhaDeJogo _ e = return $ e  
@@ -131,7 +132,7 @@ reageEventosSelectGameMode (EventKey (SpecialKey KeyEnter) Down _ _) e@Immutable
 reageEventosSelectGameMode _ e = return $ e
 
 {-|
-    'reageEventosSelectLevel' reage a eventos na seleção de níveis.  saveSlot
+    'reageEventosSelectLevel' reage a eventos na seleção de níveis.  slotSave
 -}
 reageEventosSelectLevel :: Event -> ImmutableTowers -> IO ImmutableTowers
 {-|
@@ -496,13 +497,25 @@ reageEventosTelaFinal (EventKey (SpecialKey KeyLeft) Down _ _) e@ImmutableTowers
     Acessa os casos de vitória
 -}
 reageEventosTelaFinal (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = TelaFinal (Vitoria MenuVitoria)} = return $ e {cena = MenuInicial Jogar}
-reageEventosTelaFinal (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = TelaFinal (Vitoria NextLevel)} = return $ e {jogo = level2 , cena = ModoJogo Resumed}
-
+reageEventosTelaFinal (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = TelaFinal (Vitoria NextLevel), slotSave = n} = do
+    case n of
+        1 -> return $ e {jogo = level2 , cena = ModoJogo Resumed, slotSave = 2}
+        2 -> return $ e {jogo = level3 , cena = ModoJogo Resumed, slotSave = 3}
+        3 -> return $ e {jogo = level4 , cena = ModoJogo Resumed, slotSave = 4}
+        4 -> return $ e {jogo = level5 , cena = ModoJogo Resumed, slotSave = 5}
+        _ -> return $ e {cena = MenuInicial Jogar}
 {-|
     Acessa os casos de derrota
 -}
 reageEventosTelaFinal (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = TelaFinal (Derrota MenuDerrota)} = return $ e {cena = MenuInicial Jogar}
-reageEventosTelaFinal (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = TelaFinal (Derrota TentarNovamente)} = return $ e {jogo = level1 ,cena =  ModoJogo Resumed}
+reageEventosTelaFinal (EventKey (SpecialKey KeyEnter) Down _ _) e@ImmutableTowers {cena = TelaFinal (Derrota TentarNovamente), slotSave = n} = do
+    case n of 
+        1 -> return $ e {jogo = level1 ,cena =  ModoJogo Resumed, slotSave = 1}
+        2 -> return $ e {jogo = level2 ,cena =  ModoJogo Resumed, slotSave = 2}
+        3 -> return $ e {jogo = level3 ,cena =  ModoJogo Resumed, slotSave = 3}
+        4 -> return $ e {jogo = level4 ,cena =  ModoJogo Resumed, slotSave = 4}
+        5 -> return $ e {jogo = level5 ,cena =  ModoJogo Resumed, slotSave = 5}
+        _ -> return $ e {cena = MenuInicial Jogar}
 
 reageEventosTelaFinal _ e = return $ e
 
