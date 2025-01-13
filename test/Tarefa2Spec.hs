@@ -208,7 +208,6 @@ testesTarefa2 =
         testInimigoComResinaAtingFogo,
         testInimigoComResinaAtingGelo,
 
-<<<<<<< HEAD
         -- testes inimigosNoAlcance
         testInimigosNoAlcance,
 
@@ -216,27 +215,4 @@ testesTarefa2 =
         testeNaoTerminouJogo,
         testeTerminouJogo
         
-=======
-<<<<<<< HEAD
-        -- testes terminouJogo
-        testJogoNaoTerminou,
-        
-        -- testes ganhouJogo
-        testJogoGanhou,
-        testJogoNaoGanhou,
-
-        -- testes perdeuJogo
-        testJogoPerdeu,
-        testJogoNaoPerdeu
-=======
-        -- testes ativaInimigo
-        testPortalComOndaAtivaEInimigoParaAtivar,
-        testPortalSemOndaAtiva,
-        testPortalComOndaAtivaSemInimigoParaAtivar,
-        testPortalMultOndas,
-
-        -- testes extra
-        testInsertOndaAtivaInOndas
->>>>>>> main
->>>>>>> 83d13f644be0830c75088d2ecc0934a12bc245d4
       ]

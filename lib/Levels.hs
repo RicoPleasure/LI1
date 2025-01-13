@@ -17,7 +17,7 @@ import Utils.Utilitarios
 level1 :: Jogo
 level1 = Jogo {
         baseJogo = Base {
-            vidaBase = 500,
+            vidaBase =500,
             posicaoBase = (5,0),
             creditosBase = 500
         },
@@ -106,7 +106,7 @@ level1 = Jogo {
 level2 :: Jogo
 level2 = Jogo {
     baseJogo = Base {
-        vidaBase = 100,
+        vidaBase =500,
         posicaoBase = (10,1),
         creditosBase = 500
     },
@@ -243,7 +243,7 @@ level2 = Jogo {
 level3 :: Jogo
 level3 = Jogo {
     baseJogo = Base {
-        vidaBase = 100,
+        vidaBase =500,
         posicaoBase = (10,1),
         creditosBase = 500
     },
@@ -560,7 +560,7 @@ level3 = Jogo {
 level4 :: Jogo
 level4 = Jogo {
     baseJogo = Base {
-        vidaBase = 100,
+        vidaBase =500,
         posicaoBase = (5,5),
         creditosBase = 500
     },
@@ -830,7 +830,7 @@ level4 = Jogo {
 level5 :: Jogo
 level5 = Jogo {
     baseJogo = Base {
-        vidaBase = 100,
+        vidaBase =500,
         posicaoBase = (7,10),
         creditosBase = 500
     },
@@ -1201,9 +1201,9 @@ level5 = Jogo {
             Onda {
                 inimigosOnda = [
                         Inimigo {
-                        posicaoInimigo = (7,11),
+                        posicaoInimigo = (3,10),
                         direcaoInimigo = Norte,
-                        vidaInimigo = 100,
+                        vidaInimigo = 10000,
                         velocidadeInimigo = 1,
                         ataqueInimigo = 100,
                         butimInimigo = 200,
@@ -1218,15 +1218,15 @@ level5 = Jogo {
     }],
     torresJogo = [],
     mapaJogo = [
-        [a, a, r, t, t, t, t, t, r, a, a],
-        [a, r, t, t, r, r, r, t, t, r, a],
-        [r, t, t, r, r, r, r, r, t, t, r],
+        [a, a, r, t, t, t, t, t, t, t, a],
+        [a, r, t, t, r, r, r, r, r, t, a],
+        [r, t, t, r, r, r, r, r, r, t, r],
         [r, t, r, a, t, r, a, t, r, t, r],
         [r, t, r, a, t, r, a, t, r, t, r],
         [r, t, r, a, t, r, a, t, r, t, r],
-        [r, t, t, r, r, r, r, r, t, t, r],
-        [r, r, t, t, r, r, r, t, t, r, r],
-        [r, r, r, t, a, a, a, t, r, r, r],
+        [r, t, t, r, r, r, r, r, r, t, r],
+        [r, r, t, t, r, r, r, r, r, t, r],
+        [r, r, r, t, a, a, a, t, t, t, r],
         [a, r, r, t, a, a, a, t, r, r, a],
         [a, a, r, t, a, a, a, t, r, a, a]
         ],
@@ -1241,7 +1241,7 @@ level5 = Jogo {
 mapaInicialEditorDeMapas :: Jogo
 mapaInicialEditorDeMapas =  Jogo {
         baseJogo = Base {
-            vidaBase = 100,
+            vidaBase =500,
             posicaoBase = (99,99),
             creditosBase = 500
         },

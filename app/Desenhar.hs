@@ -18,7 +18,7 @@ import Utils.UtilitariosEditor
 import Utils.UtilitariosSaves
 import Data.Char (digitToInt)
 
-{-| Legenda dos temaAtual
+{-| Legenda dos sprites:
 
 (sprites !! temaAtual) !! 0 -> Loja
 (sprites !! temaAtual) !! 1 -> Terrenos
@@ -33,11 +33,12 @@ import Data.Char (digitToInt)
 (sprites !! temaAtual) !! 10 -> Terreno alternativo inválido (modo de adicionar torre)
 (sprites !! temaAtual) !! 11 -> Terreno a adicionar (modo de adicionar terreno)
 (sprites !! temaAtual) !! 12 -> Vida da base e dos inimigos
-(sprites !! temaAtual) !! 13 -> Projetil
-(sprites !! temaAtual) !! 14 -> Editor de Mapas
-(sprites !! temaAtual) !! 15 -> Menu de Temas
-(sprites !! temaAtual) !! 16 -> Temas
-
+(sprites !! temaAtual) !! 13 -> Numero usados para representar os créditos
+(sprites !! temaAtual) !! 14 -> Editor de mapas
+(sprites !! temaAtual) !! 15 -> Save Game
+(sprites !! temaAtual) !! 16 -> Opções de Temas
+(sprites !! temaAtual) !! 17 -> Telas finais
+(sprites !! temaAtual) !! 18 -> Aviso Loja
 
  -}
 
@@ -258,6 +259,7 @@ desenha sprites (ImmutableTowers {cena = ModoJogo Resumed, jogo = jogo , tema = 
                           ++ desenhaInimigos ((sprites !! temaAtual) !! 6) ((sprites !! temaAtual) !! 12) (inimigosJogo jogo)
                           ++ desenhaVidaBase ((sprites !! temaAtual) !! 12) (vidaBase (baseJogo jogo)) (posicaoBase (baseJogo jogo)) 
                           ), desenhaCreditos ((sprites !! temaAtual) !! 13) (creditosBase (baseJogo jogo))
+                          , Translate 0 (-50) $ scale 0.95 0.95 (((sprites !! temaAtual) !! 18) !! 0)
              ]
 
 desenha sprites (ImmutableTowers {cena = Debug, jogo = jogo , tema = temaAtual}) = return $
@@ -290,7 +292,7 @@ desenha sprites (ImmutableTowers { cena = ModoJogo (Loja t), jogo = jogo , tema 
                  ++ desenhaTorres ((sprites !! temaAtual) !! 4) (torresJogo jogo)
                  ++ desenhaInimigos ((sprites !! temaAtual) !! 6) ((sprites !! temaAtual) !! 12) (inimigosJogo jogo) )
              ,  scale 0.9 0.9 $ spriteLoja t
-             , desenhaCreditos ((sprites !! temaAtual) !! 13) (creditosBase (baseJogo jogo))
+             , Translate (150) (-420) $ desenhaCreditos ((sprites !! temaAtual) !! 13) (creditosBase (baseJogo jogo))
              ]
   where
     spriteLoja indexTorre = case indexTorre of

@@ -119,6 +119,7 @@ main = do
   dm <- loadImage (path ++ "endgame/derrota-voltar.png")
   vn <- loadImage (path ++ "endgame/vitoria-next.png")
   dt <- loadImage (path ++ "endgame/derrota-tryagain.png")
+  al <- loadImage (path ++ "utils/aviso.png")
   
 
   {- Tema Natal -}
@@ -133,11 +134,11 @@ main = do
   w06 <- loadImage (path ++ "terreno/water-3.png")
   bg3 <- loadImage (path ++ "fundo/bg3.png")
 
-  let temaInicial = [[l01, l02, l03],[r01, d01, w01, v01],[bg1],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02, v01],[g03, d03, w03, v01],[g04, d04, w04, v01], [rb], [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9], [et, er, ea, eres, efog, egel, ebase, eport, eadd], [save, nsave], [tema1, tema2, tema3], [vm, dm, vn, dt]] 
+  let temaInicial = [[l01, l02, l03],[r01, d01, w01, v01],[bg1],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02, v01],[g03, d03, w03, v01],[g04, d04, w04, v01], [rb], [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9], [et, er, ea, eres, efog, egel, ebase, eport, eadd], [save, nsave], [tema1, tema2, tema3], [vm, dm, vn, dt], [al]] 
 
-  let temaNatal = [[l01, l02, l03],[r02, d05, w05, v01],[bg2],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02, v01],[g03, d03, w03, v01],[g04, d04, w04, v01], [rb], [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9], [et, er, ea, eres, efog, egel, ebase, eport, eadd], [save, nsave], [tema1, tema2, tema3], [vm, dm, vn, dt]]
+  let temaNatal = [[l01, l02, l03],[r02, d05, w05, v01],[bg2],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02, v01],[g03, d03, w03, v01],[g04, d04, w04, v01], [rb], [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9], [et, er, ea, eres, efog, egel, ebase, eport, eadd], [save, nsave], [tema1, tema2, tema3], [vm, dm, vn, dt], [al]]
 
-  let temaNoite = [[l01, l02, l03],[r03, d06, w06, v01],[bg3],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02, v01],[g03, d03, w03, v01],[g04, d04, w04, v01], [rb], [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9], [et, er, ea, eres, efog, egel, ebase, eport, eadd], [save, nsave], [tema1, tema2, tema3], [vm, dm, vn, dt]] 
+  let temaNoite = [[l01, l02, l03],[r03, d06, w06, v01],[bg3],[b01],[t01, t02, t03],[p01],[i01],[m01, m02, m03, m04, m05, m06, m07, m08, m09, m10, m11, m12, m13, m14, m15],[p02, p03],[g02, d02, w02, v01],[g03, d03, w03, v01],[g04, d04, w04, v01], [rb], [n0, n1, n2, n3, n4, n5, n6, n7, n8, n9], [et, er, ea, eres, efog, egel, ebase, eport, eadd], [save, nsave], [tema1, tema2, tema3], [vm, dm, vn, dt], [al]] 
 
 
   playIO janela fundo fr it (desenha [temaInicial, temaNatal, temaNoite]) reageEventos reageTempo
