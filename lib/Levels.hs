@@ -831,7 +831,7 @@ level5 :: Jogo
 level5 = Jogo {
     baseJogo = Base {
         vidaBase = 100,
-        posicaoBase = (7,11),
+        posicaoBase = (7,10),
         creditosBase = 500
     },
     portaisJogo = [ Portal {
