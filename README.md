@@ -41,3 +41,9 @@ A documentação do projeto pode ser gerada recorrendo ao [Haddock](https://hask
 ```bash
 cabal haddock
 ```
+
+## Extras
+
+- Sistema de saves para os níveis
+- Editor de mapas
+- Temas de jogo (mudanças no visual)
