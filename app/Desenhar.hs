@@ -485,7 +485,7 @@ posicaoReal (x, y) = Translate realX (-realY)
 posicaoRealObjetos :: (Float, Float) -- ^ Coordenadas do objeto na grelha do mapa
                    -> Picture -- ^ Sprite do objeto 
                    -> Picture -- ^ Objeto com a posição ajustada
-posicaoRealObjetos (x, y) = Translate (realX) (-realY+25)
+posicaoRealObjetos (x, y) = Translate realX (-realY+25)
     where 
         realX = (x - y) * (blocoLargura / 2)
         realY = (x + y) * (blocoAltura / 2)
@@ -500,10 +500,10 @@ posicaoRealObjetos (x, y) = Translate (realX) (-realY+25)
 posicaoRealObjetosScale :: (Float, Float) -- ^ Coordenadas do objeto na grelha do mapa
                    -> Picture -- ^ Sprite do objeto
                    -> Picture -- ^ Objeto com a posição ajustada
-posicaoRealObjetosScale (x, y) = Translate (realX) (-realY + 25)
+posicaoRealObjetosScale (x, y) = Translate realX (-realY + 25)
     where 
-        realX = (x - y) * (blocoLargura)
-        realY = (x + y) * (blocoAltura)
+        realX = (x - y) * blocoLargura
+        realY = (x + y) * blocoAltura
 
 {-| 
     'desenhaMapa' é uma função que desenha o mapa do jogo.
@@ -512,7 +512,7 @@ desenhaMapa :: [Picture] -- ^ temaAtual dos terrenos
             -> [[Terreno]] -- ^ Grelha do mapa  
             -> (Float,Float) -- ^ Coordenadas da grelha do mapa
             -> [Picture] -- ^ Mapa com os terrenos desenhados
-desenhaMapa ts [] _ = []   
+desenhaMapa _ [] _ = []   
 desenhaMapa ts (linha:t) (x,y) =
     desenhaLinha ts linha (x,y) ++ desenhaMapa ts t (x, (y+1))
 
@@ -523,7 +523,7 @@ desenhaLinha :: [Picture] -- ^ temaAtual dos terrenos
              -> [Terreno] -- ^ Linha do mapa
              -> (Float,Float) -- ^ Coordenadas da grelha do mapa
              -> [Picture] -- ^ Linha do mapa com os terrenos desenhados
-desenhaLinha ts [] _ = []
+desenhaLinha _ [] _ = []
 desenhaLinha ts (terreno:t) (x,y) =
     posicaoReal (x,y) (scale 3 3 $ (terrenoSprite ts terreno))
     : desenhaLinha ts t ((x+1), y)
@@ -717,7 +717,7 @@ mostrarJogos sel games =
       (\index game ->
          let
             saveName = extraiNomeSave game 
-            umSave = translate 0 (fromIntegral (-100 * index)) (scale 0.5 0.5 $ text saveName)
+            umSave = translate 0 (fromIntegral (-100 * index)) (scale 0.5 0.5 $ text ("Level " ++ saveName))
          in if index == sel
               then color red umSave
               else umSave
