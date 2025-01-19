@@ -1,4 +1,26 @@
-# Laboratórios de Informática I
+# Projeto realizado em Laboratórios de Informática I
+
+O jogo consiste num Tower Defense padrão (com torres, inimigos e a base). O objetivo é impedir que os inimigos alcancem a base.
+
+## Funcionalidades extras
+- Editor de mapas
+- Diferentes temas
+- Sistema de saves
+
+## Falhas
+- Movimentos dos inimigos quando há 2 caminhos ou mais.
+
+## Imagens do jogo
+
+![image](https://github.com/user-attachments/assets/e21704eb-8ca9-4243-a561-80831f66af61)
+![image](https://github.com/user-attachments/assets/ad6b49ea-e806-4700-8df7-2707edde7baa)
+![image](https://github.com/user-attachments/assets/c8851d8c-c7a0-4c81-962a-4350d36658bc)
+
+## **Nota do projeto:** ??
+
+## Desenvolvido por 
+- Enrico Silva Prazeres
+- Leandro Filipe Lourenço Carvalho
 
 ## Executável
 
@@ -41,9 +63,3 @@ A documentação do projeto pode ser gerada recorrendo ao [Haddock](https://hask
 ```bash
 cabal haddock
 ```
-
-## Extras
-
-- Sistema de saves para os níveis
-- Editor de mapas
-- Temas de jogo (mudanças no visual)
