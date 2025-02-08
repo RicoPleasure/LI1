@@ -16,7 +16,7 @@ O jogo consiste num Tower Defense padrão (com torres, inimigos e a base). O obj
 ![image](https://github.com/user-attachments/assets/ad6b49ea-e806-4700-8df7-2707edde7baa)
 ![image](https://github.com/user-attachments/assets/c8851d8c-c7a0-4c81-962a-4350d36658bc)
 
-## **Nota do projeto:** ??
+## **Nota do projeto:** 18
 
 ## Desenvolvido por 
 - Enrico Silva Prazeres
